@@ -13,20 +13,20 @@ var productSchema = new Schema({
     }
 });
 
-var timeSchema = new Schema({
-    date: {
-        type: Date,
-        required: true
-    },
-    start: {
-        type: Number,
-        required: true
-    },
-    end: {
-        type: Number,
-        required: true
-    }
-});
+// var timeSchema = new Schema({
+//     date: {
+//         type: Date,
+//         required: true
+//     },
+//     start: {
+//         type: Number,
+//         required: true
+//     },
+//     end: {
+//         type: Number,
+//         required: true
+//     }
+// });
 
 const orderSchema = new Schema({
     buyer: {
@@ -38,7 +38,24 @@ const orderSchema = new Schema({
         type: Number,
         required: true
     },
-    timeSlot: timeSchema,
+    status: {
+        type: String,
+        default: "TO BE DELIVERED"
+    },
+    timeSlot: {
+        date: {
+            type: Date,
+            required: true
+        },
+        start: {
+            type: Number,
+            required: true
+        },
+        end: {
+            type: Number,
+            required: true
+        }
+    },
     items: [ productSchema ]
 }, {
     timestamps: true
