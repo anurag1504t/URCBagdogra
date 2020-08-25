@@ -4,10 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
-var passport = require('passport');
-var authenticate = require('./authenticate');
 var config = require('./config');
 var cors = require('cors');
+var compression = require('compression');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -27,11 +26,10 @@ connect.then((db) => {
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, "client", "build")));
 
 app.use(cors());
+app.use(compression());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -42,6 +40,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/orders', orderRouter);
 app.use('/products',productRouter);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

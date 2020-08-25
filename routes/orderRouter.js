@@ -11,7 +11,7 @@ orderRouter.use(bodyParser.json());
 // Methods for http://localhost:3000/orders/ API end point
 orderRouter.route('/')
 .get((req,res,next) => {
-    Orders.find({})
+    Orders.find(req.query)
     .then((orders) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');

@@ -13,29 +13,10 @@ var productSchema = new Schema({
     }
 });
 
-// var timeSchema = new Schema({
-//     date: {
-//         type: Date,
-//         required: true
-//     },
-//     start: {
-//         type: Number,
-//         required: true
-//     },
-//     end: {
-//         type: Number,
-//         required: true
-//     }
-// });
-
 const orderSchema = new Schema({
     buyer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true
-    },
-    amount: {
-        type: Number,
         required: true
     },
     status: {
@@ -43,18 +24,8 @@ const orderSchema = new Schema({
         default: "TO BE DELIVERED"
     },
     timeSlot: {
-        date: {
-            type: Date,
-            required: true
-        },
-        start: {
-            type: Number,
-            required: true
-        },
-        end: {
-            type: Number,
-            required: true
-        }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Time'
     },
     items: [ productSchema ]
 }, {
