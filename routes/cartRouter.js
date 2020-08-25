@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const Carts = require('../models/cart');
+var authenticate = require('../authenticate');
 
 const cartRouter = express.Router();
 cartRouter.use(bodyParser.json());

@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
 const Feeds = require('../models/feed');
+var authenticate = require('../authenticate');
 
 const feedRouter = express.Router();
 feedRouter.use(bodyParser.json());

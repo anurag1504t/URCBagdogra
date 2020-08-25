@@ -9,11 +9,11 @@ var User = new Schema({
     },
     mobileNumber : {
         type: Number,
-        required: true
+        required: false
     },
     email: {
         type: String,
-        required: true
+        required: false
     },
     livingIn: {
         type: Boolean,

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const Orders = require('../models/order');
+var authenticate = require('../authenticate');
 
 const orderRouter = express.Router();
 orderRouter.use(bodyParser.json());

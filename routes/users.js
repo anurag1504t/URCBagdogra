@@ -17,10 +17,6 @@ userRouter.route('/')
         }, (err) => next(err))
         .catch((err) => next(err));
 })
-.post((req, res, next) => {
-    res.statusCode = 403;
-    res.end('POST operation not supported on /users. For Signup user /users/signup API endpoint.');
-})
 .put((req, res, next) => {
     res.statusCode = 403;
     res.end('PUT operation not supported on /users');
@@ -44,10 +40,6 @@ userRouter.route('/:username')
             res.json(user);
         }, (err) => next(err))
         .catch((err) => next(err));
-})
-.post((req, res, next) => {
-    res.statusCode = 403;
-    res.end('POST operation not supported on /users. For Signup user /users/signup API endpoint.');
 })
 .put((req, res, next) => {
     User.findOne({username: req.params.username})
@@ -97,10 +89,14 @@ userRouter.post('/signup', (req, res, next) => {
             res.json({err: err});
         }
         else {
-            if (req.body.firstname)
-                user.firstname = req.body.firstname;
-            if (req.body.lastname)
-                user.lastname = req.body.lastname;
+            if (req.body.name)
+                user.name = req.body.name;
+            if (req.body.mobileNumber)
+                user.mobileNumber = req.body.mobileNumber;
+            if (req.body.email)
+                user.email = req.body.email;
+            if (req.body.livingIn)
+                user.livingIn = req.body.livingIn;
             user.save((err, user) => {
                 if (err) {
                     res.statusCode = 500;
@@ -111,7 +107,7 @@ userRouter.post('/signup', (req, res, next) => {
                 passport.authenticate('local')(req, res, () => {
                     res.statusCode = 200;
                     res.setHeader('Content-Type', 'application/json');
-                    res.json({success: true, status: 'Registration Successful!'});
+                    res.json({success: true, status: 'Registration Successful!', userInfo:user});
                 });
             });
         }
@@ -139,7 +135,7 @@ userRouter.post('/login', (req, res, next) => {
             var token = authenticate.getToken({_id: req.user._id});
             res.statusCode = 200;
             res.setHeader('Content-Type', 'application/json');
-            res.json({success: true, status: 'Login Successful!', token: token});
+            res.json({success: true, status: 'Login Successful!', token: token, user: user});
         }); 
     }) (req, res, next);
 });

@@ -7,11 +7,14 @@ const mongoose = require('mongoose');
 var config = require('./config');
 var cors = require('cors');
 var compression = require('compression');
+var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var orderRouter = require('./routes/orderRouter');
-var productRouter = require('./routes/productRouter')
+var productRouter = require('./routes/productRouter');
+var cartRouter = require('./routes/cartRouter');
+var feedRouter = require('./routes/feedRouter');
 
 const url = config.mongoUrl;
 const connect = mongoose.connect(url, { 
@@ -21,12 +24,20 @@ const connect = mongoose.connect(url, {
 });
 
 connect.then((db) => {
-    console.log("Connected correctly to server");
+    console.log("Connected correctly to Database Server");
 }, (err) => { console.log(err); });
 
 var app = express();
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, "client", "build")));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(cors());
 app.use(compression());
@@ -40,6 +51,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/orders', orderRouter);
 app.use('/products',productRouter);
+app.use('/carts', cartRouter);
+app.use('/feeds',feedRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));
