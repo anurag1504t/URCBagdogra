@@ -91,6 +91,8 @@ userRouter.post('/signup', (req, res, next) => {
         else {
             if (req.body.name)
                 user.name = req.body.name;
+            if (req.body.admin)
+                user.admin = req.body.admin;
             if (req.body.mobileNumber)
                 user.mobileNumber = req.body.mobileNumber;
             if (req.body.email)

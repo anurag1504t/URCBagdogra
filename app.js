@@ -51,7 +51,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/orders', orderRouter);
 app.use('/products',productRouter);
-app.use('/carts', cartRouter);
+app.use('/cart', cartRouter);
 app.use('/feeds',feedRouter);
 
 app.get("*", (req, res) => {

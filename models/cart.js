@@ -9,7 +9,7 @@ var productSchema = new Schema({
     },
     quantity: {
         type: Number,
-        required: true
+        default: 1
     }
 });
 

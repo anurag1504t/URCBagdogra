@@ -1,4 +1,3 @@
-// Imported Modules
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -13,6 +12,8 @@ orderRouter.use(bodyParser.json());
 orderRouter.route('/')
 .get((req,res,next) => {
     Orders.find(req.query)
+    .populate('buyer')
+    .populate('items.item')
     .then((orders) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -24,9 +25,14 @@ orderRouter.route('/')
     Orders.create(req.body)
     .then((order) => {
         console.log('Order Placed ', order);
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(order);
+        Orders.findById(order._id)
+        .populate('buyer')
+        .populate('items.item')
+        .then((cart) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(cart);
+        })
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -48,6 +54,8 @@ orderRouter.route('/')
 orderRouter.route('/:orderId')
 .get((req,res,next) => {
     Orders.findById(req.params.orderId)
+    .populate('buyer')
+    .populate('items.item')
     .then((order) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -64,9 +72,14 @@ orderRouter.route('/:orderId')
         $set: req.body
     }, { new: true })
     .then((order) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(order);
+        Orders.findById(order._id)
+        .populate('buyer')
+        .populate('items.item')
+        .then((order) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(order);
+        })
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -84,6 +97,8 @@ orderRouter.route('/:orderId')
 orderRouter.route('/:orderId/items')
 .get((req,res,next) => {
     Orders.findById(req.params.orderId)
+    .populate('buyer')
+    .populate('items.item')
     .then((order) => {
         if (order != null) {
             res.statusCode = 200;
@@ -91,7 +106,7 @@ orderRouter.route('/:orderId/items')
             res.json(order.items);
         }
         else {
-            err = new Error('Order ' + req.params.orderId + ' not found');
+            err = new Error(`Order ${req.params.orderId} not found`);
             err.status = 404;
             return next(err);
         }
@@ -105,13 +120,18 @@ orderRouter.route('/:orderId/items')
             order.items.push(req.body);
             order.save()
             .then((order) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(order);                
+                Orders.findById(order._id)
+                .populate('buyer')
+                .populate('items.item')
+                .then((order) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(order); 
+                })                               
             }, (err) => next(err));
         }
         else {
-            err = new Error('Order ' + req.params.orderId + ' not found');
+            err = new Error(`Order ${req.params.orderId} not found`);
             err.status = 404;
             return next(err);
         }
@@ -120,7 +140,7 @@ orderRouter.route('/:orderId/items')
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /orders/' + req.params.orderId + '/items');
+    res.end(`PUT operation not supported on /orders/${req.params.orderId}/items`);
 })
 .delete((req, res, next) => {
     Orders.findById(req.params.orderId)
@@ -131,13 +151,18 @@ orderRouter.route('/:orderId/items')
             }
             order.save()
             .then((order) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(order);                
+                Orders.findById(order._id)
+                .populate('buyer')
+                .populate('items.item')
+                .then((order) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(order); 
+                })               
             }, (err) => next(err));
         }
         else {
-            err = new Error('Order ' + req.params.orderId + ' not found');
+            err = new Error(`Order ${req.params.orderId} not found`);
             err.status = 404;
             return next(err);
         }
@@ -149,19 +174,23 @@ orderRouter.route('/:orderId/items')
 orderRouter.route('/:orderId/item/:itemId')
 .get((req,res,next) => {
     Orders.findById(req.params.orderId)
+    .populate('buyer')
+    .populate('items.item')
     .then((order) => {
-        if (order != null && order.items.id(req.params.itemId) != null) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(order.orderId.id(req.params.itemId));
-        }
-        else if (order == null) {
-            err = new Error('Order ' + req.params.orderId + ' not found');
-            err.status = 404;
-            return next(err);
+        if (order != null) {
+            if(order.items.id(req.params.itemId) != null) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(order.orderId.id(req.params.itemId));
+            }
+            else {
+                err = new Error(`Order ${req.params.orderId} not found`);
+                err.status = 404;
+                return next(err);
+            }
         }
         else {
-            err = new Error('Item ' + req.params.itemId + ' not found');
+            err = new Error(`Item ${req.params.itemId} not found`);
             err.status = 404;
             return next(err);            
         }
@@ -170,33 +199,39 @@ orderRouter.route('/:orderId/item/:itemId')
 })
 .post((req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /orders/'+ req.params.orderId
-        + '/items/' + req.params.itemId);
+    res.end(`POST operation not supported on /orders/${req.params.orderId}/items/${req.params.itemId}`);
 })
 .put((req, res, next) => {
     Orders.findById(req.params.orderId)
     .then((order) => {
-        if (order != null && order.items.id(req.params.itemId) != null) {
-            if (req.body.item) {
-                order.items.id(req.params.itemId).item = req.body.item;
+        if (order != null) {
+            if(order.items.id(req.params.itemId) != null) {
+                if (req.body.item) {
+                    order.items.id(req.params.itemId).item = req.body.item;
+                }
+                if (req.body.quantity) {
+                    order.items.id(req.params.itemId).quantity = req.body.quantity;                
+                }
+                order.save()
+                .then((order) => {
+                    Orders.findById(order._id)
+                    .populate('buyer')
+                    .populate('items.item')
+                    .then((order) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(order); 
+                    })                 
+                }, (err) => next(err));
             }
-            if (req.body.quantity) {
-                order.items.id(req.params.itemId).quantity = req.body.quantity;                
+            else {
+                err = new Error(`Order ${req.params.orderId} not found`);
+                err.status = 404;
+                return next(err);
             }
-            order.save()
-            .then((order) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(order);                
-            }, (err) => next(err));
-        }
-        else if (order == null) {
-            err = new Error('Order ' + req.params.orderId + ' not found');
-            err.status = 404;
-            return next(err);
         }
         else {
-            err = new Error('Item ' + req.params.itemId + ' not found');
+            err = new Error(`Item ${req.params.itemId} not found`);
             err.status = 404;
             return next(err);            
         }
@@ -206,24 +241,31 @@ orderRouter.route('/:orderId/item/:itemId')
 .delete((req, res, next) => {
     Orders.findById(req.params.orderId)
     .then((order) => {
-        if (order != null && order.item.id(req.params.itemId) != null) {
-            order.item.id(req.params.itemId).remove();
-            order.save()
-            .then((order) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(order);                
-            }, (err) => next(err));
-        }
-        else if (order == null) {
-            err = new Error('Order ' + req.params.orderId + ' not found');
-            err.status = 404;
-            return next(err);
+        if(order != null) {
+            if(order.item.id(req.params.itemId) != null) {
+                order.item.id(req.params.itemId).remove();
+                order.save()
+                .then((order) => {
+                    Orders.findById(order._id)
+                    .populate('buyer')
+                    .populate('items.item')
+                    .then((order) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(order); 
+                    })                 
+                }, (err) => next(err));
+            }
+            else {
+                err = new Error(`Item ${req.params.itemId} not found`);
+                err.status = 404;
+                return next(err); 
+            }
         }
         else {
-            err = new Error('Item ' + req.params.itemId + ' not found');
+            err = new Error(`Order ${req.params.orderId} not found`);
             err.status = 404;
-            return next(err);            
+            return next(err);
         }
     }, (err) => next(err))
     .catch((err) => next(err));
