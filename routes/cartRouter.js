@@ -21,7 +21,7 @@ cartRouter.route('/')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     Carts.create(req.body)
     .then((cart) => {
         console.log('Cart created ', cart);
@@ -40,7 +40,7 @@ cartRouter.route('/')
     res.statusCode = 403;
     res.end('PUT operation not supported on /cart');
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     Carts.remove({})
     .then((resp) => {
         res.statusCode = 200;
@@ -52,7 +52,8 @@ cartRouter.route('/')
 
 // Method for http://localhost:3000/cart/add/:itemId API end point
 cartRouter.route('/add/:itemId')
-.put((req,res,next) => {
+.put(authenticate.verifyUser, (req,res,next) => {
+    console.log(req.user);
     Carts.findOne({buyer : req.user._id})
     .then((cart) => {
         if (cart != null) {
@@ -96,7 +97,7 @@ cartRouter.route('/add/:itemId')
 
 // Method for http://localhost:3000/cart/remove/:itemId API end point
 cartRouter.route('/remove/:itemId')
-.put((req,res,next) => {
+.put(authenticate.verifyUser, (req,res,next) => {
     Carts.findOne({buyer : req.user._id})
     .then((cart) => {
         if(cart != null) {
@@ -151,7 +152,7 @@ cartRouter.route('/:cartId')
     res.statusCode = 403;
     res.end(`POST operation not supported on /cart/${req.params.cartId}`);
 })
-.put((req, res, next) => {
+.put(authenticate.verifyUser, (req, res, next) => {
     Carts.findByIdAndUpdate(req.params.cartId, {
         $set: req.body
     }, { new: true })
@@ -167,7 +168,7 @@ cartRouter.route('/:cartId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     Carts.findByIdAndRemove(req.params.cartId)
     .then((resp) => {
         res.statusCode = 200;
@@ -197,7 +198,7 @@ cartRouter.route('/:cartId/items')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     Carts.findById(req.params.cartId)
     .then((cart) => {
         if (cart != null) {
@@ -226,7 +227,7 @@ cartRouter.route('/:cartId/items')
     res.statusCode = 403;
     res.end(`PUT operation not supported on /cart/${req.params.cartId}/items`);
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     Carts.findById(req.params.cartId)
     .then((cart) => {
         if (cart != null) {
@@ -285,7 +286,7 @@ cartRouter.route('/:cartId/item/:itemId')
     res.statusCode = 403;
     res.end(`POST operation not supported on /cart/${req.params.cartId}/items/${req.params.itemId}`);
 })
-.put((req, res, next) => {
+.put(authenticate.verifyUser, (req, res, next) => {
     Carts.findById(req.params.cartId)
     .then((cart) => {
         if(cart != null) {
@@ -322,7 +323,7 @@ cartRouter.route('/:cartId/item/:itemId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     Carts.findById(req.params.cartId)
     .then((cart) => {
         if(cart != null) {
