@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
+import {serverurl} from '../config'
 import {Link} from 'react-router-dom'
 
 const Profile= ()=>{
@@ -8,7 +9,7 @@ const Profile= ()=>{
    const {state,dispatch}=useContext(usercontext)
 
    useEffect(()=>{
-      fetch(`http://localhost:5000/user/${state.username}`,{
+      fetch(`${serverurl}/users/${state.username}`,{
          method:"get",
          headers:{
             Authorization:"Bearer "+localStorage.getItem("token"),
@@ -21,18 +22,18 @@ const Profile= ()=>{
    
 return(
 
-   <div>
-      <img src={} />//logo
-      <Link to='/home'>home</Link>
+   <div className='main'>
         <div>
-            <div>name: {data.username}</div>
-            <div>name: {data.name}</div>
-            <div>name: {data.email}</div>
-            <div>name: {data.mobileNumber}</div>
-            <div>name: {data.livingIn}</div>
-            //userdata
-            <Link to='/lastorders'>see last orders</Link>
-            <Link to='/changepwd'>change password</Link>
+           <div className='main'>
+            <div className='dd'>{data.username}</div>
+            <div className='dd'>{data.name}</div>
+            <div className='dd'>{data.email}</div>
+            <div className='dd'>{data.mobileNumber}</div>
+            </div>
+            <div className='main'>
+           <div className='rout2'><Link to='/lastorders'>see last orders</Link> </div> 
+           <div className='rout2'><Link to='/changepwd'>change password</Link></div> 
+           </div>
         </div>
    </div>
 

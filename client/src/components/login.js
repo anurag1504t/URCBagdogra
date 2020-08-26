@@ -2,7 +2,9 @@
 import React,{ useState ,useContext  } from 'react'
 import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
+import {serverurl} from '../config'
+import '../stylesheet/style.css';
 
 const Login= ()=>{
     const{state,dispatch}=useContext(usercontext)
@@ -12,7 +14,7 @@ const Login= ()=>{
     const [msg,setmsg]=useState("")
 
     const postdata=()=>{
-        fetch("http://localhost:5000/signin",{
+        fetch(serverurl+"/users/login",{
             method:"post",
             headers:{
                 "Content-Type":"application/json"
@@ -25,7 +27,7 @@ const Login= ()=>{
         .then(data=>{
             console.log(data)
             if(data.err){
-                setmsg(data.err)
+                setmsg(data.err.message)
             }
             else{
                 localStorage.setItem("token",data.token)
@@ -38,12 +40,12 @@ const Login= ()=>{
 
 return(
 
-    <div>
-        <div>{msg}</div>
-         <input type='number' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} />
+    <div className='main'>
+        <div className='message'>{msg}</div>
+         <input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} />
     <input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} />
-   <button onClick={()=>postdata()}>login</button>
-        <Link to='/forgotpwd'>forgot password ?</Link>
+   <button onClick={()=>postdata()}>login</button><br />
+        <Link className='link' to='/forgotpwd'>forgot password ?</Link>
     </div>
 
 

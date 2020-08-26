@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
+import {serverurl} from '../config'
 import {Link} from 'react-router-dom'
 
 const Cart= ()=>{
@@ -8,34 +9,42 @@ const Cart= ()=>{
    const {state,dispatch}=useContext(usercontext)
 
    useEffect(()=>{
-      fetch('http://localhost:5000/cart',{
+      fetch(serverurl+'/cart/',{
          method:"get",
-         query:JSON.stringify({})
+         query:JSON.stringify({}),
+         headers:{
+            Authorization:"Bearer "+localStorage.getItem("token"),
+         }
       }).then(res=>res.json())
       .then(result=>{
-         setdata(result.items)
+        let cc=result.items.filter(val=>{
+            return val.quantity!=0
+        })
+         setdata(cc)
       })
    },[])
    let total=0
 
 return(
 
-   <div><Link to='shop'>shop</Link>
-       <div>
-        {
+   <div className='main'>
+       <ul>
+        {data?
             data.map(item=>{
-                total+=item.item.price*item.quantity;
+                //total+=item.item.price*item.quantity;
                 return (
-                    <div>{item.item.name} price:{item.item.price} quantity:{item.quantity}</div>
+                    <li className='cartobj'>{item.item.name} - {item.quantity}</li>
                 )
             })
+            :"loading"
         }
+        </ul>
+        <div>
+            {//total amount: {total} INR;
+            }
         </div>
         <div>
-            total amount: {total} INR;
-        </div>
-        <div>
-            <Link to='/order'>checkout</Link>
+           <button><Link to='/checkout'>checkout</Link></button> 
         </div>
    </div>
 

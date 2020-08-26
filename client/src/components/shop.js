@@ -1,7 +1,8 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
 import {Link} from 'react-router-dom'
-
+import {serverurl} from '../config'
+import logo from '../img/logo.jpg'
 const Shop= ()=>{
 
    const [data,setdata]=useState([])
@@ -10,7 +11,7 @@ const Shop= ()=>{
    const {state,dispatch}=useContext(usercontext)
    const [category,setcategory]=useState([])
    useEffect(()=>{
-      fetch('http://localhost:5000/products',{
+      fetch(serverurl+'/products/',{
          method:"get",
          headers:{
             Authorization:"Bearer "+localStorage.getItem("token"),
@@ -20,37 +21,39 @@ const Shop= ()=>{
          setdata(result)
          setlist(result)
          let s=new Set()
-         for(r in result){
+         for(var r in result){
             s.add(r.category);
          }
          setcategory(s);
       })
    },[])
    useEffect(()=>{
-      fetch('http://localhost:5000/cart',{
+      fetch(serverurl+'/cart/',{
          method:"get",
          headers:{
             Authorization:"Bearer "+localStorage.getItem("token"),
          }
       }).then(res=>res.json())
       .then(result=>{
+         console.log(result)
          updatecart(result.items)
       })
    },[])
    
    const updatecart=(cartarray)=>{
       let c={}
-      for(i in cartarray){
-         c[cartarray[i].item]=cartarray[i].quantity;
-      }
+      for(var i in cartarray){
+         c[cartarray[i].item._id]=cartarray[i].quantity
+         }
       setcart(c);
    }
    const searchproduct=(query)=>{
-    let userpattern=new RegExp(query)
+    let userpattern=new RegExp(query,"i")
     let dd=data.filter(val=>{
-        userpattern.test(val.name)
+        return userpattern.test(val.name)
     })
     setlist(dd);
+    console.log(list)
    }
 
    const searchcategory=(query)=>{
@@ -61,7 +64,7 @@ const Shop= ()=>{
    }
 
    const addtocart=(id)=>{
-      fetch('http://localhost:5000/addtocart',{
+      fetch(`${serverurl}/cart/add/${id}`,{
          method:"put",
          headers:{
             "Content-Type":"application/json",
@@ -72,14 +75,15 @@ const Shop= ()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         updatecart(result);
+         console.log(result)
+         updatecart(result.items);
       }).catch(err=>{
          console.log(err)
       })
    }
 
-   const removefromcart=()=>{
-      fetch('http://localhost:5000/removefromcart',{
+   const removefromcart=(id)=>{
+      fetch(`${serverurl}/cart/remove/${id}`,{
          method:"put",
          headers:{
             "Content-Type":"application/json",
@@ -90,7 +94,8 @@ const Shop= ()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         updatecart(result);
+         console.log(result)
+         updatecart(result.items);
       }).catch(err=>{
          console.log(err)
       })
@@ -98,13 +103,9 @@ const Shop= ()=>{
 
 return(
 
-   <div>
-      <div>
-         
-         <Link to='/home'><img src={} />//logo</Link>
-         <Link to='/profile'>account</Link>
-      </div>
-
+   <div className='main'>
+      
+      {/*
       <div class="dropdown">
          <button className="dropbtn">menu</button>
          <div className="dropdown-content">
@@ -112,11 +113,13 @@ return(
                <button>categories</button>
                <div className='category-content'>
                   {
+                     category?
                      category.map(item=>{
                         return(
                            <button onclick={searchcategory(item)}>item</button>
                         )
                      })
+                     :"no category"
                   }
                </div>
             </div>
@@ -124,25 +127,24 @@ return(
                <button>new arrival</button>
             </div>
          </div>
-      </div>
+               </div>*/}
 
         <input type='text' onChange={(e)=>searchproduct(e.target.value)} placeholder='search' />
-        <Link to='/cart'>cart</Link>
-        <div>
-            {
+        <div className='list'>
+            {  list?
                 list.map(item=>{
                     return(
-                        <div>
-                           <div>{item.name}</div>
-                           <div><img src={item.image} /></div>
+                        <div className='product'>
+                           <div className='t'>{item.name}</div>
+                           <div><img src={item.image} height='200px' width='200px' /></div>
                            <div>
-                              <button onclick={addtocart(item._id)}>+</button>
-                              {cart[item._id]}
-                              <button onclick={removefromcart(item._id)}>-</button>
+                              <button className='add' onClick={()=>addtocart(item._id)}>+</button>
+                              <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
+                              <button className='remove' onClick={()=>removefromcart(item._id)}>-</button>
                            </div>
                         </div>
                     )
-                })
+                }):"loading"
             }
         </div>
    </div>

@@ -1,14 +1,14 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
 import {Link} from 'react-router-dom'
-
+import {serverurl} from '../config'
 const Home= ()=>{
 
    const [data,setdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
 
    useEffect(()=>{
-      fetch('http://localhost:5000/news',{
+      fetch(serverurl+'/feeds/',{
          method:"get",
          query:JSON.stringify({})
       }).then(res=>res.json())
@@ -20,9 +20,8 @@ const Home= ()=>{
 
 return(
 
-   <div>
-        <img src={} />//logo
-        <Link to='/login'>Login</Link>
+   <div className='main'>
+      <div className='news'> NEWS </div>
         <div>
             {
                data ?
@@ -30,7 +29,7 @@ return(
                   {
                      data.map(item=>{
                         return(
-                        <div key={item._id}>{item.feeds} posted on : {item.dateposted}</div>
+                        <div className='newsdata' key={item._id}>{item.feeds}</div>
                         )
                      })
                   }

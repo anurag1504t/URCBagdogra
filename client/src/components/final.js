@@ -1,5 +1,6 @@
 import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import {usercontext} from '../App'
+import {serverurl} from '../config'
 import {Link} from 'react-router-dom'
 
 const Final= ()=>{
@@ -10,8 +11,8 @@ const Final= ()=>{
 
 return(
 
-   <div><Link to='shop'>shop</Link>
-       //instructions for the order pickup
+   <div className='main'>
+       <div className='rout'>instructions for the order pickup</div>
    </div>
 
 )
