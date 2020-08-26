@@ -53,38 +53,31 @@ cartRouter.route('/')
 // Method for http://localhost:3000/cart/add/:itemId API end point
 cartRouter.route('/add/:itemId')
 .put(authenticate.verifyUser, (req,res,next) => {
-    console.log(req.user);
     Carts.findOne({buyer : req.user._id})
     .then((cart) => {
         if (cart != null) {
-            if(cart.items.id(req.params.itemId) != null) {
-                cart.items.id(req.params.itemId).quantity = cart.items.id(req.params.itemId).quantity + 1;
-                cart.save()
-                .then((cart) => {
-                    Carts.findById(cart._id)
-                    .populate('buyer')
-                    .populate('items.item')
-                    .then((cart) => {
-                        res.statusCode = 200;
-                        res.setHeader('Content-Type', 'application/json');
-                        res.json(cart);
-                    })               
-                }, (err) => next(err));
+            var changed = false;
+            for (var i = (cart.items.length -1); i >= 0; i--) {
+                if(cart.items[i].item == req.params.itemId) {
+                    changed = true;
+                    cart.items[i].quantity = cart.items[i].quantity + 1;
+                    break;
+                }
             }
-            else {
+            if(changed != true) {
                 cart.items.push({item: req.params.itemId, quantity: 1});
-                cart.save()
-                .then((cart) => {
-                    Carts.findById(cart._id)
-                    .populate('buyer')
-                    .populate('items.item')
-                    .then((cart) => {
-                        res.statusCode = 200;
-                        res.setHeader('Content-Type', 'application/json');
-                        res.json(cart);
-                    })               
-                }, (err) => next(err));
             }
+            cart.save()
+            .then((cart) => {
+                Carts.findById(cart._id)
+                .populate('buyer')
+                .populate('items.item')
+                .then((cart) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(cart);
+                })               
+            }, (err) => next(err));
         }
         else {
             err = new Error(`Cart of user ${req.user._id} not found`);
@@ -101,30 +94,26 @@ cartRouter.route('/remove/:itemId')
     Carts.findOne({buyer : req.user._id})
     .then((cart) => {
         if(cart != null) {
-            if(cart.items.id(req.params.itemId) != null) {
-                if(cart.items.id(req.params.itemId).quantity == 1) {
-                    cart.item.id(req.params.itemId).remove();
+            for (var i = (cart.items.length -1); i >= 0; i--) {
+                if(cart.items[i].item == req.params.itemId) {
+                    changed = true;
+                    if(cart.items[i].quantity > 0) {
+                        cart.items[i].quantity = cart.items[i].quantity - 1;
+                        cart.save()
+                        .then((cart) => {
+                            Carts.findById(cart._id)
+                            .populate('buyer')
+                            .populate('items.item')
+                            .then((cart) => {
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.json(cart);
+                            })                                    
+                        }, (err) => next(err));
+                    }
+                    break;
                 }
-                else {
-                    cart.item.id(req.params.itemId).quantity = cart.item.id(req.params.itemId).quantity - 1;
-                }                
-                cart.save()
-                .then((cart) => {
-                    Carts.findById(cart._id)
-                    .populate('buyer')
-                    .populate('items.item')
-                    .then((cart) => {
-                        res.statusCode = 200;
-                        res.setHeader('Content-Type', 'application/json');
-                        res.json(cart);
-                    })                                    
-                }, (err) => next(err));
-            }
-            else {
-                err = new Error(`Item ${req.params.itemId} not found`);
-                err.status = 404;
-                return next(err);
-            }
+            }            
         }
         else {
             err = new Error(`Cart of user ${req.user._id} not found`);
