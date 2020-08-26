@@ -8,36 +8,12 @@ var authenticate = require('../authenticate');
 const cartRouter = express.Router();
 cartRouter.use(bodyParser.json());
 
-// Aditya Code
-// CartsRouter.route('/')
-// .get((req,res,next) => {
-//     Feeds.create(req.body)
-//     .then((cart) => {
-//         console.log('Carts created ', cart);
-//         res.statusCode = 200;
-//         res.setHeader('Content-Type', 'application/json');
-//         res.json(cart);
-//     }, (err) => next(err))
-//     .catch((err) => next(err));
-    
-// })
-// .post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-//     res.statusCode = 403;
-//     res.end('post operation not supported on /cart'); 
-// })
-// .put((req, res, next) => {
-//     res.statusCode = 403;
-//     res.end('PUT operation not supported on /cart');
-// })
-// .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-//     res.statusCode = 403;
-//     res.end('delete operation not supported on /cart');    
-// });
-
 // Methods for http://localhost:3000/carts/ API end point
 cartRouter.route('/')
 .get((req,res,next) => {
     Carts.find(req.query)
+    .populate('buyer')
+    .populate('items.item')
     .then((carts) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -49,9 +25,15 @@ cartRouter.route('/')
     Carts.create(req.body)
     .then((cart) => {
         console.log('Cart created ', cart);
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(cart);
+        Carts.findById(cart._id)
+        .populate('buyer')
+        .populate('items.item')
+        .then((cart) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(cart);
+        })
+        
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -73,6 +55,8 @@ cartRouter.route('/')
 cartRouter.route('/:cartsId')
 .get((req,res,next) => {
     Carts.findById(req.params.cartsId)
+    .populate('buyer')
+    .populate('items.item')
     .then((cart) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -89,9 +73,14 @@ cartRouter.route('/:cartsId')
         $set: req.body
     }, { new: true })
     .then((cart) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(cart);
+        Carts.findById(cart._id)
+        .populate('buyer')
+        .populate('items.item')
+        .then((cart) => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(cart);
+        })
     }, (err) => next(err))
     .catch((err) => next(err));
 })
@@ -109,6 +98,8 @@ cartRouter.route('/:cartsId')
 cartRouter.route('/:cartsId/items')
 .get((req,res,next) => {
     Carts.findById(req.params.cartsId)
+    .populate('buyer')
+    .populate('items.item')
     .then((cart) => {
         if (cart != null) {
             res.statusCode = 200;
@@ -130,9 +121,14 @@ cartRouter.route('/:cartsId/items')
             cart.items.push(req.body);
             cart.save()
             .then((cart) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(cart);                
+                Carts.findById(cart._id)
+                .populate('buyer')
+                .populate('items.item')
+                .then((cart) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(cart);
+                })               
             }, (err) => next(err));
         }
         else {
@@ -145,7 +141,7 @@ cartRouter.route('/:cartsId/items')
 })
 .put((req, res, next) => {
     res.statusCode = 403;
-    res.end('PUT operation not supported on /carts/' + req.params.cartsId + '/items');
+    res.end(`PUT operation not supported on /carts/${req.params.cartsId}/items`);
 })
 .delete((req, res, next) => {
     Carts.findById(req.params.cartsId)
@@ -156,13 +152,18 @@ cartRouter.route('/:cartsId/items')
             }
             cart.save()
             .then((cart) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(cart);                
+                Carts.findById(cart._id)
+                .populate('buyer')
+                .populate('items.item')
+                .then((cart) => {
+                    res.statusCode = 200;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json(cart);
+                })             
             }, (err) => next(err));
         }
         else {
-            err = new Error('Cart ' + req.params.cartsId + ' not found');
+            err = new Error(`Cart ${req.params.cartsId} not found`);
             err.status = 404;
             return next(err);
         }
@@ -174,21 +175,25 @@ cartRouter.route('/:cartsId/items')
 cartRouter.route('/:cartsId/item/:itemId')
 .get((req,res,next) => {
     Carts.findById(req.params.cartsId)
+    .populate('buyer')
+    .populate('items.item')
     .then((card) => {
-        if (cart != null && card.items.id(req.params.itemId) != null) {
-            res.statusCode = 200;
-            res.setHeader('Content-Type', 'application/json');
-            res.json(cart.cartsId.id(req.params.itemId));
+        if(cart != null) {
+            if(card.items.id(req.params.itemId) != null) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(cart.cartsId.id(req.params.itemId));
+            }
+            else {
+                err = new Error(`Item ${req.params.itemId} not found`);
+                err.status = 404;
+                return next(err);
+            }
         }
-        else if (cart == null) {
+        else {
             err = new Error(`Cart ${req.params.cartsId} not found`);
             err.status = 404;
             return next(err);
-        }
-        else {
-            err = new Error('Item ' + req.params.itemId + ' not found');
-            err.status = 404;
-            return next(err);            
         }
     }, (err) => next(err))
     .catch((err) => next(err));
@@ -200,57 +205,71 @@ cartRouter.route('/:cartsId/item/:itemId')
 .put((req, res, next) => {
     Carts.findById(req.params.cartsId)
     .then((cart) => {
-        if (cart != null && cart.items.id(req.params.itemId) != null) {
-            if (req.body.item) {
-                cart.items.id(req.params.itemId).item = req.body.item;
+        if(cart != null) {
+            if(card.items.id(req.params.itemId) != null) {
+                if (req.body.item) {
+                    cart.items.id(req.params.itemId).item = req.body.item;
+                }
+                if (req.body.quantity) {
+                    cart.items.id(req.params.itemId).quantity = req.body.quantity;                
+                }
+                cart.save()
+                .then((cart) => {
+                    Carts.findById(cart._id)
+                    .populate('buyer')
+                    .populate('items.item')
+                    .then((cart) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(cart);
+                    })                                    
+                }, (err) => next(err));
             }
-            if (req.body.quantity) {
-                cart.items.id(req.params.itemId).quantity = req.body.quantity;                
+            else {
+                err = new Error(`Item ${req.params.itemId} not found`);
+                err.status = 404;
+                return next(err);
             }
-            cart.save()
-            .then((cart) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(cart);                
-            }, (err) => next(err));
         }
-        else if (cart == null) {
+        else {
             err = new Error(`Cart ${req.params.cartsId} not found`);
             err.status = 404;
             return next(err);
-        }
-        else {
-            err = new Error(`Item ${req.params.itemId} not found`);
-            err.status = 404;
-            return next(err);            
         }
     }, (err) => next(err))
     .catch((err) => next(err));
 })
 .delete((req, res, next) => {
     Carts.findById(req.params.cartsId)
-    .then((cart) => {
-        if (cart != null && cart.item.id(req.params.itemId) != null) {
-            cart.item.id(req.params.itemId).remove();
-            cart.save()
-            .then((cart) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(cart);                
-            }, (err) => next(err));
+    .then((card) => {
+        if(cart != null) {
+            if(card.items.id(req.params.itemId) != null) {
+                cart.item.id(req.params.itemId).remove();
+                cart.save()
+                .then((cart) => {
+                    Carts.findById(cart._id)
+                    .populate('buyer')
+                    .populate('items.item')
+                    .then((cart) => {
+                        res.statusCode = 200;
+                        res.setHeader('Content-Type', 'application/json');
+                        res.json(cart);
+                    })                                    
+                }, (err) => next(err));
+            }
+            else {
+                err = new Error(`Item ${req.params.itemId} not found`);
+                err.status = 404;
+                return next(err);
+            }
         }
-        else if (cart == null) {
+        else {
             err = new Error(`Cart ${req.params.cartsId} not found`);
             err.status = 404;
             return next(err);
         }
-        else {
-            err = new Error(`Item ${req.params.itemId} not found`);
-            err.status = 404;
-            return next(err);            
-        }
     }, (err) => next(err))
-    .catch((err) => next(err));
+    .catch((err) => next(err));   
 });
 
 module.exports = cartRouter;
