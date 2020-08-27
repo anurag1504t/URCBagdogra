@@ -1,7 +1,8 @@
 import React,{useContext} from 'react'
 import {Link,useHistory} from 'react-router-dom'
 import {usercontext} from '../App'
-import logo from '../img/logo.jpg'
+import logo from '../img/logo.png'
+import logo2 from '../img/logo2.jpg'
 import '../stylesheet/style.css';
 
 const NavBar=()=> {
@@ -35,7 +36,8 @@ const NavBar=()=> {
     return (
       <nav>
           <div className='logo' >
-          <div key='0'><Link exact to='/'><img src={logo} height='60px' width='300px' /></Link></div>,
+              <div key='11'><img src={logo} height='200px' width='200px' /></div>
+          <div key='0'><Link exact to='/'><img src={logo2} height='60px' width='300px' /></Link></div>,
               <div>
                   {renderlist()}
               </div>

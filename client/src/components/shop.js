@@ -2,7 +2,6 @@ import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {Link} from 'react-router-dom'
 import {serverurl} from '../config'
-import logo from '../img/logo.jpg'
 const Shop= ()=>{
 
    const [data,setdata]=useState([])
@@ -137,6 +136,7 @@ return(
                         <div className='product'>
                            <div className='t'>{item.name}</div>
                            <div><img src={item.image} height='200px' width='200px' /></div>
+                           <div className='p'>price : rs 100</div>
                            <div>
                               <button className='add' onClick={()=>addtocart(item._id)}>+</button>
                               <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
