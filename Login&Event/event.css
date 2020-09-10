@@ -50,3 +50,23 @@
       text-align:center;
       bottom:100px;
   }
+  .inside
+  {
+     
+  border: 10px solid black;
+  margin:10%;
+  margin-top:2%
+  
+  
+
+  }
+
+  .main { 
+   
+
+    min-height: 100%;
+    background-image: url(https://cdn.britannica.com/97/1597-004-05816F4E/Flag-India.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
