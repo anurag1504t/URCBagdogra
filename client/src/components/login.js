@@ -42,10 +42,9 @@ return(
 
     <div className='main'>
         <div className='message'>{msg}</div>
-         <input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} />
-    <input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} />
-   <button onClick={()=>postdata()}>login</button><br />
-        <Link className='link' to='/forgotpwd'>forgot password ?</Link>
+         <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div>
+         <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div>
+         <div><button onClick={()=>postdata()}>login</button></div>
     </div>
 
 

@@ -16,7 +16,9 @@ const NavBar=()=> {
                    
                 <div className='rout' key="2"><Link to="/cart"> cart</Link></div>,
                 <div className='rout' key="3"><Link to="/shop"> shop</Link></div>,
-                <div className='rout' key="4">
+                <div className='rout' key="4"><Link to="/windowslotbooking"> slot booking</Link></div>,
+                <div className='rout' key="5"><Link to="/orders"> orders</Link></div>,
+                <div className='rout' key="6">
                     <Link onClick={()=>{
                         localStorage.clear();
                         dispatch({type:"CLEAR"})
@@ -29,15 +31,15 @@ const NavBar=()=> {
             ]
         }else{
             return [
-                <div className='rout' key="7"><Link to="/login">login</Link></div>
+                <div className='rout' key="7"><Link to="/login">login</Link></div>,
+                <div className='rout' key="8"><Link to="/signup">signup</Link></div>,
             ]
         }
     }
     return (
       <nav>
           <div className='logo' >
-              <div key='11'><img src={logo} height='200px' width='200px' /></div>
-          <div key='0'><Link exact to='/'><img src={logo2} height='60px' width='300px' /></Link></div>,
+              <div key='11' className='logobar'><img src={logo} height='100px' width='100px' /><Link exact to='/'><img src={logo2} height='60px' width='300px' /></Link></div>,
               <div>
                   {renderlist()}
               </div>

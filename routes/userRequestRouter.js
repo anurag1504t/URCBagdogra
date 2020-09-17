@@ -7,47 +7,49 @@ var authenticate = require('../authenticate');
 const userRequestRouter = express.Router();
 userRequestRouter.use(bodyParser.json());
 
-userRequestRouter.route('/')
-.get(authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
+userRequestRouter.route('/req')
+.get(authenticate.verifyUser, function(req, res, next) {
     UserRequest.find({})
     .then((users) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(users);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err}));
 })
 .post((req, res, next) => {
-    User.find({username: req.body.username})
-    .then((user) => {
-        if(user != null) {
+    console.log("gr")
+    User.findOne({username: req.body.username})
+    .then(user => {
+        if(user) {
             err = new Error(`Username ${req.body.username} not available`);
             err.status = 404;
             return next(err);
         }
         else {
-            UserRequest.create(req.body)
-            .then((user) => {
+            s=UserRequest(req.body);
+            s.save()
+            .then(user => {
                 console.log('User Added to Request List ', user);
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(user);
-            }, (err) => next(err))
-            .catch((err) => next(err));
+            })
+            .catch((err) => res.json({err:"error"}));
         }
     }, (err) => next(err))
     .catch((err) => next(err));    
 });
 
 userRequestRouter.route('/:userId')
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     UserRequest.findByIdAndRemove(req.params.userId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(resp);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err}));
 });
 
 module.exports = userRequestRouter;

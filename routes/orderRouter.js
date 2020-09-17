@@ -8,21 +8,108 @@ var authenticate = require('../authenticate');
 const orderRouter = express.Router();
 orderRouter.use(bodyParser.json());
 
-// Methods for http://localhost:3000/orders/ API end point
-orderRouter.route('/')
-.get((req,res,next) => {
-    Orders.find(req.query)
+var pickupslot=require('../models/pickupslot');
+const Carts = require('../models/cart');
+
+
+
+orderRouter.route('/placeorder')
+.post(authenticate.verifyUser,(req, res, next) => {
+    let timeid=req.body.timeslotid
+    Carts.findOne({buyer:req.user._id})
     .populate('buyer')
     .populate('items.item')
+    .then((cart) => {
+        let total=0;
+        for(i in cart.items){
+            total+=cart.items[i].item.price*cart.items[i].quantity;
+        }
+        pickupslot.findOne({_id:timeid})
+        .then(timeslot=>{
+            if(timeslot.orders==timeslot.maxorders){
+                res.json({err:"error"})
+            }
+        }).catch(err=>res.json({err:"error"}))
+
+        pickupslot.findOneAndUpdate({_id:timeid},{
+            $inc: { orders: 1 }
+        },{
+            new:true
+        }).exec((err,result)=>{
+            if(err) return res.json({err:"error"})
+            let s=Orders({buyer:req.user._id,timeSlot:timeid,items:cart.items,amount:total})
+            s.save()
+            .then((order) => {
+                console.log("order saved")
+                Carts.findOneAndUpdate({buyer:req.user._id},{
+                    $set:{items:[]}
+                },{
+                    new:true
+                }).exec((err,result)=>{
+                    if(!err)
+                    return res.json({msg:"success",id:order._id})
+                    else{
+                        return res.json({err:"error"})
+                    }
+                })
+                
+            })
+            .catch((err) => res.json({err:"error"}));
+        })
+    
+})
+})
+
+
+orderRouter.route('/getorderdetails')
+.post(authenticate.verifyUser,(req, res, next) => {
+    
+    const orderid=req.body.orderid
+    console.log(orderid)
+    Orders.findById(orderid)
+    .populate("buyer")
+    .populate("timeSlot")
+    .then(order=>{
+        if(req.user._id.equals(order.buyer._id)){
+            return res.json({timeslot:order.timeSlot,status:order.status,amount:order.amount})
+        }else{
+            return res.json({err:"error"})
+        }
+    }).catch(err=>res.json({err:"error"}))
+    
+})
+
+orderRouter.route('/getuserorders')
+.get(authenticate.verifyUser,(req, res, next) => {
+    Orders.find({buyer:req.user._id})
+    .populate("buyer")
+    .populate("timeSlot")
+    .populate("items.item")
+    .then(orders=>{
+            return res.json({orders:orders})
+    }).catch(err=>res.json({err:"error"}))
+    
+})
+
+
+
+// Methods for http://localhost:3000/orders/ API end point
+orderRouter.route('/')
+.get(authenticate.verifyUser, (req,res,next) => {
+    Orders.find({})
+    .populate('buyer')
+    .populate('items.item')
+    .populate('timeSlot')
     .then((orders) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(orders);
     }, (err) => next(err))
-    .catch((err) => next(err));
+    .catch((err) => res.json({err}));
 })
 .post((req, res, next) => {
-    Orders.create(req.body)
+    let s=Orders(req.body)
+    s.save()
     .then((order) => {
         console.log('Order Placed ', order);
         Orders.findById(order._id)
@@ -56,6 +143,7 @@ orderRouter.route('/:orderId')
     Orders.findById(req.params.orderId)
     .populate('buyer')
     .populate('items.item')
+    .populate('timeSlot')
     .then((order) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
@@ -90,7 +178,7 @@ orderRouter.route('/:orderId')
         res.setHeader('Content-Type', 'application/json');
         res.json(resp);
     }, (err) => next(err))
-    .catch((err) => next(err));
+    .catch((err) => res.json({err}));
 });
 
 // Methods for http://localhost:3000/orders/:orderId/items API end point

@@ -22,6 +22,14 @@ var User = new Schema({
     admin: {
         type: Boolean,
         default: false
+    },
+    shopping:{
+        type: Boolean,
+        default: true
+    },
+    slotbooking:{
+        type: Boolean,
+        default: true
     }
 });
 

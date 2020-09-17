@@ -2,12 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const feedSchema = new Schema({
-    Feeds: {
+    feeds: {
         type: String,
         required: true
     },
     expiry: {
-        type: Date
+        type: Date,
+        required:false
     }
 }, {
     timestamps: true

@@ -25,9 +25,13 @@ const orderSchema = new Schema({
     },
     timeSlot: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Time'
+        ref: 'pickupslot'
     },
-    items: [ productSchema ]
+    items: [ productSchema ],
+    amount:{
+        type:Number,
+        required:true
+    }
 }, {
     timestamps: true
 });

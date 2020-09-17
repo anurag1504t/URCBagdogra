@@ -6,10 +6,17 @@ import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/home'
 import Profile from './components/profile'
 import Login from './components/login'
+import Signup from './components/signup'
+import Signupmsg from './components/signupmsg'
 import Cart from './components/cart'
 import Checkout from './components/checkout'
 import Shop from './components/shop'
 import Final from './components/final'
+import WindowFinal from './components/windowfinal'
+import WindowSlotBook from './components/windowslot'
+import Orders from './components/orders'
+
+
 import {initialstate,reducer} from './reducers/userreducer'
 export const usercontext=createContext()
 
@@ -22,7 +29,7 @@ const Routing=()=>{
       dispatch({type:"USER",payload:user})
     }
     else{
-      history.push('/')
+      //history.push('/')
     }
   },[])
   return (
@@ -36,6 +43,12 @@ const Routing=()=>{
     <Route path='/shop'>
       <Shop />
     </Route>
+    <Route path='/signup'>
+      <Signup />
+    </Route>
+    <Route path='/signupmsg/:name'>
+      <Signupmsg />
+    </Route>
     <Route exact path='/profile'>
       <Profile />
     </Route>
@@ -45,9 +58,21 @@ const Routing=()=>{
     <Route path='/checkout'>
       <Checkout />
     </Route>
-    <Route path='/final'>
+    <Route path='/final/:id'>
       <Final />
     </Route>
+    <Route path='/orders'>
+      <Orders />
+    </Route>
+
+    <Route path='/windowfinal/:id'>
+      <WindowFinal />
+    </Route>
+    <Route path='/windowslotbooking'>
+      <WindowSlotBook />
+    </Route>
+
+  
     </Switch>
   )
 }

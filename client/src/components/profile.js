@@ -31,7 +31,6 @@ return(
             <div className='dd'>{data.mobileNumber}</div>
             </div>
             <div className='main'>
-           <div className='rout2'><Link to='/lastorders'>see last orders</Link> </div> 
            <div className='rout2'><Link to='/changepwd'>change password</Link></div> 
            </div>
         </div>

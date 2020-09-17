@@ -46,18 +46,19 @@ feedRouter.route('/')
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(feeds);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err:err}));
 })
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
-    Feeds.create(req.body)
+.post(authenticate.verifyUser, (req, res, next) => {
+    let f=Feeds({feeds:req.body.feeds})
+    f.save()
     .then((feed) => {
         console.log('Feed Created ', feed);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(feed);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err:err}));
 })
 .put((req, res, next) => {
     res.statusCode = 403;
@@ -88,7 +89,7 @@ feedRouter.route('/:feedId')
     res.statusCode = 403;
     res.end(`POST operation not supported on /feeds/${req.params.feedId}`);
 })
-.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put(authenticate.verifyUser, (req, res, next) => {
     Feeds.findByIdAndUpdate(req.params.feedId, {
         $set: req.body
     }, { new: true })
@@ -99,14 +100,14 @@ feedRouter.route('/:feedId')
     }, (err) => next(err))
     .catch((err) => next(err));
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     Feeds.findByIdAndRemove(req.params.feedId)
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(resp);
     }, (err) => next(err))
-    .catch((err) => next(err));
+    .catch((err) =>res.json({err:err}));
 });
 
 module.exports = feedRouter;

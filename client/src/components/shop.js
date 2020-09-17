@@ -18,6 +18,7 @@ const Shop= ()=>{
       }).then(res=>res.json())
       .then(result=>{
          setdata(result)
+         console.log(result)
          setlist(result)
          let s=new Set()
          for(var r in result){
@@ -133,10 +134,10 @@ return(
             {  list?
                 list.map(item=>{
                     return(
-                        <div className='product'>
+                        <div className={cart[item._id]?"product1":"product2"}>
                            <div className='t'>{item.name}</div>
                            <div><img src={item.image} height='200px' width='200px' /></div>
-                           <div className='p'>price : rs 100</div>
+                    <div className='t'>price : Rs.{item.price}</div>
                            <div>
                               <button className='add' onClick={()=>addtocart(item._id)}>+</button>
                               <span className='t'>{cart[item._id]?cart[item._id]:0}</span>

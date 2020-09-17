@@ -4,19 +4,20 @@ var User = require('../models/user');
 var UserRequest = require('../models/userRequest');
 var passport = require('passport');
 var authenticate = require('../authenticate');
-
+const userRequest = require('../models/userRequest');
+const cart = require('../models/cart');
 const userRouter = express.Router();
 userRouter.use(bodyParser.json());
 
 userRouter.route('/')
-.get(authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
+.get(authenticate.verifyUser, function(req, res, next) {
     User.find({})
     .then((users) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(users);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err}));
 })
 .delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     User.remove({})
@@ -31,39 +32,54 @@ userRouter.route('/')
 userRouter.post('/signup/:userId', (req, res, next) => {
     UserRequest.findById(req.params.userId)
     .then((tempUser) => {
+        
         if(tempUser != null) {
             User.register(new User({username: tempUser.username}), tempUser.password, (err, user) => {
+
                 if(err) {
                     res.statusCode = 500;
                     res.setHeader('Content-Type', 'application/json');
-                    res.json({err: err});
+                     return res.json({err: err});
                 }
                 else {
                     if (tempUser.name)
                         user.name = tempUser.name;
-                    if (tempUser.admin)
-                        user.admin = tempUser.admin;
+                    user.admin = false;
                     if (tempUser.mobileNumber)
                         user.mobileNumber = tempUser.mobileNumber;
                     if (tempUser.email)
                         user.email = tempUser.email;
                     if (tempUser.livingIn)
                         user.livingIn = tempUser.livingIn;
+
                     user.save((err, user) => {
                         if (err) {
                             res.statusCode = 500;
                             res.setHeader('Content-Type', 'application/json');
-                            res.json({err: err});
-                            return ;
+                            return res.json({err: err});
                         }
-                        passport.authenticate('local')(req, res, () => {
-                            res.statusCode = 200;
-                            res.setHeader('Content-Type', 'application/json');
-                            res.json({success: true, status: 'Registration Successful!', userInfo:user});
-                        });
+                            userRequest.findByIdAndRemove(req.params.userId)
+                            .then((resp) => {
+
+                                let c=cart({buyer:user._id,items:[]})
+                                c.save()
+                                .then(r=>{
+                                    res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                return res.json({success: true, status: 'Registration Successful!', userInfo:user});
+                                })
+
+                                
+                            })
+                            .catch((err) => console.log(err));
+                        
+                        
                     });
                 }
             });
+
+            
+
         }
         else {
             err = new Error(`User with ID ${req.params.userId} not found`);
@@ -145,39 +161,36 @@ userRouter.route('/:username')
     User.findOne({username: req.params.username})
     .then((user) => {
         if(user != null) {
-            if(req.body.mobileNumber) {
                 user.mobileNumber = req.body.mobileNumber;
-            }
-            if(req.body.email) {
                 user.email = req.body.email;
-            }
-            if(req.body.livingIn) {
+                user.name = req.body.name;
                 user.livingIn = req.body.livingIn;
-            }
-
+                user.shopping = req.body.shopping;
+                user.slotbooking = req.body.slotbooking;
             user.save()
             .then((user) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(user);              
-            }, (err) => next(err));
+            }, (err) => res.json({err}));
         }
         else {
             err = new Error('User: ' + req.params.username + ' not found');
             err.status = 404;
             return next(err);
         }
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err}));
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
+    console.log(req.params.username)
     User.findOneAndRemove({username: req.params.username})
     .then((resp) => {
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(resp);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    })
+    .catch((err) => res.json({err}));
 });
 
 module.exports = userRouter;
