@@ -11,11 +11,13 @@ var passport = require('passport');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var usersRequestRouter = require('./routes/userRequestRouter');
 var orderRouter = require('./routes/orderRouter');
+var windoworderRouter = require('./routes/windoworderRouter');
 var productRouter = require('./routes/productRouter');
 var cartRouter = require('./routes/cartRouter');
 var feedRouter = require('./routes/feedRouter');
-
+var timeslotRouter=require('./routes/timeslotRouter')
 const url = config.mongoUrl;
 const connect = mongoose.connect(url, { 
     useNewUrlParser: true, 
@@ -49,10 +51,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/usersrequests', usersRequestRouter);
 app.use('/orders', orderRouter);
+app.use('/windoworders', windoworderRouter);
 app.use('/products',productRouter);
 app.use('/cart', cartRouter);
 app.use('/feeds',feedRouter);
+app.use('/timeslot',timeslotRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

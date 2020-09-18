@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
 import '../stylesheet/style.css';
-import { confirmAlert } from 'react-confirm-alert';
 
 
 const Signup= ()=>{
