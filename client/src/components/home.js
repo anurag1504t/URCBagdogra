@@ -19,32 +19,28 @@ const Home= ()=>{
    
 
 return(
-
-   <div className='main'>
-      <div className='news'> NEWS </div>
+    <div className='main'>
+        <div className='news'> NEWS </div>
         <div>
             {
-               data ?
-               <div>
-                  {
-                     data.map(item=>{
-                        return(
-                        <div className='newsdata' key={item._id}>{item.feeds}</div>
-                        )
-                     })
-                  }
-               </div>
-                  :
-                  <div>
-                     No news availaible
-                  </div>
-            }
-
+                data ?
+                <div>
+                   {
+                      data.map(item=>{
+                         return(
+                         <div className='newsdata' key={item._id}>{item.feeds}</div>
+                         )
+                      })
+                   }
+                </div>
+                :
+                <div>
+                    No news availaible
+                </div>
+            }        
         </div>
-   </div>
-
+    </div>
 )
-
 }
 
 export default Home

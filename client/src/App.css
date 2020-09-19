@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.navbar-dark {
+  background-color: #3c4d5f;
+  padding:0px auto;
+  margin:0px auto;
+}
+
+.inside
+  {
+     
+  border: 10px solid black;
+}
