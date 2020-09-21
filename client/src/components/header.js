@@ -8,13 +8,13 @@ export const Header = () => {
     return(
         <div className="logo col-12">
             <div key='11' className='logobar'>
-                <img src={logo} height='100px' width='100px' /> 
+                <img src={logo} alt="" height='100px' width='100px' /> 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Link exact to='/'>
-                    <img src={logo2} height='60px' width='300px' />
+                <Link to='/'>
+                    <img src={logo2} alt="" height='60px' width='300px' />
                 </Link> 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <img src={logo} height='100px' width='100px' />
+                <img src={logo} alt="" height='100px' width='100px' />
             </div>
             <br></br>
             <br></br>

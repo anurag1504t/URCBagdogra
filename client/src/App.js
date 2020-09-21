@@ -2,7 +2,7 @@ import React,{useEffect,createContext,useReducer,useContext} from 'react';
 import './App.css';
 import NavBar from "./components/navbar"
 
-import {BrowserRouter,Route,Switch,useHistory,withRouter} from 'react-router-dom'
+import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
 import Home from './components/home'
 import Profile from './components/profile'
 import Login from './components/login'

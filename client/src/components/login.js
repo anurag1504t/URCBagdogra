@@ -13,7 +13,7 @@ const Login= ()=>{
     const [password,setpassword]=useState("")
     const [msg,setmsg]=useState("")
 
-    const postdata=()=>{
+    const postdata = () => {
         fetch(serverurl+"/users/login",{
             method:"post",
             headers:{
@@ -44,7 +44,7 @@ return(
         <div className='message'>{msg}</div>
          <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div>
          <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div>
-         <div><button onClick={()=>postdata()}>login</button></div>
+         <div><button onClick={()=>postdata()}> login </button></div>
     </div>
 
 

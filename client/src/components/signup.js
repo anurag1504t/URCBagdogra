@@ -82,10 +82,10 @@ return(
          <form onSubmit={(e)=>submitform(e)}>
        <div><input type='text' minlength="3" placeholder='name' value={name} onChange={(e)=>setname(e.target.value)} /></div> 
        <div> <input type='email' placeholder='email' value={email} onChange={(e)=>setemail(e.target.value)} /></div> 
-       <div> <input type='tel' pattern="[0-9]{10}" minlength="10"  maxlength="10" placeholder='mobile number' value={mobile} onChange={(e)=>setmobile(e.target.value)} /></div> 
-       <div>  <input type='text' minlength="5" maxlength="20" placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
-       <div><input type='password' minlength="6" maxlength="20" placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
-       <div> <input type='password' minlength="6" maxlength="20" placeholder='retype password' value={repassword} onChange={(e)=>setrepassword(e.target.value)} /></div> 
+       <div> <input type='tel' pattern="[0-9]{10}" minlength="10"  maxLength="10" placeholder='mobile number' value={mobile} onChange={(e)=>setmobile(e.target.value)} /></div> 
+       <div>  <input type='text' minlength="5" maxLength="20" placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
+       <div><input type='password' minlength="6" maxLength="20" placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
+       <div> <input type='password' minlength="6" maxLength="20" placeholder='retype password' value={repassword} onChange={(e)=>setrepassword(e.target.value)} /></div> 
         <div>living in
             <select value={livein} onChange={(e)=>setlivein(e.target.value)}>
             <option value='true'>living in</option>

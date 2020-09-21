@@ -75,7 +75,7 @@ const NavBar=()=> {
         else{
             return (
                 <React.Fragment>
-                <Navbar dark expand="md">
+                <Navbar dark expand="sd">
                     <div>                
                         {/* <NavbarBrand className="mr-auto" href="/">URC Bagdogra</NavbarBrand>  */}
                         <Nav navbar>
