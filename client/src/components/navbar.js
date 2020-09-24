@@ -81,20 +81,22 @@ const NavBar=()=> {
             else{
                 return (
                     <React.Fragment>
-                    <Navbar dark expand="sd">
-                        <div>                
+                    <Navbar dark expand="sd" diaply="inline">
+                        <div className="navu" display="inline">                
                             {/* <NavbarBrand className="mr-auto" href="/">URC Bagdogra</NavbarBrand>  */}
-                            <Nav navbar>
-                                <NavItem className='rout' key="7">
+                            <Nav navbar display="inline">
+                            
+                                <NavItem className='rout' key="7" display="inline">
                                     <Link className="nav-link" to="/login">
                                         login
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="8">
+                                <NavItem className='rout' key="8" display="inline">
                                     <Link className="nav-link" to="/signup">
                                         signup
                                     </Link>
                                 </NavItem>
+                                
                             </Nav>   
                         </div>
                     </Navbar>  

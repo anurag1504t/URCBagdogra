@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import "./styles.css";
+import "./about.css";
+import Navbar from '../navbarpage/Navbar/Navbar';
 const about = () => {
+  
   return (
     <div>
       <title>URC BAGDOGRA</title>
@@ -11,8 +13,8 @@ const about = () => {
         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
       />
       <title>LandingPage</title>
-      <link rel="stylesheet" type="text/css" href="./event.css" />
-      <div className="main"></div>
+      <link rel="stylesheet" type="text/css" href="./about.css" />
+      
       <div className="igloo">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTpb_6-Tv-Ju50YtNihPFDiwH5PZ2voHIfMQQ&usqp=CAU"
@@ -20,27 +22,7 @@ const about = () => {
         />
       </div>
       <div className="inside">
-        <div className="navbar">
-          <ul>
-            <li>
-              <a className="active" href="#home">
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#news">News</a>
-            </li>
-            <li>
-              <a href="#contact">Contact</a>
-            </li>
-            <li>
-              <a href="#about">About</a>
-            </li>
-            <li>
-              <a href="login.html">Signup/login</a>
-            </li>
-          </ul>
-        </div>
+        <Navbar/>
         <div className="container">
           <h2>
             <img

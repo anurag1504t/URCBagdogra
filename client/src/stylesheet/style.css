@@ -226,6 +226,12 @@ select{
     font-size: 15px;
     color: black;
 }
+.navu{
+    display:inline;
+}
+.rout{
+    display:inline;
+}
 
 .dropbtn {
     background-color: #4CAF50;
