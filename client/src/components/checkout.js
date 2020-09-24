@@ -3,15 +3,37 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
+import Loading from './loading'
+
 const Checkout= ()=>{
 
    const [data,setdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
    const [date,setdate]=useState()
    const [dateshow,setdateshow]=useState()
+   const [loading,setloading]=useState(false)
    const [time,settime]=useState("")
    const history=useHistory()
 
+   useEffect(() => {
+      fetch(serverurl+'/sys/getuserinfo',{
+         method:"get",
+         headers:{
+            Authorization:"Bearer "+localStorage.getItem("token"),
+         }
+      }).then(res=>res.json())
+      .then(result=>{
+         if(!result.data.usershop){
+            history.push('/info/shrestrict')
+         }
+         else if(!result.data.shop){
+            history.push('info/shclose')
+         }
+         else{
+            setloading(true)
+         }
+      })
+   },[])
 
 const getmindate=()=>{
    let dt=new Date();
@@ -74,6 +96,7 @@ if(i*10%10==0){
 return(
 
    <div className='main'>
+      {loading?<div>
        <div className='rout'>select time slot</div>
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
        <button className='d' onClick={()=>getdate()}>check</button>
@@ -90,6 +113,8 @@ return(
           }
        </select>
       <button onClick={()=>submitorder()}>place order</button>
+      </div>:<Loading />
+}
    </div>
 
 )

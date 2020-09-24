@@ -4,6 +4,8 @@ import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 
+import Loading from './loading'
+
 const WindowSlot= ()=>{
 
    const [data,setdata]=useState([])
@@ -12,7 +14,28 @@ const WindowSlot= ()=>{
    const [dateshow,setdateshow]=useState()
    const [time,settime]=useState("")
    const history=useHistory()
+   const [loading,setloading]=useState(false)
 
+
+   useEffect(() => {
+      fetch(serverurl+'/sys/getuserinfo',{
+         method:"get",
+         headers:{
+            Authorization:"Bearer "+localStorage.getItem("token"),
+         }
+      }).then(res=>res.json())
+      .then(result=>{
+         if(!result.data.userslot){
+            history.push('/info/slrestrict')
+         }
+         else if(!result.data.slot){
+            history.push('info/slclose')
+         }
+         else{
+            setloading(true)
+         }
+      })
+   },[])
 
 const getmindate=()=>{
    let dt=new Date();
@@ -75,6 +98,7 @@ if(i*10%10==0){
 return(
 
    <div className='main'>
+      {loading?<div>
        <div className='rout'>select time slot</div>
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
        <button className='d' onClick={()=>getdate()}>check</button>
@@ -91,6 +115,8 @@ return(
           }
        </select>
       <button onClick={()=>submitorder()}>book slot</button>
+      </div>:<Loading />
+}
    </div>
 
 )

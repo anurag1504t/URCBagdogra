@@ -16,6 +16,8 @@ var orderRouter = require('./routes/orderRouter');
 var windoworderRouter = require('./routes/windoworderRouter');
 var productRouter = require('./routes/productRouter');
 var cartRouter = require('./routes/cartRouter');
+var sysRouter = require('./routes/sysRouter');
+
 var feedRouter = require('./routes/feedRouter');
 var timeslotRouter=require('./routes/timeslotRouter')
 const url = config.mongoUrl;
@@ -58,6 +60,7 @@ app.use('/products',productRouter);
 app.use('/cart', cartRouter);
 app.use('/feeds',feedRouter);
 app.use('/timeslot',timeslotRouter);
+app.use('/sys',sysRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

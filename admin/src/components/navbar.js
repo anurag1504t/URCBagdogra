@@ -18,7 +18,8 @@ const NavBar=()=> {
                 <div className='rout' key="3"><Link to="/ordertimeslot">timeslots</Link></div>,
                 <div className='rout' key="4"><Link to="/orderlist"> orders</Link></div>,
                 <div className='rout' key="5"><Link to="/news">news</Link></div>,
-                <div className='rout' key="6">
+                <div className='rout' key="6"><Link to="/sys">shop/slot</Link></div>,
+                <div className='rout' key="7">
                     <Link onClick={()=>{
                         localStorage.clear();
                         dispatch({type:"CLEAR"})
@@ -32,7 +33,7 @@ const NavBar=()=> {
         }else{
             return [
                 
-                <div className='rout' key="7"><Link to="/login">login</Link></div>
+                <div className='rout' key="8"><Link to="/login">login</Link></div>
             ]
         }
     }

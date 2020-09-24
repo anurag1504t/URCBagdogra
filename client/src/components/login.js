@@ -6,6 +6,8 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import '../stylesheet/style.css';
 
+import Loading from './loading'
+
 const Login= ()=>{
     const{state,dispatch}=useContext(usercontext)
     const history=useHistory()
@@ -33,7 +35,9 @@ const Login= ()=>{
                 localStorage.setItem("token",data.token)
                 localStorage.setItem("user",JSON.stringify(data.user))
                 dispatch({type:"USER",payload:data.user})
+                console.log(data.user)
                 history.push('/')
+                
             }
         })
     }

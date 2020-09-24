@@ -6,6 +6,8 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import '../stylesheet/style.css';
 
+import Loading from './loading'
+
 
 const Signupmsg= ()=>{
     const {name}=useParams()

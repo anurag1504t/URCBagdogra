@@ -1,14 +1,39 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
-import {Link} from 'react-router-dom'
+import {Link,useHistory} from 'react-router-dom'
+import Loading from './loading'
+
 
 const Cart= ()=>{
 
    const [data,setdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
+   const [loading,setloading]=useState(false)
+   const history=useHistory()
 
-   useEffect(()=>{
+
+   useEffect(() => {
+      fetch(serverurl+'/sys/getuserinfo',{
+         method:"get",
+         headers:{
+            Authorization:"Bearer "+localStorage.getItem("token"),
+         }
+      }).then(res=>res.json())
+      .then(result=>{
+         if(!result.data.usershop){
+            history.push('/info/shrestrict')
+         }
+         else if(!result.data.shop){
+            history.push('info/shclose')
+         }
+         else{
+            load()
+         }
+      })
+   },[])
+
+const load=()=>{
       fetch(serverurl+'/cart/',{
          method:"get",
          query:JSON.stringify({}),
@@ -22,8 +47,10 @@ const Cart= ()=>{
         })
         console.log(cc)
          setdata(cc)
+         console.log(result)
+         setloading(true)
       })
-   },[])
+   }
    let total=0
 
    const updatecart=(cartarray)=>{
@@ -80,26 +107,35 @@ return(
 
    <div className='main'>
        <ul>
-        {data?
+        {data&&loading?
             data.map(item=>{
                 total+=item.item.price*item.quantity;
                 return (
                     <li className='cartobj'>{item.item.name} - 
-                              <button className='add' onClick={()=>addtocart(item.item._id)}>+</button>
+                              <button className='add' disabled={item.item.quantity>0?(item.quantity>=item.item.maxQuantity?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                               {item.quantity}
-                              <button className='remove' onClick={()=>removefromcart(item.item._id)}>-</button>
+                              <button className='remove' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
+                              <div>max quantity - {item.item.maxQuantity}</div>
+                              <div>price - Rs.{item.item.price}</div>
                     </li>
                 )
             })
-            :"loading"
+            :
+            <Loading />
         }
         </ul>
+        {loading?(
+        data.length==0?
+        <div>cart is empty</div>:
+        <div>
         <div className='ta'>
             total amount: {total} INR
         </div>
         <div>
            <button><Link to='/checkout'>checkout</Link></button> 
         </div>
+        </div>):<div></div>
+}
    </div>
 
 )

@@ -3,9 +3,14 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link, useParams} from 'react-router-dom'
 
+import Loading from './loading'
+
 const Orders= ()=>{
 
    const [data,setdata]=useState([])
+   const [loadingo,setloadingo]=useState(false)
+   const [loadings,setloadings]=useState(false)
+
    const [slotdata,setslotdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
 
@@ -24,6 +29,7 @@ const Orders= ()=>{
           }else{
             setdata(result.orders)
           }
+          setloadingo(true)
       }).catch(err=>{
          console.log(err)
       })
@@ -43,6 +49,8 @@ const Orders= ()=>{
         }else{
           setslotdata(result.orders)
         }
+        setloadings(true)
+
     }).catch(err=>{
        console.log(err)
     })
@@ -63,12 +71,15 @@ const Orders= ()=>{
 return(
 
    <div className='main'>
-     {
-         data?
+
          <div className='order'>
              <div className='oh'>orders</div>
+             {
+               loadingo?
+               <div>
              <ul>
-             {data.map(item=>{
+             {data?
+             data.map(item=>{
                  return(
                     <li className='oi'>
                         <div className='timeslot2'>
@@ -94,17 +105,26 @@ return(
                             </div>
                     </li>
                  )
-             })}</ul>
+             }):<div></div>
+            }</ul>
         </div>:
+        <Loading />
+     }
+     {
+        data.length==0&&loadingo?
+        <div>no orders found</div>:
         <div></div>
      }
+     </div>
 
-     {  slotdata?
+
      <div className='order'>
          <div className='oh'> slot booked</div>
+         {  loadings?
          <div className='order'>
          <ul>
-         {slotdata.map(item=>{
+         {slotdata?
+         slotdata.map(item=>{
             return(
                <li className='oi'>
                    <div className='timeslot2'>
@@ -114,12 +134,18 @@ return(
                    </div>
                </li>
             )
-        })}</ul>
-        </div>
+        }):<div></div>
+      }</ul>
         </div>:
-        <div>loading</div>
-
+        <Loading />
+   }
+   {
+        data.length==0&&loadings?
+        <div>no slot bookings found</div>:
+        <div></div>
      }
+        </div>
+
    </div>
    
 )

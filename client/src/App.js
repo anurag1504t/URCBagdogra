@@ -12,6 +12,9 @@ import Cart from './components/cart'
 import Checkout from './components/checkout'
 import Shop from './components/shop'
 import Final from './components/final'
+import Info from './components/info'
+import Changepwd from './components/changepwd'
+
 import WindowFinal from './components/windowfinal'
 import WindowSlotBook from './components/windowslot'
 import Orders from './components/orders'
@@ -25,7 +28,8 @@ const Routing=()=>{
   const history=useHistory() 
   const {state,dispatch}=useContext(usercontext)
   useEffect(()=>{
-    const user=JSON.parse(JSON.stringify(localStorage.getItem("user")))
+    const user=JSON.parse(localStorage.getItem("user"))
+    console.log(user.sys)
     if(user){
       dispatch({type:"USER",payload:user})
     }
@@ -64,6 +68,12 @@ const Routing=()=>{
     </Route>
     <Route path='/orders'>
       <Orders />
+    </Route>
+    <Route path='/changepwd'>
+      <Changepwd />
+    </Route>
+    <Route path='/info/:code'>
+      <Info />
     </Route>
 
     <Route path='/windowfinal/:id'>

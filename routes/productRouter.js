@@ -1,12 +1,73 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const {pagesize}=require('../config')
 const Products = require('../models/product');
 var authenticate = require('../authenticate');
-
+const Category=require('../models/category')
 const productRouter = express.Router();
 productRouter.use(bodyParser.json());
+
+productRouter.route('/getcategory')
+.get(authenticate.verifyUser,(req,res,next) => {
+    console.log("getcategory route")
+    Category.find({})
+    .then((cat) => {
+        console.log(cat)
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({category:cat});
+    })
+    .catch((err) => res.json({err}));
+})
+
+productRouter.route('/search')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    const p=new RegExp(query,"i")
+    Products.find({name:{$regex:p}})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .then(product=>{
+        Products.count({name:{$regex:p}})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({products:product,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+productRouter.route('/category')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    Products.find({category:query})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .then(product=>{
+        console.log(product)
+       Products.count({category:query})
+       .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({products:product,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+productRouter.route('/allproducts')
+.post((req,res,next) => {
+    const pgnum=req.body.pgnum
+    Products.find({})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .then(product=>{
+        console.log(product)
+       Products.count({})
+       .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({products:product,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
 
 // Methods for http://localhost:3000/products/ API end point
 productRouter.route('/')

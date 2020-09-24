@@ -7,6 +7,8 @@ import {serverurl} from '../config'
 import '../stylesheet/style.css';
 
 
+import Loading from './loading'
+
 const Signup= ()=>{
     const{state,dispatch}=useContext(usercontext)
     const history=useHistory()

@@ -27,6 +27,7 @@ import Bookingtimeslot from './components/timeslot/bookingslot'
 
 
 import News from './components/news/news'
+import Sys from './components/sys/sys'
 
 import {initialstate,reducer} from './reducers/userreducer'
 import OrderDetails from './components/order/orderdetails';
@@ -56,7 +57,9 @@ const Routing=()=>{
     <Route path='/news'>
       <News />
     </Route>
-
+    <Route path='/sys'>
+      <Sys />
+    </Route>
     <Route path='/userlist'>
       <Userlist />
     </Route>

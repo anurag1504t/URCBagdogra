@@ -3,6 +3,8 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link, useParams} from 'react-router-dom'
 
+import Loading from './loading'
+
 const WindowFinal= ()=>{
 
    const [data,setdata]=useState({})
