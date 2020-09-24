@@ -112,10 +112,12 @@ return(
                 total+=item.item.price*item.quantity;
                 return (
                     <li className='cartobj'>{item.item.name} - 
-                              <button className='add' disabled={item.item.quantity>0?(item.quantity>=item.item.maxQuantity?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                              <button className='add' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quanity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                               {item.quantity}
                               <button className='remove' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                               <div>max quantity - {item.item.maxQuantity}</div>
+                              <div>total quantity - {item.item.quantity}</div>
+
                               <div>price - Rs.{item.item.price}</div>
                     </li>
                 )
