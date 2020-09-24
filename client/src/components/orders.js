@@ -67,7 +67,38 @@ const Orders= ()=>{
     return Math.floor(i)+".30-"+(Math.floor(i)+1)+".00"+c
  }
  }
-
+ const cancelorder=(id)=>{
+   fetch(`${serverurl}/orders/${id}`,{
+       method:"delete",
+       headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("token")
+       }
+    }).then(res=>res.json())
+    .then(result=>{
+        console.log(result)
+        let d=data.filter(item=>{return item._id!=id})
+        setdata(d)
+    }).catch(err=>{
+       console.log(err)
+    })
+}
+const cancelslot=(id)=>{
+   fetch(`${serverurl}/windoworders/${id}`,{
+       method:"delete",
+       headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer "+localStorage.getItem("token")
+       }
+    }).then(res=>res.json())
+    .then(result=>{
+        console.log(result)
+        let d=slotdata.filter(item=>{return item._id!=id})
+        setslotdata(d)
+    }).catch(err=>{
+       console.log(err)
+    })
+}
 return(
 
    <div className='main'>
@@ -103,6 +134,7 @@ return(
                             </p>
                             </details>
                             </div>
+                            <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel the order?')){cancelorder(item._id)}}}>cancel</button></div>
                     </li>
                  )
              }):<div></div>
@@ -132,6 +164,8 @@ return(
                    <div>{item.timeSlot.date}</div>
                    <div>{convert(item.timeSlot.start)}</div>
                    </div>
+                   <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel the booking?')){cancelslot(item._id)}}}>cancel</button></div>
+
                </li>
             )
         }):<div></div>
