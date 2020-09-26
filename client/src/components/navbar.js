@@ -1,14 +1,20 @@
-import React,{useContext} from 'react'
+import React,{useContext, useState} from 'react'
 import {Link,useHistory} from 'react-router-dom'
 import {usercontext} from '../App'
 import '../stylesheet/style.css';
-import { Navbar, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler, Collapse} from 'reactstrap';
 
 import {serverurl} from '../config'
 const NavBar=()=> {
 
     const{state,dispatch}=useContext(usercontext) 
+    const [panel, setPanel] = useState(false);
     const history=useHistory()
+
+    function toggleNav () {
+        if(!panel) setPanel(true);
+        else setPanel(false);
+        }
 
     const renderlist=()=>{
 
@@ -16,8 +22,10 @@ const NavBar=()=> {
                 return (
                     <React.Fragment>
                     <Navbar dark expand="md">
-                        <div>                
-                            {/* <NavbarBrand className="mr-auto" href="/">URC Bagdogra</NavbarBrand>  */}
+                        <div className="container"> 
+                            <NavbarToggler onClick={toggleNav} />               
+                            <NavbarBrand className="rout mr-auto" href="/">URC Bagdogra</NavbarBrand> 
+                            <Collapse isOpen={panel} navbar>                            
                             <Nav navbar>
                                 <NavItem className='rout' key="1">
                                     <Link className="nav-link" to="/profile">
@@ -57,6 +65,7 @@ const NavBar=()=> {
                                     </Link>
                                 </NavItem>
                             </Nav> 
+                            </Collapse>
                         </div>
                     </Navbar>
                     </React.Fragment>
@@ -81,23 +90,26 @@ const NavBar=()=> {
             else{
                 return (
                     <React.Fragment>
-                    <Navbar dark expand="sd" diaply="inline">
-                        <div className="navu" display="inline">                
-                            {/* <NavbarBrand className="mr-auto" href="/">URC Bagdogra</NavbarBrand>  */}
-                            <Nav navbar display="inline">
+                    <Navbar dark expand="md" >
+                        <div className="container" > 
+                            <NavbarToggler onClick={toggleNav} />                
+                            <NavbarBrand className="rout mr-auto" href="/">URC Bagdogra</NavbarBrand> 
+                            <Collapse isOpen={panel} navbar> 
+                            <Nav navbar>
                             
-                                <NavItem className='rout' key="7" display="inline">
+                                <NavItem className='rout' key="7" >
                                     <Link className="nav-link" to="/login">
                                         login
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="8" display="inline">
+                                <NavItem className='rout' key="8" >
                                     <Link className="nav-link" to="/signup">
                                         signup
                                     </Link>
                                 </NavItem>
                                 
-                            </Nav>   
+                            </Nav>  
+                            </Collapse> 
                         </div>
                     </Navbar>  
                     </React.Fragment>      

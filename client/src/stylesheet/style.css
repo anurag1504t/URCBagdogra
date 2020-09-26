@@ -24,14 +24,14 @@ img{
   align-items: center;
 }
 
-body{
+/* body{
     padding:20px;
     font-size:15px;
     margin:20px;
     display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
 input{
     padding:5px;
@@ -43,9 +43,8 @@ input{
 }
 
 .rout,.rout:visited{
-    display:inline;
     padding:10px;
-    margin:20px;
+    margin:10px;
     font-size:25px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color:black;

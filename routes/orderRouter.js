@@ -10,19 +10,31 @@ orderRouter.use(bodyParser.json());
 
 var pickupslot=require('../models/pickupslot');
 const Carts = require('../models/cart');
+const Products = require('../models/product');
 
-
-
+// Anurag's Code placeorder
 orderRouter.route('/placeorder')
 .post(authenticate.verifyUser,(req, res, next) => {
     let timeid=req.body.timeslotid
+    let orderItems = [];
     Carts.findOne({buyer:req.user._id})
     .populate('buyer')
     .populate('items.item')
     .then((cart) => {
         let total=0;
         for(i in cart.items){
-            total+=cart.items[i].item.price*cart.items[i].quantity;
+            Products.findById(cart.items[i].item)
+            .then((product) => {                
+                let orderQuantity = Math.min(cart.items[i].quantity, product.quantity);
+                console.log(`Items in cart: ${cart.items[i].quantity}. Max Product quantity: ${product.quantity}. Minimum: ${orderQuantity}`);
+                orderItems.push({item:product._id, quantity:orderQuantity});
+                total +=  orderQuantity*product.price;
+                product.quantity -=  orderQuantity;
+                product.save()
+                .then(console.log("Product Edited Successfully"))
+                .catch(err => res.json({err:"error"}));
+            }, (err) => next(err))
+            .catch((err) => res.json({err}));
         }
         pickupslot.findOne({_id:timeid})
         .then(timeslot=>{
@@ -37,7 +49,7 @@ orderRouter.route('/placeorder')
             new:true
         }).exec((err,result)=>{
             if(err) return res.json({err:"error"})
-            let s=Orders({buyer:req.user._id,timeSlot:timeid,items:cart.items,amount:total})
+            let s=Orders({buyer:req.user._id,timeSlot:timeid,items:orderItems,amount:total})
             s.save()
             .then((order) => {
                 console.log("order saved")
@@ -56,9 +68,55 @@ orderRouter.route('/placeorder')
             })
             .catch((err) => res.json({err:"error"}));
         })
+    })
+}); 
+
+// orderRouter.route('/placeorder')
+// .post(authenticate.verifyUser,(req, res, next) => {
+//     let timeid=req.body.timeslotid
+//     Carts.findOne({buyer:req.user._id})
+//     .populate('buyer')
+//     .populate('items.item')
+//     .then((cart) => {
+//         let total=0;
+//         for(i in cart.items){
+//             total+=cart.items[i].item.price*cart.items[i].quantity;
+//         }
+//         pickupslot.findOne({_id:timeid})
+//         .then(timeslot=>{
+//             if(timeslot.orders==timeslot.maxorders){
+//                 res.json({err:"error"})
+//             }
+//         }).catch(err=>res.json({err:"error"}))
+
+//         pickupslot.findOneAndUpdate({_id:timeid},{
+//             $inc: { orders: 1 }
+//         },{
+//             new:true
+//         }).exec((err,result)=>{
+//             if(err) return res.json({err:"error"})
+//             let s=Orders({buyer:req.user._id,timeSlot:timeid,items:cart.items,amount:total})
+//             s.save()
+//             .then((order) => {
+//                 console.log("order saved")
+//                 Carts.findOneAndUpdate({buyer:req.user._id},{
+//                     $set:{items:[]}
+//                 },{
+//                     new:true
+//                 }).exec((err,result)=>{
+//                     if(!err)
+//                     return res.json({msg:"success",id:order._id})
+//                     else{
+//                         return res.json({err:"error"})
+//                     }
+//                 })
+                
+//             })
+//             .catch((err) => res.json({err:"error"}));
+//         })
     
-})
-})
+// })
+// })
 
 
 orderRouter.route('/getorderdetails')
@@ -89,6 +147,42 @@ orderRouter.route('/getuserorders')
             return res.json({orders:orders})
     }).catch(err=>res.json({err:"error"}))
     
+})
+
+// Anurag's Code cancel order
+orderRouter.route('/cancelorder/:orderId')
+.delete(authenticate.verifyUser, (req, res, next) => {
+    Orders.findByIdAndRemove(req.params.orderId, (err, order) => {
+        if (err) { 
+            console.log(err); 
+            return res.json({err:"error"});
+        } 
+        else { 
+            for(i in order.items) {
+                Products.findById(order.items[i].item)
+                .then((product) => {
+                    product.quantity += order.items[i].quantity;
+                    product.save()
+                    .then(console.log("Product Edited Successfully"))
+                    .catch(err => res.json({err:"error"}));
+                }, (err) => next(err))
+                .catch((err) => res.json({err}));
+            }
+
+            pickupslot.findOneAndUpdate({_id:order.timeSlot},{
+                $inc: { orders: -1 }
+            },{
+                new:true
+            }).exec((err,result)=>{
+                if(!err) {
+                    return res.json({msg:"Order Cancelled Successfully",order:order})
+                }
+                else{
+                    return res.json({err:"error"})
+                }
+            })
+        }
+    })
 })
 
 

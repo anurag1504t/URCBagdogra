@@ -95,11 +95,11 @@ function App() {
     return (
         <usercontext.Provider value={{state,dispatch}}>
             <BrowserRouter>
-            <Header />
-                <div className = 'inside'>
-                    <NavBar/>
-                    <Routing />
-                </div>                
+            {/* <Header /> */}
+                <div>
+                        <NavBar/>
+                        <Routing />
+                </div>               
             </BrowserRouter>
         </usercontext.Provider>
     );

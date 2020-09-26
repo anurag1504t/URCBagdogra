@@ -68,7 +68,7 @@ const Orders= ()=>{
  }
  }
  const cancelorder=(id)=>{
-   fetch(`${serverurl}/orders/${id}`,{
+   fetch(`${serverurl}/orders/cancelorder/${id}`,{
        method:"delete",
        headers:{
           "Content-Type":"application/json",
