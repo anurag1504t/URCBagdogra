@@ -29,18 +29,12 @@ const NavBar=()=> {
                             <Nav navbar>
                                 <NavItem className='rout' key="1">
                                     <Link className="nav-link" to="/profile">
-                                        Account
+                                        <span className="fa fa-home fa-lg"></span> Account
                                     </Link>
-                                </NavItem>
-                                <NavItem className='rout' key="2">
-                                    <Link className="nav-link" to="/cart">
-                                        cart
-                                    </Link>
-                                </NavItem>
-
+                                </NavItem>                    
                                 <NavItem className='rout' key="3">
                                     <Link className="nav-link" to="/shop">
-                                        shop
+                                        <span className="fa fa-store"></span> Shop
                                     </Link>
                                 </NavItem>
 
@@ -49,10 +43,14 @@ const NavBar=()=> {
                                         slot booking 
                                     </Link>
                                 </NavItem>
-
                                 <NavItem className='rout' key="5">
                                     <Link className="nav-link" to="/orders">
                                         orders
+                                    </Link>
+                                </NavItem>
+                                <NavItem className='rout' key="2">
+                                    <Link className="nav-link" to="/cart">
+                                        <span className="fa fa-shopping-cart"></span> cart
                                     </Link>
                                 </NavItem>
                                 <NavItem className='rout' key="6">
@@ -61,7 +59,7 @@ const NavBar=()=> {
                                         dispatch({type:"CLEAR"})
                                         history.push('/')
                                     }}>
-                                        logout
+                                        <span className="fa fa-sign-out"></span> logout
                                     </Link>
                                 </NavItem>
                             </Nav> 

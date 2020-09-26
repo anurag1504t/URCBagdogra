@@ -25,67 +25,65 @@ import { Header } from './components/header';
 export const usercontext=createContext()
 
 const Routing=()=>{
-  const history=useHistory() 
-  const {state,dispatch}=useContext(usercontext)
-  useEffect(()=>{
-    const user=JSON.parse(localStorage.getItem("user"))
-    //console.log(user.sys)
-    if(user){
-      dispatch({type:"USER",payload:user})
-    }
-    else{
-history.push('/')
-    }
-  },[])
-  return (
-<Switch>
-    <Route exact path='/'>
-      <Home />
-    </Route>
-    <Route path='/login'>
-      <Login />
-    </Route>
-    <Route path='/shop'>
-      <Shop />
-    </Route>
-    <Route path='/signup'>
-      <Signup />
-    </Route>
-    <Route path='/signupmsg/:name'>
-      <Signupmsg />
-    </Route>
-    <Route exact path='/profile'>
-      <Profile />
-    </Route>
-    <Route path='/cart'>
-      <Cart />
-    </Route>
-    <Route path='/checkout'>
-      <Checkout />
-    </Route>
-    <Route path='/final/:id'>
-      <Final />
-    </Route>
-    <Route path='/orders'>
-      <Orders />
-    </Route>
-    <Route path='/changepwd'>
-      <Changepwd />
-    </Route>
-    <Route path='/info/:code'>
-      <Info />
-    </Route>
-
-    <Route path='/windowfinal/:id'>
-      <WindowFinal />
-    </Route>
-    <Route path='/windowslotbooking'>
-      <WindowSlotBook />
-    </Route>
-
-  
-    </Switch>
-  )
+    const history=useHistory() 
+    const {state,dispatch}=useContext(usercontext)
+    useEffect(()=>{
+        const user=JSON.parse(localStorage.getItem("user"))
+        //console.log(user.sys)
+        if(user){
+          dispatch({type:"USER",payload:user})
+        }
+        else{
+            history.push('/')
+        }
+    },[])
+    
+    return (
+        <Switch>
+            <Route exact path='/'>
+                <Home />
+            </Route>
+            <Route path='/login'>
+                <Login />
+            </Route>
+            <Route path='/shop'>
+                <Shop />
+            </Route>
+            <Route path='/signup'>
+                <Signup />
+            </Route>
+            <Route path='/signupmsg/:name'>
+                <Signupmsg />
+            </Route>
+            <Route exact path='/profile'>
+                <Profile />
+            </Route>
+            <Route path='/cart'>
+                <Cart />
+            </Route>
+            <Route path='/checkout'>
+                <Checkout />
+            </Route>
+            <Route path='/final/:id'>
+                <Final />
+            </Route>
+            <Route path='/orders'>
+                <Orders />
+            </Route>
+            <Route path='/changepwd'>
+                <Changepwd />
+            </Route>
+            <Route path='/info/:code'>
+                <Info />
+            </Route>
+            <Route path='/windowfinal/:id'>
+                <WindowFinal />
+            </Route>
+            <Route path='/windowslotbooking'>
+                <WindowSlotBook />
+            </Route>  
+        </Switch>
+    )
 }
 
 function App() {
@@ -97,8 +95,8 @@ function App() {
             <BrowserRouter>
             {/* <Header /> */}
                 <div>
-                        <NavBar/>
-                        <Routing />
+                    <NavBar/>
+                    <Routing />
                 </div>               
             </BrowserRouter>
         </usercontext.Provider>
