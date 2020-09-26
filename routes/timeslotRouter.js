@@ -4,12 +4,23 @@ var UserRequest = require('../models/userRequest');
 var User = require('../models/user');
 var pickupslot=require('../models/pickupslot')
 var windowslot=require('../models/windowslot')
+const SystemInfo = require('../models/system');
 var authenticate = require('../authenticate');
 
 const timeslotRouter = express.Router();
 timeslotRouter.use(bodyParser.json());
 
-
+timeslotRouter.route('/')
+.all((req, res, next) => {
+    SystemInfo.find({})
+    .then((data) => {
+        if(data[0].slot != true) {
+            res.statusCode = 403;
+            res.setHeader('Content-Type', 'application/json');
+            res.json('Slot Booking operation is temporarily disabled by admin.');
+        }
+    })
+});
 
 timeslotRouter.route('/getwindowslot')
 .post((req,res,next) => {

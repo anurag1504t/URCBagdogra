@@ -4,9 +4,23 @@ const mongoose = require('mongoose');
 const {pagesize}=require('../config')
 const Products = require('../models/product');
 var authenticate = require('../authenticate');
-const Category=require('../models/category')
+const Category=require('../models/category');
+const SystemInfo = require('../models/system');
+
 const productRouter = express.Router();
 productRouter.use(bodyParser.json());
+
+productRouter.route('/')
+.all((req, res, next) => {
+    SystemInfo.find({})
+    .then((data) => {
+        if(data[0].shop != true) {
+            res.statusCode = 403;
+            res.setHeader('Content-Type', 'application/json');
+            res.json('Shop operation is temporarily disabled by admin.');
+        }
+    })
+});
 
 productRouter.route('/getcategory')
 .get(authenticate.verifyUser,(req,res,next) => {
