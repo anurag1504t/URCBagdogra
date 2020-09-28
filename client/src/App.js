@@ -22,6 +22,7 @@ import Orders from './components/orders'
 
 import {initialstate,reducer} from './reducers/userreducer'
 import { Header } from './components/header';
+import { Footer } from './components/footer';
 export const usercontext=createContext()
 
 const Routing=()=>{
@@ -37,7 +38,7 @@ const Routing=()=>{
             history.push('/')
         }
     },[])
-    
+
     return (
         <Switch>
             <Route exact path='/'>
@@ -97,7 +98,9 @@ function App() {
                 <div>
                     <NavBar/>
                     <Routing />
-                </div>               
+                 
+                    <Footer /> 
+                </div>             
             </BrowserRouter>
         </usercontext.Provider>
     );

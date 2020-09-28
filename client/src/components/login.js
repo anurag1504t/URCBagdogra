@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
-import '../stylesheet/style.css';
+import '../stylesheet/login.css';
 
 import Loading from './loading'
 
@@ -42,18 +42,16 @@ const Login= ()=>{
         })
     }
 
-return(
-
-    <div className='main'>
-        <div className='message'>{msg}</div>
-         <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div>
-         <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div>
-         <div><button onClick={()=>postdata()}> login </button></div>
-    </div>
-
-
-)
-
+    return(
+        <div className="container">
+            <div className='main'>
+                <div className='message'>{msg}</div>
+                <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> <br></br>
+                <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> <br></br>
+                <div><button onClick={()=>postdata()}> login </button></div>
+            </div>
+        </div>
+    )
 }
 
 export default Login

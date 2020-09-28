@@ -1,14 +1,12 @@
-.main{
+/* .main{
     padding:20px;
     font-size:20px;
     font-variant: small-caps;
-    /* margin:20px; */
+    margin:20px;
     display: flex;
-    color: floralwhite;
   flex-direction: column;
-  align-items: center;
-  background-color: #3c4d5f;
-}
+  align-items: center;;
+} */
 .signmsg{
     font-size:25px;
 }
@@ -23,7 +21,7 @@ img{
     font-size:20px;
     font-variant: small-caps;
     color:red;
-  align-items: center;
+    align-items: center;
 }
 
 /* body{
@@ -45,9 +43,9 @@ input{
 }
 
 .rout,.rout:visited{
-    padding:10px;
+    /* padding:10px; */
     margin:10px;
-    font-size:25px;
+    font-size:20px;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     color:black;
     font-variant:small-caps;
@@ -95,45 +93,16 @@ button{
     font-size:20px;
 }
 
-.list{
-    padding:20px;
-    margin:30px;
-}
 
-.add{
-    font-size:20px;
-    padding:5px;
-    margin:15px;
 
-}
 
-.remove{
-    font-size:20px;
-    padding:5px;
-    margin:15px;
-}
-
-.product1{
-    padding:20px;
-    margin:20px;
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-  border:3px green solid;
-}
-.product2{
-    padding:20px;
-    margin:20px;
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-  border:1px black solid;
-}
 
 .list{
     display:grid;
     grid-gap:1px;
     grid-template-columns: repeat(3,1fr);
+    padding:20px;
+    margin:30px;
 }
 
 .t{

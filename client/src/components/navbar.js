@@ -2,9 +2,8 @@ import React,{useContext, useState} from 'react'
 import {Link,useHistory} from 'react-router-dom'
 import {usercontext} from '../App'
 import '../stylesheet/style.css';
-import { Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler, Collapse} from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, NavbarToggler, Collapse} from 'reactstrap';
 
-import {serverurl} from '../config'
 const NavBar=()=> {
 
     const{state,dispatch}=useContext(usercontext) 
@@ -34,7 +33,7 @@ const NavBar=()=> {
                                 </NavItem>                    
                                 <NavItem className='rout' key="3">
                                     <Link className="nav-link" to="/shop">
-                                        <span className="fa fa-store"></span> Shop
+                                        <span className="fa fa-store">@</span> Shop
                                     </Link>
                                 </NavItem>
 
@@ -66,23 +65,7 @@ const NavBar=()=> {
                             </Collapse>
                         </div>
                     </Navbar>
-                    </React.Fragment>
-                    // <div className='rout' key="1"><Link to="/profile">account</Link></div>,
-                       
-                    // <div className='rout' key="2"><Link to="/cart"> cart</Link></div>,
-                    // <div className='rout' key="3"><Link to="/shop"> shop</Link></div>,
-                    // <div className='rout' key="4"><Link to="/windowslotbooking"> slot booking</Link></div>,
-                    // <div className='rout' key="5"><Link to="/orders"> orders</Link></div>,
-                    // <div className='rout' key="6">
-                    //     <Link onClick={()=>{
-                    //         localStorage.clear();
-                    //         dispatch({type:"CLEAR"})
-                    //         history.push('/')
-                    //     }}>
-                    //         logout
-                    //     </Link>
-                    // </div>,
-                      
+                    </React.Fragment>                      
                 )
             }
             else{
@@ -97,12 +80,12 @@ const NavBar=()=> {
                             
                                 <NavItem className='rout' key="7" >
                                     <Link className="nav-link" to="/login">
-                                        login
+                                        <span className="fa fa-sign-out"></span> login
                                     </Link>
                                 </NavItem>
                                 <NavItem className='rout' key="8" >
                                     <Link className="nav-link" to="/signup">
-                                        signup
+                                        <span className="fa fa-user-plus"></span> signup
                                     </Link>
                                 </NavItem>
                                 
@@ -110,9 +93,7 @@ const NavBar=()=> {
                             </Collapse> 
                         </div>
                     </Navbar>  
-                    </React.Fragment>      
-                    // <div className='rout' key="7"><Link to="/login">login</Link></div>,
-                    // <div className='rout' key="8"><Link to="/signup">signup</Link></div>,
+                    </React.Fragment>
                 )
             }
        

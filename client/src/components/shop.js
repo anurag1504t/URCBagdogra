@@ -3,6 +3,8 @@ import {usercontext} from '../App'
 import {Link,useHistory} from 'react-router-dom'
 import {serverurl} from '../config'
 import Loading from './loading'
+import { Card, CardImg, CardTitle } from 'reactstrap'
+import '../stylesheet/shop.css'
 
 const Shop= ()=>{
 
@@ -197,26 +199,43 @@ return(
 
         <input type='text' value={query} onChange={(e)=>setquery(e.target.value)} placeholder='search' />
         <button onClick={()=>searchproduct()}>search</button>
-        <div className='list'>
+        <div className='row'>
+        
             {  list?
                 list.map(item=>{
-                    return(
-                        <div className={cart[item._id]?"product1":"product2"}>
-                           <div className='t'>{item.name}</div>
-                           <div><img src={item.image} height='200px' width='200px' /></div>
-                    <div className='t'>price : Rs.{item.price}</div>
-                           <div>
-                              <button className='add' disabled={item.quantity>0?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quanity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
-                              <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
-                              <button className='remove' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
-                           </div>
-                           <div>max quantity : {item.maxQuantity}</div>
-                           <div>total quantity : {item.quantity}</div>
+                    return(   
+                        <div className="col-12 col-md-3 mb-3">
+                            <Card className={cart[item._id]?"product1":"product2"}>
+                                <CardTitle className='t'>{item.name}</CardTitle>
+                                <CardImg width="200px" height="200px" src={item.image} alt={item.name} />
+                                {/* <div><img src={item.image} height='200px' width='200px' /></div> */}
+                                <div className='t'>price : Rs.{item.price}</div>
+                                <div>
+                                    <button className='add' disabled={item.quantity>0?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quanity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
+                                    <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
+                                    <button className='remove' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
+                                </div>
+                                    <div>max quantity : {item.maxQuantity}</div>
+                                <div>total quantity : {item.quantity}</div>
+                            </Card>
                         </div>
+                //         <div className={cart[item._id]?"product1":"product2"}>
+                //            <div className='t'>{item.name}</div>
+                //            <div><img src={item.image} height='200px' width='200px' /></div>
+                //             <div className='t'>price : Rs.{item.price}</div>
+                //            <div>
+                //               <button className='add' disabled={item.quantity>0?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quanity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
+                //               <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
+                //               <button className='remove' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
+                //            </div>
+                //            <div>max quantity : {item.maxQuantity}</div>
+                //            <div>total quantity : {item.quantity}</div>
+                //         </div>
                     )
                 }):
                 <Loading />
             }
+       
         </div>
         <div>
             {

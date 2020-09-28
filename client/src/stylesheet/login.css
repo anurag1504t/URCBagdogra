@@ -1,0 +1,26 @@
+.main{
+    padding:20px;
+    font-size:20px;
+    font-variant: small-caps;
+    margin:20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border:3px black;
+}
+
+.message{
+    padding:10px;
+    font-size:20px;
+    font-variant: small-caps;
+    color:red;
+    align-items: center;
+}
+
+button{
+    font-size:15px;
+    font-variant:small-caps;
+    border-radius:10px;
+    margin:10px;
+    padding:10px 20px;
+}
