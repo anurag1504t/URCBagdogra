@@ -2,6 +2,7 @@
 import React,{ useState ,useContext  } from 'react'
 import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
+import { Button } from 'reactstrap'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
 import '../stylesheet/login.css';
@@ -44,11 +45,21 @@ const Login= ()=>{
 
     return(
         <div className="container">
-            <div className='main'>
-                <div className='message'>{msg}</div>
-                <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> <br></br>
-                <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> <br></br>
-                <div><button onClick={()=>postdata()}> login </button></div>
+            <div className='inside'>
+                <div>
+                    <h1>Sign in</h1>
+                    <span>to use your account</span>
+                </div>
+                <div className="main">                    
+                    <div className='message'>{msg}</div>
+                    <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
+                    <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
+                    <a href="#">Forgot your password?</a>
+                    <Button onClick={()=>postdata()}> login</Button>
+                    <p>Not Registered yet?
+                        <br></br>Apply for Registration</p>
+                    <Link to="/signup"><Button> Register</Button></Link>
+                </div>
             </div>
         </div>
     )

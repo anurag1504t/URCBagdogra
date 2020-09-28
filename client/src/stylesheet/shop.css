@@ -47,3 +47,19 @@
   align-items: center;
   border:1px black solid;
 }
+
+select {
+    background: transparent;
+    border: none;
+    padding: 6px 12px;
+}
+
+/* button {
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+} */
+
+.input-group-addon {
+    padding: 0!important;
+  }
