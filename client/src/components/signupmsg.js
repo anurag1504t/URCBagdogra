@@ -1,7 +1,7 @@
 
 import React,{ useState ,useContext  } from 'react'
 import { useParams } from 'react-router-dom'
-import '../stylesheet/style.css';
+// import '../stylesheet/style.css';
 
 import Loading from './loading'
 

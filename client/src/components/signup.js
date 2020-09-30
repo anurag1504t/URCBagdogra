@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
-import '../stylesheet/style.css';
+// import '../stylesheet/style.css';
 
 
 import Loading from './loading'
