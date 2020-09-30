@@ -1,9 +1,6 @@
 
 import React,{ useState ,useContext  } from 'react'
-import {Link} from 'react-router-dom'
-import { useHistory,useParams } from 'react-router-dom'
-import {usercontext} from '../App'
-import {serverurl} from '../config'
+import { useParams } from 'react-router-dom'
 import '../stylesheet/style.css';
 
 import Loading from './loading'

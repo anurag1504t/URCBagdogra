@@ -1,5 +1,4 @@
 import React,{useEffect,createContext,useReducer,useContext} from 'react';
-import './App.css';
 import NavBar from "./components/navbar"
 
 import {BrowserRouter,Route,Switch,useHistory} from 'react-router-dom'
@@ -21,7 +20,6 @@ import Orders from './components/orders'
 
 
 import {initialstate,reducer} from './reducers/userreducer'
-import { Header } from './components/header';
 import { Footer } from './components/footer';
 export const usercontext=createContext()
 

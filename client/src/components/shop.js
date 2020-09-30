@@ -1,9 +1,9 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
-import {Link,useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {serverurl} from '../config'
 import Loading from './loading'
-import { Card, CardImg, CardTitle, Row } from 'reactstrap'
+import { Card, CardImg, CardTitle } from 'reactstrap'
 import '../stylesheet/shop.css'
 
 const Shop= ()=>{

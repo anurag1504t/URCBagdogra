@@ -52,15 +52,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/usersrequests', usersRequestRouter);
-app.use('/orders', orderRouter);
-app.use('/windoworders', windoworderRouter);
-app.use('/products',productRouter);
-app.use('/cart', cartRouter);
-app.use('/feeds',feedRouter);
-app.use('/timeslot',timeslotRouter);
-app.use('/sys',sysRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/usersrequests', usersRequestRouter);
+app.use('/api/orders', orderRouter);
+app.use('/api/windoworders', windoworderRouter);
+app.use('/api/products',productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/feeds',feedRouter);
+app.use('/api/timeslot',timeslotRouter);
+app.use('/api/sys',sysRouter);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "build", "index.html"));

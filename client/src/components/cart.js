@@ -3,6 +3,7 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import Loading from './loading'
+import '../stylesheet/cart.css'
 
 
 const Cart= ()=>{
@@ -105,7 +106,7 @@ const load=()=>{
 
 return(
 
-   <div className='main'>
+   <div className='main-cart'>
        <ul>
         {data&&loading?
             data.map(item=>{

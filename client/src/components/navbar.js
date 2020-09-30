@@ -1,7 +1,7 @@
 import React,{useContext, useState} from 'react'
 import {Link,useHistory} from 'react-router-dom'
 import {usercontext} from '../App'
-import '../stylesheet/style.css';
+import '../stylesheet/navbar.css';
 import { Navbar, NavbarBrand, Nav, NavItem, NavbarToggler, Collapse} from 'reactstrap';
 
 const NavBar=()=> {
@@ -80,7 +80,7 @@ const NavBar=()=> {
                             
                                 <NavItem className='rout' key="7" >
                                     <Link className="nav-link" to="/login">
-                                        <span className="fa fa-sign-out"></span> login
+                                        <span className="fa fa-sign-in"></span> login
                                     </Link>
                                 </NavItem>
                                 <NavItem className='rout' key="8" >
