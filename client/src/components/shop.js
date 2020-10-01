@@ -180,7 +180,7 @@ return(
       loading?
       <div className='main'>
             <div className="row">
-                <div className='dropdown col input-group'>
+                <div className='dropdown category col-3'>
                     <div><button className='dropbtn'>categories</button></div>
                     <div className='dropdown-content'>
                         <span onClick={()=>searchcategory("all")}>All</span>
@@ -197,11 +197,11 @@ return(
                     </div>
                 </div>
             
-                <div className="input-group col">
+                <div className="category col-6">
                     <input type='text' value={query} onChange={(e)=>setquery(e.target.value)} placeholder='search' />
                 </div>
-                <div className="input-group col">
-                    <button onClick={()=>searchproduct()}>search</button>
+                <div className="category col-3">
+                    <button className="search-btn fa fa-search" onClick={()=>searchproduct()}></button>
                 </div>
             </div>
         <div className='row'>

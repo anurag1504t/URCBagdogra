@@ -51,10 +51,10 @@ const Login= ()=>{
                     <h1>Sign in</h1>
                     <span>to use your account</span>
                 </div>
-                <div className="main">                    
+                <div className="main-login">                    
                     <div className='message'>{msg}</div>
-                    <div><input type='text' placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
-                    <div><input type='password' placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
+                    <div><input className="col-12" type='text' placeholder='Username' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
+                    <div><input className="col-12" type='password' placeholder='Password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
                     <a href="#">Forgot your password?</a>
                     <Button onClick={()=>postdata()}> login</Button>
                     <p>Not Registered yet?

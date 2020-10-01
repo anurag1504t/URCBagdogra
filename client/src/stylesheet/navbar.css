@@ -13,3 +13,7 @@
     color:black;
     font-variant:small-caps;
 }
+
+img {
+    background: transparent;
+}

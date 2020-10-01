@@ -1,7 +1,8 @@
-import React,{useContext, useState} from 'react'
-import {Link,useHistory} from 'react-router-dom'
-import {usercontext} from '../App'
-import '../stylesheet/navbar.css';
+import React, { useContext, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { usercontext } from "../App";
+import Tiger from "../img/Tiger.png";
+import "../stylesheet/navbar.css";
 import { Navbar, NavbarBrand, Nav, NavItem, NavbarToggler, Collapse} from 'reactstrap';
 
 const NavBar=()=> {
@@ -23,7 +24,7 @@ const NavBar=()=> {
                     <Navbar dark expand="md">
                         <div className="container"> 
                             <NavbarToggler onClick={toggleNav} />
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Roundel_of_India.svg/601px-Roundel_of_India.svg.png" width="20px" ></img>              
+                            <img src={Tiger} width="50px" ></img>              
                             <NavbarBrand className="rout mr-auto" href="/">URC Bagdogra</NavbarBrand> 
                             <Collapse isOpen={panel} navbar>                            
                             <Nav navbar>
@@ -74,8 +75,11 @@ const NavBar=()=> {
                     <React.Fragment>
                     <Navbar dark expand="md" >
                         <div className="container" > 
-                            <NavbarToggler onClick={toggleNav} />                
-                            <NavbarBrand className="rout mr-auto" href="/">URC Bagdogra</NavbarBrand> 
+                            <NavbarToggler onClick={toggleNav} />                                           
+                            <NavbarBrand className="rout mr-auto" href="/">
+                                <span><img src={Tiger} width="50px"></img></span>
+                                URC Bagdogra
+                            </NavbarBrand> 
                             <Collapse isOpen={panel} navbar> 
                             <Nav navbar>
                             

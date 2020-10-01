@@ -1,4 +1,4 @@
-.main-login{
+.main-signup{
     /* padding:20px; */
     font-size:20px;
     font-variant: small-caps;
@@ -14,17 +14,6 @@
     font-variant: small-caps;
     color:red;
     align-items: center;
-}
-
-.btn {
-    background-color: #242F3E;
-    font-size:15px;
-    color:pink;
-    margin:10px;
-    padding:10px 20px;
-    border-radius: 20px;
-    border: 1px solid , #242F3E;
-    font-variant:small-caps;
 }
 
 .inside {  
@@ -44,13 +33,24 @@
     align-items: center;
 }
 
-div > input{
+input{
     margin: 10px;
     margin-bottom: 5px;
-    border-radius: 15px;
+    /* border-radius: 15px; */
     text-align: center;
     font-size: 20px;
     position: relative;
+}
+
+.button {
+    background-color: #242F3E;
+    font-size:15px;
+    color:pink;
+    margin:10px;
+    padding:10px 20px;
+    border: 1px solid , #242F3E;
+    font-variant:small-caps;
+    align-items: center;
 }
 
 h1 {

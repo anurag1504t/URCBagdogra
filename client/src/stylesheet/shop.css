@@ -29,7 +29,11 @@
 }
 
 .row {
-    padding: 15px;
+    padding: 0px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin: 0px
 }
 .product1{
     /* padding:20px;
@@ -43,22 +47,22 @@
     /* padding:20px;
     margin:20px; */
     display: flex;
-  flex-direction: column;
-  align-items: center;
-  border:1px black solid;
+    flex-direction: column;
+    align-items: center;
+    border:1px black solid;
 }
 
 select {
     background: transparent;
     border: none;
-    padding: 6px 12px;
+    padding: 0px;
 }
 
-/* button {
-    padding: 6px 12px;
+.search-btn {
+    /* padding: 6px 12px; */
     background: transparent;
     border: none;
-} */
+}
 
 .input-group-addon {
     padding: 0!important;
@@ -67,10 +71,13 @@ select {
   .dropbtn {
     background-color: #4CAF50;
     color: white;
-    padding: 16px;
+    padding: 10px;
     font-size: 16px;
     border: none;
     cursor: pointer;
+    display: flex;
+    margin-top: 10px;
+    border-radius: 15px;
   }
   
   .dropdown {
@@ -103,3 +110,22 @@ select {
   .dropdown:hover .dropbtn {
     background-color: #3e8e41;
   }
+
+div > input{
+    /* margin: 10px; */
+    padding: 0px;    
+    /* margin-bottom: 5px; */
+    border-radius: 15px;
+    text-align: center;
+    font-size: 20px;
+    position: relative;
+}
+
+.category {
+    padding: 0px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: stretch; */
+    width: 100%;
+}

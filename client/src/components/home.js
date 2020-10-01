@@ -45,12 +45,8 @@ const Home = () => {
                   <ul className="list-unstyled">
                   {data.map((item) => {
                     return (
-                      <li><a
-                        className="font-alt mb-30 titan-title-size-1"
-                        key={item._id}
-                      >
-                        {item.feeds}
-                      </a>
+                      <li key={item._id}  >
+                        <p className="newsdata font-alt mb-30 titan-title-size-1">{item.feeds}</p>
                       </li>
                     );
                   })}

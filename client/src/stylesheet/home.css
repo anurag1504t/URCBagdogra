@@ -25,6 +25,9 @@
 .newsdata{
     font-size:20px;
     margin:20px;
+    color: floralwhite;
+    text-align: left;
+    margin: 15px;
 }
 
 .carousel-item > img {
@@ -42,23 +45,6 @@ marquee {
     color: #242F3E;
 }
 
-marquee > a {
-    color: white;
-    text-align: justify;
-    border-radius: 25px;
-    padding: 5px;
-}
-
 loading {
     color: floralwhite;
-}
-
-li > a {
-    color: white;
-    text-align: justify;
-    
-}
-
-li {
-    padding: 10px;
 }

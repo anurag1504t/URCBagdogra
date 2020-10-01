@@ -1,13 +1,9 @@
 
-import React,{ useState ,useContext  } from 'react'
-import {Link} from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
-import {usercontext} from '../App'
-import {serverurl} from '../config'
-// import '../stylesheet/style.css';
-
-
-import Loading from './loading'
+import React,{ useState ,useContext  } from "react"
+import { useHistory } from "react-router-dom"
+import {usercontext} from "../App"
+import {serverurl} from "../config"
+import '../stylesheet/signup.css';
 
 const Signup= ()=>{
     const{state,dispatch}=useContext(usercontext)
@@ -78,26 +74,32 @@ const Signup= ()=>{
 
 
 return(
-
-    <div className='main'>
+    <div className="container">
+        <div className='inside'>
+            <div>
+                <h1>Sign Up</h1>
+                <span>request to create account</span>
+            </div>
+    <div className='main-signup'>
          <div className='message'>{msg}</div>
          <form onSubmit={(e)=>submitform(e)}>
-       <div><input type='text' minlength="3" placeholder='name' value={name} onChange={(e)=>setname(e.target.value)} /></div> 
-       <div> <input type='email' placeholder='email' value={email} onChange={(e)=>setemail(e.target.value)} /></div> 
-       <div> <input type='tel' pattern="[0-9]{10}" minlength="10"  maxLength="10" placeholder='mobile number' value={mobile} onChange={(e)=>setmobile(e.target.value)} /></div> 
-       <div>  <input type='text' minlength="5" maxLength="20" placeholder='unique id' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
-       <div><input type='password' minlength="6" maxLength="20" placeholder='password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
-       <div> <input type='password' minlength="6" maxLength="20" placeholder='retype password' value={repassword} onChange={(e)=>setrepassword(e.target.value)} /></div> 
-        <div>living in
-            <select value={livein} onChange={(e)=>setlivein(e.target.value)}>
+       <div><input className="col-12" type='text' minlength="3" placeholder='Name' value={name} onChange={(e)=>setname(e.target.value)} /></div> 
+       <div> <input className="col-12" type='email' placeholder='Email' value={email} onChange={(e)=>setemail(e.target.value)} /></div> 
+       <div> <input className="col-12" type='tel' pattern="[0-9]{10}" minlength="10"  maxLength="10" placeholder='Mobile Number' value={mobile} onChange={(e)=>setmobile(e.target.value)} /></div> 
+       <div>  <input className="col-12" type='text' minlength="5" maxLength="20" placeholder='Username' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
+       <div><input className="col-12" type='password' minlength="6" maxLength="20" placeholder='Password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
+       <div> <input className="col-12" type='password' minlength="6" maxLength="20" placeholder='Verify Password' value={repassword} onChange={(e)=>setrepassword(e.target.value)} /></div> 
+        <div>Living in: 
+            <select  value={livein} onChange={(e)=>setlivein(e.target.value)}>
             <option value='true'>living in</option>
             <option value='false'>not living in</option>
             </select>
         </div>
-       <div>  <input type='submit' value='submit' /></div> 
+       <div>  <input className="button" type='submit' value='Register' /></div> 
        </form>
     </div>
-
+    </div>
+    </div>
 
 )
 
