@@ -1,7 +1,8 @@
 .navbar-dark {
-    background-color: #3c4d5f;
+    background-color: #242F3E;
     padding:0px auto;
     margin:0px auto;
+    margin-bottom: 5px;
 }
 
 .rout,.rout:visited{

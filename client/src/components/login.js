@@ -3,6 +3,7 @@ import React,{ useState ,useContext  } from 'react'
 import {Link} from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { Button } from 'reactstrap'
+
 import {usercontext} from '../App'
 import {serverurl} from '../config'
 import '../stylesheet/login.css';
@@ -58,7 +59,7 @@ const Login= ()=>{
                     <Button onClick={()=>postdata()}> login</Button>
                     <p>Not Registered yet?
                         <br></br>Apply for Registration</p>
-                    <Link to="/signup"><Button> Register</Button></Link>
+                    <Link to="/signup"><Button > Register</Button></Link>
                 </div>
             </div>
         </div>
