@@ -8,13 +8,14 @@
     outline: none;
     border: none;
     cursor: pointer;
+    background: #242F3E;
 }
 
 .btn:hover {
     padding: 8px 20px;
     transition: all 0.3s ease-out;
-    background: #fff;
-    color: #6568F4;
+    background: #242F3E;
+    color:white;
     transition: 250ms;
 }
 
@@ -23,7 +24,7 @@
 }
 
 .btn--outline {
-    background-color: transparent;
+    background-color:#242F3E;
     color: #fff;
     padding: 8px 20px;
     border-radius: 4px;

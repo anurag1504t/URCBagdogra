@@ -16,16 +16,26 @@
     color:red;
     align-items: center;
 }
-
-.btn {
-    background-color: #3c4d5f;
+.button{
+    background-color: #242F3E;
     font-size:15px;
     font-variant:small-caps;
     border-radius:10px;
     margin:10px;
     padding:10px 20px;
     border-radius: 20px;
-    border: 1px solid , #3c4d5f;
+    
+}
+.btn {
+    background-color: #242F3E;
+    font-size:15px;
+    color:pink;
+    font-variant:small-caps;
+    border-radius:10px;
+    margin:10px;
+    padding:10px 20px;
+    border-radius: 20px;
+    border: 1px solid , #242F3E;
 }
 
 .inside {  
@@ -34,7 +44,7 @@
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: #ffffff;
     background-clip: border-box;
     border: 1px solid black;
     margin:10%;
@@ -68,7 +78,7 @@ p {
 }
 
 a {
-    color: #333;
+    background-color: #242F3E;
     /* font-size: 14px; */
     text-decoration: none;
     /* margin: 15px 0; */

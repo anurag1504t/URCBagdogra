@@ -8,8 +8,13 @@
     flex-direction: column;
     align-items: center;
     background-color: #3c4d5f;
+    border-radius: 25px;
+    padding: 5px;
+    margin:12px;
 }
-
+/* .container{
+    margin:12px;
+} */
 .news{
     font-size:30px;
     font-variant:small-caps;
@@ -32,12 +37,14 @@ marquee {
     padding: 0 50px 0 30px;
     max-height: 30%;
     height: 250px;
-    color: black;
+    color: #242F3E;
 }
 
 marquee > a {
     color: white;
     text-align: justify;
+    border-radius: 25px;
+    padding: 5px;
 }
 
 loading {
