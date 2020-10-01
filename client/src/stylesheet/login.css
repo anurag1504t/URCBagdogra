@@ -31,7 +31,6 @@
     font-size:15px;
     color:pink;
     font-variant:small-caps;
-    border-radius:10px;
     margin:10px;
     padding:10px 20px;
     border-radius: 20px;
@@ -63,16 +62,6 @@ div > input{
     text-align: center;
     font-size: 20px;
     font-variant: small-caps
-}
-
-.btn {
-    background-color: #3c4d5f;
-    font-size:15px;
-    font-variant:small-caps;
-    margin:10px;
-    padding:10px 20px;
-    border-radius: 20px;
-    border: 1px solid , #3c4d5f;
 }
 
 h1 {

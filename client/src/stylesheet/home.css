@@ -10,7 +10,8 @@
     background-color: #3c4d5f;
     border-radius: 25px;
     padding: 5px;
-    margin:12px;
+    margin-bottom: 12px;
+    margin-top: 12px;
 }
 /* .container{
     margin:12px;
@@ -31,6 +32,7 @@
     height: 400px;
     align-items: center;
     background-color: #3c4d5f;
+    border-radius: 25px;
 }
 
 marquee {
@@ -49,4 +51,14 @@ marquee > a {
 
 loading {
     color: floralwhite;
+}
+
+li > a {
+    color: white;
+    text-align: justify;
+    
+}
+
+li {
+    padding: 10px;
 }

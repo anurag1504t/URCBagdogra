@@ -42,16 +42,19 @@ const Home = () => {
                   scrolldelay="0"
                   scrollamount="3"
                 >
+                  <ul className="list-unstyled">
                   {data.map((item) => {
                     return (
-                      <a
+                      <li><a
                         className="font-alt mb-30 titan-title-size-1"
                         key={item._id}
                       >
                         {item.feeds}
                       </a>
+                      </li>
                     );
                   })}
+                  </ul>
                 </marquee>
               </div>
             ) : (
