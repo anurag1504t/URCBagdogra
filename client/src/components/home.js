@@ -41,6 +41,10 @@ const Home = () => {
                   direction="up"
                   scrolldelay="0"
                   scrollamount="3"
+                  behavior="scroll" 
+                  direction="up" 
+                  onMouseOver={this.stop} 
+                  onMouseOut={this.start}
                 >
                   <ul className="list-unstyled">
                   {data.map((item) => {
@@ -52,6 +56,8 @@ const Home = () => {
                   })}
                   </ul>
                 </marquee>
+                <Marquee behavior="scroll" direction="up" onMouseOver={this.stop} onMouseOut={this.start}>Hello</marquee>
+
               </div>
             ) : (
               <ReactLoading
