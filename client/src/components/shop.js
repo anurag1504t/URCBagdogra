@@ -14,11 +14,12 @@ const Shop= ()=>{
    const [query,setquery]=useState("")
    const [page,setpage]=useState(1)
    const [loading,setloading]=useState(false)
-   const [pagenum,setpagenum]=useState([1])
+   const [pages,setpages]=useState([1])
+   const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'category',value:'all'})
    const {state,dispatch}=useContext(usercontext)
    const [category,setcategory]=useState([])
-   
+   const [msg,setmsg]=useState("")
    const history=useHistory()
    useEffect(() => {
     fetch(serverurl+'/sys/getuserinfo',{
@@ -37,13 +38,15 @@ const Shop= ()=>{
        else{
           load()
        }
+    }).catch(err=>{
+       history.push('/')
     })
  },[])
  const load=()=>{
     fetch(serverurl+'/products/getcategory',{
         method:"get",
         headers:{
-           Authorization:"Bearer "+localStorage.getItem("token"),
+           Authorization:"Bearer "+localStorage.getItem("token")
         }
      }).then(res=>res.json())
      .then(result=>{
@@ -53,6 +56,8 @@ const Shop= ()=>{
         d.push(result.category[i].name)
        }
        setcategory(d);
+     }).catch(err=>{
+        setmsg("error loading the page")
      })
     fetch(serverurl+'/cart/',{
        method:"get",
@@ -63,7 +68,9 @@ const Shop= ()=>{
     .then(result=>{
        console.log(result)
        updatecart(result.items)
-    })
+    }).catch(err=>{
+      setmsg("error loading the page")
+   })
     getresult(1)
  }
  useEffect(() => {
@@ -96,6 +103,7 @@ const Shop= ()=>{
     setprod(d);
  }
  const getresult=(pg)=>{
+    console.log("with pg "+pg)
     setloading(false)
      let url=''
     if(prod.type=='category'){
@@ -120,16 +128,27 @@ const Shop= ()=>{
      }).then(res=>res.json())
      .then(result=>{
         console.log(result)
+        setdata(result.products)
         setlist(result.products)
         setpage(pg)
-        let d=[]
-        for(var i=1;i<=result.pages;i++){
-            d.push(i)
+        let l=pg-1>5?5:pg-1;
+        let r=result.pages-pg>5?5:result.pages
+        l=r<5?l+5-r:l;
+        r=l<5?r+5-l:r;
+      let d=[]
+        for(var i=pg-l;i<=pg+r;i++){
+           if(i<1) i=1;
+           if(i>result.pages) break;
+         d.push(i)
         }
-        setpagenum(d)
+        setpages(d)
+        setpagenum(result.pages)
         setloading(true)
+        setmsg("")
+        setquery("")
      }).catch(err=>{
         console.log(err)
+        setmsg("error loading the page")
      })
  }
 
@@ -149,6 +168,7 @@ const Shop= ()=>{
          updatecart(result.items);
       }).catch(err=>{
          console.log(err)
+         setmsg("error adding to the cart")
       })
    }
 
@@ -167,6 +187,7 @@ const Shop= ()=>{
          console.log(result)
          updatecart(result.items);
       }).catch(err=>{
+         setmsg("error removing from the cart")
          console.log(err)
       })
    }
@@ -176,6 +197,7 @@ return(
     <div>
 
    <div className='main'>
+<div>{msg}</div>
       {
       loading?
       <div className='main'>
@@ -198,7 +220,7 @@ return(
                 </div>
             
                 <div className="category col-6">
-                    <input type='text' value={query} onChange={(e)=>setquery(e.target.value)} placeholder='search' />
+                    <input type='text' value={query} onChange={(e)=>filterproduct(e.target.value)} placeholder='search' />
                 </div>
                 <div className="category col-3">
                     <button className="search-btn fa fa-search" onClick={()=>searchproduct()}></button>
@@ -232,13 +254,14 @@ return(
         </div>
         <div>
             {
-                pagenum?
-                pagenum.map(item=>{
+                pages?
+                pages.map(item=>{
                     return(
-                        <button onClick={()=>getresult(item)}>{item}</button>
+                        <button disabled={item==page?true:false} onClick={()=>getresult(item)}>{item}</button>
                     )
                 }):"loading"
             }
+            <div>... total {pagenum} pages</div>
         </div>
    </div>:
     <Loading />

@@ -9,19 +9,50 @@ const SignupRequests= ()=>{
    const [data,setdata]=useState([])
    const [msg,setmsg]=useState("")
    const {state,dispatch}=useContext(usercontext)
+   const [page,setpage]=useState(1)
+   const [loading,setloading]=useState(false)
+   const [pages,setpages]=useState([1])
+   const [pagenum,setpagenum]=useState(1)
 
     useEffect(()=>{
-        fetch(serverurl+'/usersrequests/req',{
-            method:"get",
+        getresult(1)
+    },[])
+
+    const getresult=(pg)=>{
+        setloading(false)
+        fetch(serverurl+'/usersrequests/allreq',{
+            method:"post",
             headers:{
-               Authorization:"Bearer "+localStorage.getItem("token")
-            }
+               "Content-Type":"application/json",
+               "Authorization":"Bearer "+localStorage.getItem("token")
+            },
+            body:JSON.stringify({
+               pgnum:pg
+            })
          }).then(res=>res.json())
          .then(result=>{
-            setdata(result)
-            if(result.length==0) setmsg("no sign up requests")
+            console.log(result)
+            setdata(result.usersreq)
+            setpage(pg)
+        let l=pg-1>5?5:pg-1;
+        let r=result.pages-pg>5?5:result.pages
+        l=r<5?l+5-r:l;
+        r=l<5?r+5-l:r;
+      let d=[]
+        for(var i=pg-l;i<=pg+r;i++){
+           if(i<1) i=1;
+           if(i>result.pages) break;
+         d.push(i)
+        }
+        setpages(d)
+        setpagenum(result.pages)
+            setloading(true)
+         }).catch(err=>{
+             setloading(true)
+             setmsg("error loading")
+            console.log(err)
          })
-    },[])
+     }
 
 const approve=(id)=>{
     fetch(serverurl+'/users/signup/'+id,{
@@ -37,9 +68,10 @@ const approve=(id)=>{
                 return item._id!=id;
             });
             setdata(d);
-            if(d.length==0) setmsg("no user found")
-            else setmsg("")
+            setmsg("sign up request approed successfully")
         }
+     }).catch(err=>{
+         setmsg("error approving user")
      })
 }
 const reject=(id)=>{
@@ -56,10 +88,11 @@ const reject=(id)=>{
                 return item._id!=id;
             });
             setdata(d);
-            if(d.length==0) setmsg("no user found")
-            else setmsg("")
+            setmsg("user request rejected")
         }
-     })
+     }).catch(err=>{
+        setmsg("error rejecting user")
+    })
 }
 
 return(
@@ -70,7 +103,7 @@ return(
        <div>{msg}</div>
        <div className='list'>
     {
-        data?
+        data&&loading?
         data.map(item=>{
             return(
             <div className='product2'>
@@ -79,16 +112,30 @@ return(
                 <div>email: {item.email}</div>
                 <div>living in: {item.livingIn}</div>
                 <div>
-                    <button onClick={()=>approve(item._id)}>approve</button>
-                    <button className='redbutton' onClick={()=>reject(item._id)}>reject</button>
+                    <button onClick={()=>{if(window.confirm('are you sure, you want to approve this user request?')){approve(item._id)}}}>approve</button>
+                    <button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to reject this user request?')){reject(item._id)}}}>reject</button>
                 </div>
             </div>
             )
         }):
-        <div>
         <Loading />
-        </div>
     }</div>
+    {
+       data.length==0&&loading?
+       <div>no signup requests found</div>:
+       <div></div>
+    }
+      <div>
+            {
+                pages?
+                pages.map(item=>{
+                    return(
+                        <button disabled={item==page?true:false} onClick={()=>getresult(item)}>{item}</button>
+                    )
+                }):"loading"
+            }
+            <div>... total {pagenum} pages</div>
+        </div>
    </div>
 
 )

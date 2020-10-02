@@ -10,6 +10,7 @@ const Userdetails= ()=>{
    const [msg,setmsg]=useState("")
    const {username}=useParams()
    const {state,dispatch}=useContext(usercontext)
+   const [loading,setloading]=useState(false)
 
 
 
@@ -22,6 +23,10 @@ const Userdetails= ()=>{
          }).then(res=>res.json())
          .then(result=>{
              setdata(result)
+             setloading(true)
+         }).catch(err=>{
+             setmsg("error loading")
+             setloading(true)
          })
     },[])
 
@@ -33,7 +38,7 @@ return(
 <Usernav />
    <div class='headt'> user details </div>
     {
-        data?<div>
+        data&&loading?<div>
             <div>name: {data.name}</div>
                 <div>username: {data.username}</div>
                 <div>email: {data.email}</div>
@@ -46,9 +51,7 @@ return(
                     <Link to={`/edituser/${data.username}`}><button>edit user</button></Link>
                 </div>
         </div>:
-        <div>
         <Loading />
-        </div>
     }
    </div>
 

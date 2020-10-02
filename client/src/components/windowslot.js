@@ -14,6 +14,7 @@ const WindowSlot= ()=>{
    const [dateshow,setdateshow]=useState()
    const [time,settime]=useState("")
    const history=useHistory()
+   const [msg,setmsg]=useState("")
    const [loading,setloading]=useState(false)
 
 
@@ -34,6 +35,8 @@ const WindowSlot= ()=>{
          else{
             setloading(true)
          }
+      }).catch(err=>{
+         history.push('/')
       })
    },[])
 
@@ -44,6 +47,8 @@ const getmindate=()=>{
 }
 
 const getdate=()=>{
+   settime("")
+   setloading(false)
    fetch(`${serverurl}/timeslot/getwindowslotuser`,{
       method:"post",
       headers:{
@@ -56,15 +61,22 @@ const getdate=()=>{
    }).then(res=>res.json())
    .then(result=>{
        setdata(result.timeslot)
+       if(result.timeslot[0]){
+          settime(result.timeslot[0]._id)
+       }
        setdateshow(date)
-       console.log(result)
+      setloading(true)
+      console.log(result)
    }).catch(err=>{
       console.log(err)
+      setloading(true)
+      setmsg("error loading")
    })
 } 
 
 const submitorder=()=>{
    if(!time) return 0;
+   setloading(false)
    fetch(`${serverurl}/windoworders/placeorder`,{
       method:"post",
       headers:{
@@ -80,6 +92,9 @@ const submitorder=()=>{
        history.push(`/windowfinal/${result.id}`)
    }).catch(err=>{
       console.log(err)
+      setloading(true)
+      setmsg("error loading")
+      settime("")
    })
 }
 
@@ -98,12 +113,13 @@ if(i*10%10==0){
 return(
 
    <div className='main'>
+      <div>{msg}</div>
       {loading?<div>
        <div className='rout'>select time slot</div>
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
        <button className='d' onClick={()=>getdate()}>check</button>
 <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
-       <select className='sel' onChange={(e)=>settime(e.target.value)}>
+       <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
           {
              data?
              data.map(item=>{
@@ -114,7 +130,7 @@ return(
              :<option></option>
           }
        </select>
-      <button onClick={()=>submitorder()}>book slot</button>
+     {time? <button onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
       </div>:<Loading />
 }
    </div>

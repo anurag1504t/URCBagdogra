@@ -31,6 +31,10 @@ const orderSchema = new Schema({
     amount:{
         type:Number,
         required:true
+    },
+    date:{
+        type: String,
+        required:false
     }
 }, {
     timestamps: true

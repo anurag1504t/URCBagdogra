@@ -7,10 +7,52 @@ var authenticate = require('../authenticate');
 
 const orderRouter = express.Router();
 orderRouter.use(bodyParser.json());
+const {pagesize}=require('../config')
 
 var pickupslot=require('../models/pickupslot');
 const Carts = require('../models/cart');
 const Products = require('../models/product');
+
+
+orderRouter.route('/searchdate')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    console.log(query)
+    Orders.find({date:query})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .populate('buyer')
+    .populate('items.item')
+    .populate('timeSlot')
+    .then(orders=>{
+        console.log(orders)
+        Orders.count({date:query})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({orders:orders,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+orderRouter.route('/allorders')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    Orders.find({})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .populate('buyer')
+    .populate('items.item')
+    .populate('timeSlot')
+    .then(orders=>{
+        Orders.count({})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({orders:orders,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+
 
 // Anurag's Code placeorder
 orderRouter.route('/placeorder')
@@ -49,7 +91,8 @@ orderRouter.route('/placeorder')
             new:true
         }).exec((err,result)=>{
             if(err) return res.json({err:"error"})
-            let s=Orders({buyer:req.user._id,timeSlot:timeid,items:orderItems,amount:total})
+            pickupslot.findById(timeid).then(tm=>{
+            let s=Orders({buyer:req.user._id,timeSlot:timeid,items:orderItems,amount:total,date:tm.date})
             s.save()
             .then((order) => {
                 console.log("order saved")
@@ -67,6 +110,7 @@ orderRouter.route('/placeorder')
                 
             })
             .catch((err) => res.json({err:"error"}));
+        })
         })
     })
 }); 

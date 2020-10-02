@@ -4,6 +4,7 @@ import {usercontext} from '../App'
 import logo from '../img/logo.png'
 import logo2 from '../img/logo2.jpg'
 import '../stylesheet/style.css';
+import {serverurl} from '../config'
 
 const NavBar=()=> {
 
@@ -21,9 +22,22 @@ const NavBar=()=> {
                 <div className='rout' key="6"><Link to="/sys">shop/slot</Link></div>,
                 <div className='rout' key="7">
                     <Link onClick={()=>{
-                        localStorage.clear();
-                        dispatch({type:"CLEAR"})
-                        history.push('/')
+                        fetch(serverurl+"/users/logout",{
+                            method:"get",
+                            headers:{
+                                "Content-Type":"application/json",
+                                Authorization:"Bearer "+localStorage.getItem("token")
+                            }
+                        }).then(res=>res.json())
+                        .then(data=>{
+                            localStorage.clear();
+                            dispatch({type:"CLEAR"})
+                            history.push('/')
+                        }).catch(err=>{
+                            localStorage.clear();
+                            dispatch({type:"CLEAR"})
+                            history.push('/')
+                        })
                     }}>
                         logout
                     </Link>

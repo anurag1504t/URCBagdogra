@@ -1,9 +1,11 @@
 
 import React,{ useState ,useContext  } from "react"
-import { useHistory } from "react-router-dom"
+import { useHistory,Link } from "react-router-dom"
 import {usercontext} from "../App"
 import {serverurl} from "../config"
 import '../stylesheet/signup.css';
+import { Button } from 'reactstrap'
+import Loading from './loading'
 
 const Signup= ()=>{
     const{state,dispatch}=useContext(usercontext)
@@ -16,6 +18,8 @@ const Signup= ()=>{
     const [name,setname]=useState("")
     const [livein,setlivein]=useState(false)
     const [msg,setmsg]=useState("")
+    const [loading, setloading] = useState(true);
+
 
     const validate=()=>{
         console.log(password,username,name,email,mobile)
@@ -49,7 +53,7 @@ const Signup= ()=>{
     const submitform=(e)=>{
         e.preventDefault();
         if(!validate()) return 0;
-
+        setloading(false)
         fetch(serverurl+"/usersrequests/req",{
             method:"post",
             headers:{
@@ -62,6 +66,7 @@ const Signup= ()=>{
             })
         }).then(res=>res.json())
         .then(data=>{
+            setloading(true)
             if(data.err){
                 setmsg("try changing username or email")
             }
@@ -69,12 +74,16 @@ const Signup= ()=>{
                 history.push(`/signupmsg/${data.name}`)
             }
             
+        }).catch(err=>{
+            setmsg("error signing up")
+            setloading(true)
         })
     }
 
 
 return(
     <div className="container">
+        {loading?
         <div className='inside'>
             <div>
                 <h1>Sign Up</h1>
@@ -97,8 +106,12 @@ return(
         </div>
        <div>  <input className="button" type='submit' value='Register' /></div> 
        </form>
+        <p>have an account?</p>
+                    <Link to="/login"><Button > login</Button></Link>
     </div>
-    </div>
+    </div>:
+    <Loading />
+        }
     </div>
 
 )

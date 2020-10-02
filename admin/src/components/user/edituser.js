@@ -16,6 +16,7 @@ const UserEdit= ()=>{
    const [live,setlivein]=useState(false)
    const [slot,setslot]=useState(false)
    const [shop,setshop]=useState(false)
+   const [loading,setloading]=useState(false)
 
 
     useEffect(()=>{
@@ -35,6 +36,10 @@ const UserEdit= ()=>{
             setlivein(result.livingIn)
             setshop(result.shopping)
             setslot(result.slotbooking)
+            setloading(true)
+         }).catch(err=>{
+             setloading(true)
+             setmsg("error loading")
          })
     },[])
 
@@ -61,6 +66,7 @@ const toggleorder=()=>{
 }
 
 const edituser=()=>{
+    setloading(false)
     fetch(`${serverurl}/users/${username}`,{
         method:"put",
         headers:{
@@ -74,8 +80,12 @@ const edituser=()=>{
      }).then(res=>res.json())
      .then(result=>{
         console.log(result)
+        setloading(true)
+        setmsg("user updated successfully")
      }).catch(err=>{
         console.log(err)
+        setloading(true)
+        setmsg("error updating user")
      })
 }
 
@@ -89,8 +99,10 @@ const deluser=()=>{
      }).then(res=>res.json())
      .then(result=>{
         console.log(result)
+        setmsg("user deleted successfully")
      }).catch(err=>{
         console.log(err)
+        setmsg("error deleting user")
      })
 }
 
@@ -102,7 +114,7 @@ return(
        <div>{msg}</div>
 
     {
-        data?<div>
+        data&&loading?<div>
             <div>name: <input value={name} onChange={(e)=>setname(e.target.value)} /></div>
             <div>email <input value={email} onChange={(e)=>setemail(e.target.value)} /></div>
             <div>mobile <input value={mobile} onChange={(e)=>setmobile(e.target.value)} /></div>
@@ -110,11 +122,9 @@ return(
     <div>slot booking <button onClick={()=>toggleslot()} className={slot?"greenbutton":"redbutton"}>{slot?"allowed":"not allowed"}</button></div>
     <div>online order <button onClick={()=>toggleorder()} className={shop?"greenbutton":"redbutton"}>{shop?"allowed":"not allowed"}</button></div>
     <div><button onClick={()=>edituser()}>submit</button></div>
-    <div><button className='redbutton' onClick={()=>deluser()}>delete user</button></div>
+    <div><button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to delete this user?')){deluser()}}}>delete user</button></div>
         </div>:
-        <div>
         <Loading />
-        </div>
     }
    </div>
 

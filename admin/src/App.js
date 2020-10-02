@@ -39,12 +39,20 @@ const Routing=()=>{
 
   useEffect(()=>{
     const user=JSON.parse(localStorage.getItem("user"))
-    if(user){
-      dispatch({type:"USER",payload:user})
-    }
-    else{
-      history.push('/login')
-    }
+        const tdt=localStorage.getItem("tokendate")
+        if(user&&tdt){
+            let dt=new Date();
+            let tdate=Date.parse(tdt)
+            if(tdate<=dt){
+                localStorage.clear();
+                history.push('/')
+            }else{
+                dispatch({type:"USER",payload:user})
+            }
+        }
+        else{
+            history.push('/')
+        }
   },[])
   return (
 <Switch>

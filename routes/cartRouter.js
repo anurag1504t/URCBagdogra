@@ -8,6 +8,23 @@ var authenticate = require('../authenticate');
 const cartRouter = express.Router();
 cartRouter.use(bodyParser.json());
 
+
+cartRouter.route('/emptycart')
+.get(authenticate.verifyUser,(req,res,next) => {
+    Carts.findOne({buyer:req.user._id})
+    .then((carts) => {
+        carts.items=[]
+        carts.save()
+        .then(cart=>{
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(cart);
+        }).catch(err=>res.json({err}))
+        
+    }, (err) => next(err))
+    .catch((err) => next(err));
+})
+
 // Methods for http://localhost:3000/cart/ API end point
 cartRouter.route('/')
 .get(authenticate.verifyUser,(req,res,next) => {

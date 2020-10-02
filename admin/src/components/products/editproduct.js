@@ -18,6 +18,7 @@ const EditProduct= ()=>{
    const [price,setprice]=useState(0)
    const [url,seturl]=useState(false)
    const [percent,setpercent]=useState(100)
+   const [loading,setloading]=useState(false)
 
 
     useEffect(()=>{
@@ -38,6 +39,10 @@ const EditProduct= ()=>{
             seturl(result.image)
             setmax(result.maxQuantity)
             setprice(result.price)
+            setloading(true)
+         }).catch(err=>{
+            setmsg("error loading")
+            setloading(true)
          })
     },[])
 
@@ -45,6 +50,7 @@ const EditProduct= ()=>{
 
 const updateproduct=(e)=>{
    e.preventDefault()
+   setloading(false)
     fetch(`${serverurl}/products/${productid}`,{
         method:"put",
         headers:{
@@ -59,12 +65,16 @@ const updateproduct=(e)=>{
      .then(result=>{
         console.log(result)
         setmsg("updated successfully")
+        setloading(true)
      }).catch(err=>{
+        setloading(true)
         console.log(err)
+        setmsg("error updating product")
      })
 }
 
 const delproduct=()=>{
+   setloading(false)
     fetch(`${serverurl}/products/${productid}`,{
         method:"delete",
         headers:{
@@ -74,9 +84,12 @@ const delproduct=()=>{
      }).then(res=>res.json())
      .then(result=>{
         console.log(result)
-        setmsg("deleted successfully")
+        setloading(true)
+        setmsg("product deleted successfully")
      }).catch(err=>{
+        setloading(true)
         console.log(err)
+        setmsg("error deleting product")
      })
 }
 
@@ -90,7 +103,7 @@ return(
        <div>{msg}</div>
 
     {
-        data?<div>
+        data&&loading?<div>
         <form onSubmit={(e)=>updateproduct(e)}>
             <div>name: <input value={name} onChange={(e)=>setname(e.target.value)} /></div>
             <div>size <input value={size} onChange={(e)=>setsize(e.target.value)} /></div>
@@ -102,11 +115,9 @@ return(
             <div>online percent <input value={percent} onChange={(e)=>setpercent(e.target.value)} /></div>
     <input type='submit' value='submit' />
     </form>
-    <button className='redbutton' onClick={()=>delproduct()}>delete product</button>
+    <button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to delete this product?')){delproduct()}}}>delete product</button>
         </div>:
-        <div>
         <Loading />
-        </div>
     }
    </div>
 

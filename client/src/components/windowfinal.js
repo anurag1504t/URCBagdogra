@@ -10,6 +10,8 @@ const WindowFinal= ()=>{
    const [data,setdata]=useState({})
    const {state,dispatch}=useContext(usercontext)
    const {id}=useParams()
+   const [msg,setmsg]=useState("")
+   const [loading,setloading]=useState(false)
 
    useEffect(()=>{
       fetch(`${serverurl}/windoworders/getorderdetails`,{
@@ -24,6 +26,7 @@ const WindowFinal= ()=>{
       }).then(res=>res.json())
       .then(result=>{
          console.log(result)
+         setloading(true)
           if(result.err){
 
           }else{
@@ -31,6 +34,8 @@ const WindowFinal= ()=>{
           }
       }).catch(err=>{
          console.log(err)
+         setloading(true)
+         setmsg("error loading")
       })
    },[])
 
@@ -51,7 +56,7 @@ return(
    <div className='main'>
       <div>
          {
-            data.timeslot?
+            data.timeslot&&loading?
             <div className='rout'>
               <div>your slot is booked successfully</div>
               <div className='timeslot'>
@@ -60,7 +65,7 @@ return(
                <div>{convert(data.timeslot.start)}</div>
                </div>
             </div>:
-               <div></div>
+               <Loading />
          }
       </div>
        <div className='rout'>instructions for the visiting URC</div>

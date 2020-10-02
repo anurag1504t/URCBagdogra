@@ -16,11 +16,13 @@ const AddProduct= ()=>{
    const [quantity,setquantity]=useState("")
    const [category,setcategory]=useState("")
    const [max,setmax]=useState("")
+   const [loading,setloading]=useState(true)
    const [url,seturl]=useState("")
    const [percent,setpercent]=useState("")
 
 
 const updateproduct=(e)=>{
+   setloading(false)
    e.preventDefault()
     fetch(`${serverurl}/products/`,{
         method:"post",
@@ -34,12 +36,15 @@ const updateproduct=(e)=>{
         })
      }).then(res=>res.json())
      .then(result=>{
+        setloading(true)
         console.log(result)
         if(!result.err){
            setmsg("product added successfully")
         }
      }).catch(err=>{
+        setloading(true)
         console.log(err)
+        setmsg("error adding product")
      })
 }
 
@@ -51,7 +56,7 @@ return(
    <div class='headt'> add products  </div>
        <div>{msg}</div>
 
-    {
+    {loading?
         <div>
         <form onSubmit={(e)=>updateproduct(e)}>
             <div>name: <input value={name} onChange={(e)=>setname(e.target.value)} /></div>
@@ -64,7 +69,7 @@ return(
             <div>online percent <input value={percent} onChange={(e)=>setpercent(e.target.value)} /></div>
     <input type='submit' value='submit' />
     </form>
-        </div>
+        </div>:<Loading />
     }
    </div>
 

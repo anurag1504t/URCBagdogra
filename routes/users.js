@@ -9,6 +9,40 @@ const cart = require('../models/cart');
 const userRouter = express.Router();
 userRouter.use(bodyParser.json());
 
+const {pagesize}=require('../config')
+
+userRouter.route('/search')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    const p=new RegExp(query,"i")
+    User.find({$or:[{name:{$regex:p}},{username:{$regex:p}},{email:{$regex:p}},{mobileNUmber:{$regex:p}}]})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .then(users=>{
+        User.count({$or:[{name:{$regex:p}},{username:{$regex:p}},{email:{$regex:p}},{mobileNUmber:{$regex:p}}]})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({users:users,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+userRouter.route('/allusers')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    User.find({})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .then(users=>{
+        User.count({})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({users:users,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+
 userRouter.route('/')
 .get(authenticate.verifyUser, function(req, res, next) {
     User.find({})

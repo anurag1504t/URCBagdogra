@@ -11,6 +11,7 @@ const OrderDetails= ()=>{
     const {orderid}=useParams()
    const [msg,setmsg]=useState("")
    const {state,dispatch}=useContext(usercontext)
+   const [loading,setloading]=useState(false)
 
    const getorders=()=>{
     fetch(serverurl+'/orders/'+orderid,{
@@ -23,6 +24,10 @@ const OrderDetails= ()=>{
      .then(result=>{
         setdata(result)
         console.log(result)
+        setloading(true)
+     }).catch(err=>{
+        setloading(true)
+        setmsg("error loading")
      })
    }
 
@@ -50,7 +55,7 @@ return(
        <div>{msg}</div>
 <div>
     {
-        data.items?
+        data.items&&loading?
         <div>
             
              <div>   buyer name: {data.buyer.name}</div>
@@ -71,9 +76,8 @@ return(
                <div>{convert(data.timeSlot.start)}</div>
                </div>
             </div>:
-        <div>
            <Loading />
-        </div>
+
     }</div>
    </div>
 

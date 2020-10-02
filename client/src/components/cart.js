@@ -12,6 +12,7 @@ const Cart= ()=>{
    const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
    const history=useHistory()
+   const [msg,setmsg]=useState("")
 
 
    useEffect(() => {
@@ -31,6 +32,8 @@ const Cart= ()=>{
          else{
             load()
          }
+      }).catch(err=>{
+         history.push("/")
       })
    },[])
 
@@ -50,6 +53,9 @@ const load=()=>{
          setdata(cc)
          console.log(result)
          setloading(true)
+      }).catch(err=>{
+         setloading(true)
+         setmsg("error loading the cart")
       })
    }
    let total=0
@@ -82,6 +88,7 @@ const load=()=>{
          updatecart(result.items);
       }).catch(err=>{
          console.log(err)
+         setmsg("error adding to the cart")
       })
    }
 
@@ -101,12 +108,29 @@ const load=()=>{
          updatecart(result.items);
       }).catch(err=>{
          console.log(err)
+         setmsg("error removing from the cart")
       })
    }
-
+const emptycart=()=>{
+   fetch(`${serverurl}/cart/emptycart`,{
+      method:"get",
+      headers:{
+         "Content-Type":"application/json",
+         "Authorization":"Bearer "+localStorage.getItem("token")
+      }
+   }).then(res=>res.json())
+   .then(result=>{
+      console.log(result)
+      updatecart(result.items);
+   }).catch(err=>{
+      console.log(err)
+      setmsg("error emptying the cart")
+   })
+}
 return(
 
    <div className='main-cart'>
+      <div>{msg}</div>
        <ul>
         {data&&loading?
             data.map(item=>{
@@ -137,6 +161,9 @@ return(
         <div>
            <button><Link to='/checkout'>checkout</Link></button> 
         </div>
+        <div>
+           <button onClick={()=>{if(window.confirm('are you sure, you want to empty the cart?')){emptycart()}}}>empty cart</button>
+           </div>
         </div>):<div></div>
 }
    </div>

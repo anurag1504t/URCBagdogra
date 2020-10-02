@@ -4,6 +4,7 @@ import { usercontext } from "../App";
 import Tiger from "../img/Tiger.png";
 import "../stylesheet/navbar.css";
 import { Navbar, NavbarBrand, Nav, NavItem, NavbarToggler, Collapse} from 'reactstrap';
+import {serverurl} from '../config'
 
 const NavBar=()=> {
 
@@ -56,9 +57,22 @@ const NavBar=()=> {
                                 </NavItem>
                                 <NavItem className='rout' key="6">
                                     <Link className="nav-link" onClick={()=>{
-                                        localStorage.clear();
-                                        dispatch({type:"CLEAR"})
-                                        history.push('/')
+                                         fetch(serverurl+"/users/logout",{
+                                            method:"get",
+                                            headers:{
+                                                "Content-Type":"application/json",
+                                                Authorization:"Bearer "+localStorage.getItem("token")
+                                            }
+                                        }).then(res=>res.json())
+                                        .then(data=>{
+                                            localStorage.clear();
+                                            dispatch({type:"CLEAR"})
+                                            history.push('/')
+                                        }).catch(err=>{
+                                            localStorage.clear();
+                                            dispatch({type:"CLEAR"})
+                                            history.push('/')
+                                        })
                                     }}>
                                         <span className="fa fa-sign-out"></span> logout
                                     </Link>

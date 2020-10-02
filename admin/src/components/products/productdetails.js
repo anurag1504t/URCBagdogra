@@ -10,6 +10,7 @@ const Productdetails= ()=>{
    const {productid}=useParams()
    const [msg,setmsg]=useState("")
    const {state,dispatch}=useContext(usercontext)
+   const [loading,setloading]=useState(false)
 
 
     useEffect(()=>{
@@ -21,6 +22,10 @@ const Productdetails= ()=>{
          }).then(res=>res.json())
          .then(result=>{
             setdata(result)
+            setloading(true)
+         }).catch(err=>{
+            setmsg("error loading")
+            setloading(true)
          })
     },[])
 
@@ -32,7 +37,7 @@ return(
    <div class='headt'> product details </div>
 
     {
-        data?<div>
+        data&&loading?<div>
             <div><img src={data.image} height='100px' width='100px' /></div>
                 <div>name: {data.name}</div>
                 <div>size: {data.size}</div>
@@ -44,9 +49,7 @@ return(
                 <Link to={`/editproduct/${data._id}`}><button>edit product</button></Link>
 
         </div>:
-        <div>
            <Loading />
-        </div>
     }
    </div>
 

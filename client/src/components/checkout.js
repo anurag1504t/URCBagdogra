@@ -14,6 +14,7 @@ const Checkout= ()=>{
    const [loading,setloading]=useState(false)
    const [time,settime]=useState("")
    const history=useHistory()
+   const [msg,setmsg]=useState("")
 
    useEffect(() => {
       fetch(serverurl+'/sys/getuserinfo',{
@@ -32,6 +33,8 @@ const Checkout= ()=>{
          else{
             setloading(true)
          }
+      }).catch(err=>{
+         history.push('/')
       })
    },[])
 
@@ -42,6 +45,9 @@ const getmindate=()=>{
 }
 
 const getdate=()=>{
+   settime("")
+   setloading(false)
+
    fetch(`${serverurl}/timeslot/getpickupslotuser`,{
       method:"post",
       headers:{
@@ -54,15 +60,22 @@ const getdate=()=>{
    }).then(res=>res.json())
    .then(result=>{
        setdata(result.timeslot)
-       setdateshow(date)
+       if(result.timeslot[0]){
+         settime(result.timeslot[0]._id)
+      }
+      setloading(true)
+      setdateshow(date)
        console.log(result)
    }).catch(err=>{
+      setloading(true)
       console.log(err)
+      setmsg("error loading")
    })
 } 
 
 const submitorder=()=>{
    if(!time) return 0;
+   setloading(false)
    fetch(`${serverurl}/orders/placeorder`,{
       method:"post",
       headers:{
@@ -78,6 +91,9 @@ const submitorder=()=>{
        history.push(`/final/${result.id}`)
    }).catch(err=>{
       console.log(err)
+      setloading(true)
+      setmsg("error loading")
+      settime("")
    })
 }
 
@@ -96,12 +112,13 @@ if(i*10%10==0){
 return(
 
    <div className='main'>
+      <div>{msg}</div>
       {loading?<div>
        <div className='rout'>select time slot</div>
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
        <button className='d' onClick={()=>getdate()}>check</button>
 <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
-       <select className='sel' onChange={(e)=>settime(e.target.value)}>
+       <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
           {
              data?
              data.map(item=>{
@@ -112,7 +129,7 @@ return(
              :<option></option>
           }
        </select>
-      <button onClick={()=>submitorder()}>place order</button>
+      {time?<button onClick={()=>{if(window.confirm('are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
       </div>:<Loading />
 }
    </div>

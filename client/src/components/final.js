@@ -9,6 +9,8 @@ const Final= ()=>{
 
    const [data,setdata]=useState({})
    const {state,dispatch}=useContext(usercontext)
+   const [loading,setloading]=useState(false)
+   const [msg,setmsg]=useState("")
    const {id}=useParams()
 
    useEffect(()=>{
@@ -24,12 +26,15 @@ const Final= ()=>{
       }).then(res=>res.json())
       .then(result=>{
          console.log(result)
+         setloading(true)
           if(result.err){
 
           }else{
             setdata(result)
           }
       }).catch(err=>{
+         setloading(true)
+         setmsg("error loading")
          console.log(err)
       })
    },[])
@@ -49,9 +54,10 @@ const Final= ()=>{
 return(
 
    <div className='main'>
+      <div>{msg}</div>
       <div>
          {
-            data.timeslot?
+            data.timeslot&&loading?
             <div className='rout'>
               <div>your order is placed successfully</div>
               <div className='timeslot'>
@@ -60,7 +66,7 @@ return(
                <div>{convert(data.timeslot.start)}</div>
                </div>
             </div>:
-               <div></div>
+               <Loading />
          }
       </div>
        <div className='rout'>instructions for the order pickup</div>

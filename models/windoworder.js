@@ -11,6 +11,10 @@ const orderSchema = new Schema({
     timeSlot: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'windowslot'
+    },
+    date:{
+        type:String,
+        required:false
     }
 }, {
     timestamps: true

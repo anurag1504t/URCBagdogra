@@ -10,7 +10,7 @@ const Orders= ()=>{
    const [data,setdata]=useState([])
    const [loadingo,setloadingo]=useState(false)
    const [loadings,setloadings]=useState(false)
-
+   const [msg,setmsg]=useState("")
    const [slotdata,setslotdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
 
@@ -32,6 +32,7 @@ const Orders= ()=>{
           setloadingo(true)
       }).catch(err=>{
          console.log(err)
+         setmsg("error loading orders")
       })
    },[])
    useEffect(()=>{
@@ -53,6 +54,8 @@ const Orders= ()=>{
 
     }).catch(err=>{
        console.log(err)
+       setmsg("error loading orders")
+
     })
  },[])
 
@@ -79,8 +82,12 @@ const Orders= ()=>{
         console.log(result)
         let d=data.filter(item=>{return item._id!=id})
         setdata(d)
+        setmsg("order cancelled")
+
     }).catch(err=>{
        console.log(err)
+       setmsg("error cancelling order")
+
     })
 }
 const cancelslot=(id)=>{
@@ -94,9 +101,13 @@ const cancelslot=(id)=>{
     .then(result=>{
         console.log(result)
         let d=slotdata.filter(item=>{return item._id!=id})
+        setmsg("slot cancelled")
+
         setslotdata(d)
     }).catch(err=>{
        console.log(err)
+       setmsg("error cancelling slot")
+
     })
 }
 return(
@@ -104,6 +115,7 @@ return(
    <div className='main'>
 
          <div className='order'>
+            <div>{msg}</div>
              <div className='oh'>orders</div>
              {
                loadingo?

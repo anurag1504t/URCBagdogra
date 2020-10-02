@@ -7,11 +7,49 @@ var authenticate = require('../authenticate');
 
 const windoworderRouter = express.Router();
 windoworderRouter.use(bodyParser.json());
+const {pagesize}=require('../config')
 
 var pickupslot=require('../models/pickupslot');
 var windowslot=require('../models/windowslot');
 
 const Carts = require('../models/cart');
+
+windoworderRouter.route('/searchdate')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    console.log(query)
+    windowOrders.find({date:query})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .populate('buyer')
+    .populate('timeSlot')
+    .then(orders=>{
+        console.log(orders)
+        windowOrders.count({date:query})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({orders:orders,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
+windoworderRouter.route('/allorders')
+.post((req,res,next) => {
+    const query=req.body.query
+    const pgnum=req.body.pgnum
+    windowOrders.find({})
+    .limit(pagesize)
+    .skip(pagesize*(pgnum-1))
+    .populate('buyer')
+    .populate('timeSlot')
+    .then(orders=>{
+        windowOrders.count({})
+        .exec((err,c)=>{
+       let pages=Math.ceil(c/pagesize)
+        res.json({orders:orders,pages:pages})
+        })
+    }).catch(err=>res.json({err}))
+})
 
 
 windoworderRouter.route('/placeorder')
@@ -31,13 +69,16 @@ windoworderRouter.route('/placeorder')
             new:true
         }).exec((err,result)=>{
             if(err) return res.json({err:"error"})
-            let s=windowOrders({buyer:req.user._id,timeSlot:timeid})
+            windowslot.findById(timeid)
+            .then(tm=>{
+            let s=windowOrders({buyer:req.user._id,timeSlot:timeid,date:tm.date})
             s.save()
             .then((order) => {
                 console.log("order saved")
                 res.json({msg:"success",id:order._id})
             })
             .catch((err) => res.json({err:"error"}));
+        })
         })
 
 })

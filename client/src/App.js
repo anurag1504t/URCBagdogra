@@ -28,9 +28,16 @@ const Routing=()=>{
     const {state,dispatch}=useContext(usercontext)
     useEffect(()=>{
         const user=JSON.parse(localStorage.getItem("user"))
-        //console.log(user.sys)
-        if(user){
-          dispatch({type:"USER",payload:user})
+        const tdt=localStorage.getItem("tokendate")
+        if(user&&tdt){
+            let dt=new Date();
+            let tdate=Date.parse(tdt)
+            if(tdate<=dt){
+                localStorage.clear();
+                history.push('/')
+            }else{
+                dispatch({type:"USER",payload:user})
+            }
         }
         else{
             history.push('/')

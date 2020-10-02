@@ -12,12 +12,16 @@ const WindowBookingTime= ()=>{
    const [msg,setmsg]=useState("")
    const [date,setdate]=useState(new Date())
    const {state,dispatch}=useContext(usercontext)
-
+   const [loading,setloading]=useState(false)
+   useEffect(()=>{
+    getdate()
+   },[])
    useEffect(()=>{
     updatelist()
    },[data])
 
 const getdate=()=>{
+    setloading(false)
     fetch(`${serverurl}/timeslot/getwindowslot`,{
         method:"post",
         headers:{
@@ -30,12 +34,15 @@ const getdate=()=>{
      .then(result=>{
          setdata(result.arr)
      }).catch(err=>{
-        console.log(err)
+        setloading(true)
+         setmsg("error loading")
+         console.log(err)
      })
 }
 
 const setslot=()=>{
     var arr=[]
+    setloading(false)
     for(var i=8.5;i<18;i=i+0.5){
         if(list[i]==true) arr.push(i)
     }
@@ -51,7 +58,11 @@ const setslot=()=>{
      }).then(res=>res.json())
      .then(result=>{
         console.log(result)
+        setloading(true)
+        setmsg("slot setted successfully")
      }).catch(err=>{
+        setloading(true)
+        setmsg("error setting slot")
         console.log(err)
      })
 }
@@ -67,6 +78,7 @@ const updatelist=()=>{
         console.log(data[i])
     }
     setlist(a);
+    setloading(true)
 
 }
 const toggle=(d)=>{
@@ -91,7 +103,7 @@ return(
        <button onClick={()=>getdate()}>check</button>
 
     {
-        list?
+        list&&loading?
         <div>
             <div onClick={(e)=>toggle(8.5)} className={list[8.5]?"selected":"notselected"}>8.30-9.00 PM</div>
             <div onClick={(e)=>toggle(9)} className={list[9]?"selected":"notselected"}>9.00-9.30 PM</div>
@@ -114,9 +126,7 @@ return(
             <div onClick={(e)=>toggle(17.5)} className={list[17.5]?"selected":"notselected"}>5.30-6.00 PM</div>
             <div><button onClick={()=>setslot()}>submit</button></div>
         </div>:
-        <div>
         <Loading />
-        </div>
     }
    </div>
 
