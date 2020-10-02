@@ -6,6 +6,49 @@ import ReactLoading from "react-loading";
 import { UncontrolledCarousel } from "reactstrap";
 import "../stylesheet/home.css";
 
+
+
+const Maquree = ({title, text}) => {
+  const width=500;
+    const [pos,setPos] = useState(0);   
+    const [run, setRun] = useState(true);
+    const scrollEff = () => {
+        if(run) setPos(p=>p<width? p+1: -width);        
+    }
+    
+    useEffect(() => {
+        const tm = setTimeout(scrollEff, 10);
+        return () => clearTimeout(tm);
+    },[pos]);
+    
+    const onMouseEnter = (e) => {
+        // console.log("mouse enter");
+        setRun(false);
+    }
+    
+    const onMouseLeave = (e) => {
+        // console.log("mouse leave");
+        setRun(true);
+        setPos(pos+1); // to trigger useEffect 
+    }
+    
+    const styles = {
+        position: "relative", 
+        fontSize: "1em",
+        left: pos + "px"
+    };
+    
+    return (
+        <h1 style={styles} 
+            onMouseEnter={onMouseEnter} 
+            onMouseLeave={onMouseLeave} 
+        > 
+           not working vertically
+          
+       
+        </h1>
+    )
+}
 const Home = () => {
   const [data, setdata] = useState([]);
   const { state, dispatch } = useContext(usercontext);
@@ -35,16 +78,14 @@ const Home = () => {
           <div>
             {data && loading ? (
               <div>
-                <marquee
-                  onmouseover="stop();"
-                  onmouseout="start();"
-                  direction="up"
+                <Maquree
                   scrolldelay="0"
                   scrollamount="3"
                   behavior="scroll" 
+                  
                   direction="up" 
-                  onMouseOver={this.stop} 
-                  onMouseOut={this.start}
+                  onMouseOver="this.stop()" 
+                  onMouseOut="this.start()"
                 >
                   <ul className="list-unstyled">
                   {data.map((item) => {
@@ -55,8 +96,8 @@ const Home = () => {
                     );
                   })}
                   </ul>
-                </marquee>
-                <Marquee behavior="scroll" direction="up" onMouseOver={this.stop} onMouseOut={this.start}>Hello</marquee>
+                </Maquree>
+                
 
               </div>
             ) : (
