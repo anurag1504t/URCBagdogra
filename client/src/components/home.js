@@ -35,7 +35,7 @@ const Maquree = ({title, text}) => {
     const styles = {
         position: "relative", 
         fontSize: "1em",
-        left: pos + "px"
+        up: pos + "px"
     };
     
     return (
@@ -129,6 +129,24 @@ const items = [
   },
   {
     src:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSaH5M7D9mA1-cWxKcNyXs-Pic1zRCSkNzT_A&usqp=CAU",
+    key: "1",
+    className: "air-force-item",
+  },
+  {
+    src:
+      "https://www.airforce-technology.com/wp-content/uploads/sites/4/2017/09/1l-image-70.jpg",
+    key: "1",
+    className: "air-force-item",
+  },
+  {
+    src:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQwNvqN-PA_csGJY6fF5JAw0k0qpxK8jhOD8w&usqp=CAU",
+    key: "1",
+    className: "air-force-item",
+  },
+  {
+    src:
       "https://afcat.cdac.in/AFCAT/assets/images/gallery/Helicopters/helicop3.gif",
     key: "2",
     className: "air-force-item",
@@ -138,8 +156,13 @@ const items = [
     key: "3",
     className: "air-force-item",
   },
+  {
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTqKzWIzU97FRmw5GfYuPwUTHeleRPeYQHqoA&usqp=CAU",
+    key: "3",
+    className: "air-force-item",
+  },
+ 
 ];
-
 const AirForce = () => <UncontrolledCarousel items={items} />;
 
 export default Home;
