@@ -3,7 +3,7 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link, useParams} from 'react-router-dom'
 
-import Loading from './loading'
+import Loading from './loadingbar'
 
 const Orders= ()=>{
 

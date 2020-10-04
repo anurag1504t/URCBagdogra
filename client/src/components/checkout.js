@@ -129,6 +129,7 @@ return(
              :<option></option>
           }
        </select>
+       {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
       {time?<button onClick={()=>{if(window.confirm('are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
       </div>:<Loading />
 }

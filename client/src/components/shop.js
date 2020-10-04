@@ -237,13 +237,16 @@ return(
                                 <CardImg width="100%" height="100%" src={item.image} alt={item.name} />
                                 {/* <div><img src={item.image} height='200px' width='200px' /></div> */}
                                 <div className='t'>price : Rs.{item.price}</div>
-                                <div>
-                                    <button className='add' disabled={item.quantity>0?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quanity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
+                               { item.quantity!=0?<div><div>
+                                    <button className='add' disabled={item.quantity>0?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quantity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
                                     <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
                                     <button className='remove' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
                                 </div>
                                     <div>max quantity : {item.maxQuantity}</div>
                                 <div>total quantity : {item.quantity}</div>
+                                </div>
+                                :<div>not availaible</div>
+                               }
                             </Card>
                         </div>
                     )
