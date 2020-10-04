@@ -16,7 +16,6 @@ import Changepwd from './components/changepwd'
 
 import WindowFinal from './components/windowfinal'
 import WindowSlotBook from './components/windowslot'
-import Orders from './components/orders'
 
 
 import {initialstate,reducer} from './reducers/userreducer'
@@ -72,9 +71,6 @@ const Routing=()=>{
             </Route>
             <Route path='/final/:id'>
                 <Final />
-            </Route>
-            <Route path='/orders'>
-                <Orders />
             </Route>
             <Route path='/changepwd'>
                 <Changepwd />

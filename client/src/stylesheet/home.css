@@ -59,7 +59,7 @@
 .marquee p {
     display: inline-block;
     padding-top: 100%;
-    animation: marquee 500s linear infinite;
+    animation: marquee 50s linear infinite;
 }
 
 @keyframes marquee {
