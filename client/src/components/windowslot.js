@@ -3,7 +3,7 @@ import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
-
+import "../stylesheet/windowslot.css";
 import Loading from './loading'
 
 const WindowSlot= ()=>{
@@ -110,35 +110,35 @@ if(i*10%10==0){
 }
 }
 
-return(
+    return(
+        <div className='main-windowslot'>
+            <div>{msg}</div>
+            <h1>Welcome to URC Bagdogra Online Token Issuing System</h1>
+            <hr></hr>
+            {loading?<div className="timeslot-window-container">
+                <div>Choose a Date to select a time slot</div>
+                <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
+                <br></br>
+                <button className='windowslot-button' onClick={()=>getdate()}>check</button>
+                <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
+                <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
+                    {
+                        data?
+                        data.map((item, index)=>{
+                            return(
+                                <option key={index} value={item._id}>{convert(item.start)}</option>
+                            )
+                        })
+                        :<option></option>
+                    }
+                </select>
+                {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
 
-   <div className='main'>
-      <div>{msg}</div>
-      {loading?<div>
-       <div className='rout'>select time slot</div>
-  <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
-       <button className='d' onClick={()=>getdate()}>check</button>
-<div className='sel'>{dateshow?dateshow.toDateString():""}</div>
-       <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
-          {
-             data?
-             data.map(item=>{
-                return(
-                <option value={item._id}>{convert(item.start)}</option>
-                )
-             })
-             :<option></option>
-          }
-       </select>
-       {data.length==0&&loading?<div>no slot availaible ont his date</div>:<div></div>}
-
-     {time? <button onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
-      </div>:<Loading />
-}
-   </div>
-
-)
-
+                {time? <button className="windowslot-button" onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
+                </div>:<Loading />
+            }
+        </div>
+    )
 }
 
 export default WindowSlot

@@ -51,7 +51,7 @@ const load=()=>{
         })
         console.log(cc)
          setdata(cc)
-         console.log(result)
+         console.log(JSON.stringify(result));
          setloading(true)
       }).catch(err=>{
          setloading(true)

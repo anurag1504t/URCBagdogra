@@ -10,7 +10,9 @@ const Loading=()=> {
     );*/
 
     return (
-        <span className='loader'>URC Bagdogra</span>
+        <div className="loader-main">
+            <span className='loader'>URC Bagdogra</span>
+        </div>
     )
   }
   

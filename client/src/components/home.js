@@ -6,8 +6,6 @@ import ReactLoading from "react-loading";
 import { UncontrolledCarousel } from "reactstrap";
 import "../stylesheet/home.css";
 
-
-
 const Home = () => {
   const [data, setdata] = useState([]);
   const { state, dispatch } = useContext(usercontext);
@@ -25,16 +23,6 @@ const Home = () => {
       });
   }, []);
 
-  const Marquee = <div>
-
-
-    <div class="marquee">
-      <p>Test</p>
-    </div>
-
-
-  </div>;
-  
   return (
     
       <div className="container">
@@ -46,7 +34,15 @@ const Home = () => {
           <h2 className="news"> NEWS </h2>
           <div>
             {data && loading ? (
-              Marquee
+              <ul className="list-unstyled">
+                {data.map((item) => {
+                  return (
+                    <li key={item._id}  >
+                      <p className="newsdata font-alt mb-30 titan-title-size-1">{item.feeds}</p>
+                    </li>
+                  );
+                })}
+              </ul>
             ) : (
               <ReactLoading
                 type="bars"
@@ -60,6 +56,7 @@ const Home = () => {
             ) : (
               <div></div>
             )}
+            <br></br>
           </div>
         </div>
       </div>
@@ -68,12 +65,6 @@ const Home = () => {
 };
 
 const items = [
-  // {
-  //   src:
-  //     "https://afcat.cdac.in/AFCAT/assets/images/gallery/Helicopters/helicop9.gif",
-  //   key: "1",
-  //   className: "air-force-item",
-  // },
   {
     src:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSaH5M7D9mA1-cWxKcNyXs-Pic1zRCSkNzT_A&usqp=CAU",
@@ -92,12 +83,6 @@ const items = [
     key: "3",
     className: "air-force-item",
   },
-  // {
-  //   src:
-  //     "https://afcat.cdac.in/AFCAT/assets/images/gallery/Helicopters/helicop3.gif",
-  //   key: "2",
-  //   className: "air-force-item",
-  // },
   {
     src: "https://images.financialexpress.com/2019/10/PIC-5.jpg",
     key: "4",
@@ -107,9 +92,9 @@ const items = [
     src: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTqKzWIzU97FRmw5GfYuPwUTHeleRPeYQHqoA&usqp=CAU",
     key: "5",
     className: "air-force-item",
-  },
- 
+  }, 
 ];
+
 const AirForce = () => <UncontrolledCarousel items={items} />;
 
 export default Home;

@@ -196,13 +196,13 @@ const Shop= ()=>{
 return(
     <div>
 
-   <div className='main'>
+   <div className='main-shop'>
 <div>{msg}</div>
       {
       loading?
-      <div className='main'>
-            <div className="row">
-                <div className='dropdown category col-3'>
+      <div className='main-shop'>
+            <div className="row row-shop">
+                <div className='dropdown category col'>
                     <div><button className='dropbtn'>categories</button></div>
                     <div className='dropdown-content'>
                         <span onClick={()=>searchcategory("all")}>All</span>
@@ -219,14 +219,14 @@ return(
                     </div>
                 </div>
             
-                <div className="category col-6">
-                    <input type='text' value={query} onChange={(e)=>filterproduct(e.target.value)} placeholder='search' />
+                <div className="category col">
+                    <input size="10px" type='text' value={query} onChange={(e)=>filterproduct(e.target.value)} placeholder='search' />
                 </div>
-                <div className="category col-3">
+                <div className="category col">
                     <button className="search-btn fa fa-search" onClick={()=>searchproduct()}></button>
                 </div>
             </div>
-        <div className='row'>
+        <div className='row row-shop'>
         
             {  list?
                 list.map(item=>{

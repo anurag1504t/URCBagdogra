@@ -33,10 +33,16 @@
     background:linear-gradient(to right,black 100%,white);
 }
 }
+
+.loader-main {
+    padding: 20px;
+    align-content: center;
+}
+
 .loader{
-    padding:40px;
-    margin:200px;
-    font-size:40px;
+    padding:10px;
+    margin:20px;
+    font-size:30px;
     font-family: Comic Sans MS;
     transition:0.5s;
     border:5px solid black;
@@ -44,5 +50,4 @@
     animation-direction: alternate;
     border-radius:80px;
     color:white
-
 }

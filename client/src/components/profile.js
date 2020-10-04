@@ -2,8 +2,11 @@ import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link, useParams} from 'react-router-dom'
-
+import "../stylesheet/profile.css"
+import ReactLoading from "react-loading";
 import Loading from './loadingbar'
+
+import Tiger from "../img/Tiger.png";
 
 const Profile= ()=>{
 
@@ -132,102 +135,117 @@ const cancelslot=(id)=>{
 }
 return(
 
-   <div className='main'>
-      <div>{msg}</div>
-         <div><div>user details</div>
-               {loadingp?
-               <div>
-                  <div className='main'>
-                     <div className='dd'>username: {pdata.username}</div>
-                     <div className='dd'>name: {pdata.name}</div>
-                     <div className='dd'>email: {pdata.email}</div>
-                     <div className='dd'>mobile number: {pdata.mobileNumber}</div>
-                     </div>
-                     <div className='main'>
-                  <div className='rout2'><Link to='/changepwd'>change password</Link></div> 
-                  </div>
-               </div>:<Loading />
-         }
-            </div>
-         <div className='order'>
-             <div className='oh'>orders</div>
-             {
-               loadingo?
-               <div>
-             <ul>
-             {data?
-             data.map(item=>{
-                 return(
-                    <li className='oi'>
-                        <div className='timeslot2'>
-                        <div className='tm2'>timeslot details</div>
-                        <div>{item.timeSlot.date}</div>
-                        <div>{convert(item.timeSlot.start)}</div>
+    <div className='main-profile'>
+        <div className="row">{msg}</div>
+        <div className="row">
+            <div className="user-details col-12 col-md-4 mb-4">
+                {loadingp?
+                    <div className="user-container">
+                        <br></br>                        
+                        <div>                            
+                            <div className='dd'>Hi, <em>{pdata.name}</em></div>
+                            <br></br>
+                            <img src={Tiger} width="300px" ></img>
+                            <div className='dd'>@{pdata.username}</div>
+                            <div className='dd'><span className="fa fa-envelope"></span>  {pdata.email}</div>
+                            <div className='dd'><spam className="fa fa-phone"></spam>  {pdata.mobileNumber}</div>
                         </div>
-                        <div><details className='det'>
-                            <summary>order item list</summary>
-                            <p>
-                                <ul>
-                                    {
+                        <div className='main-profile'>
+                            <div className='rout2'><Link to='/changepwd'>change password</Link></div> 
+                        </div>
+                    </div>:
+                    <ReactLoading
+                        type="bars"
+                        color="floralwhite"
+                        height={667}
+                        width={375}
+                    />
+                }
+            </div>
+            
+            <div className="order col-12 col-md-8 mb-4">
 
-                                        item.items.filter(pro=>{return pro.quantity!=0}).map(prod=>{
-                                            return(
-                                            <li className='pi'>{prod.item.name} - {prod.quantity}</li>
-                                            )
-                                        })
-                                    }
-                                </ul>
-                            </p>
-                            </details>
-                            </div>
-                            <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel the order?')){cancelorder(item._id)}}}>cancel</button></div>
-                    </li>
-                 )
-             }):<div></div>
-            }</ul>
-        </div>:
-        <Loading />
-     }
-     {
-        data.length==0&&loadingo?
-        <div>no orders found</div>:
-        <div></div>
-     }
-     </div>
+                <div>
+                    <div className='oh'> slot booked</div>
+                    {loadings?
+                        <div className='order'>
+                            <ul className="ul-order">
+                                {slotdata?
+                                    slotdata.map((item, index)=>{
+                                        return(
+                                            <li className='oi' key={index}>
+                                                <div className='timeslot2'>
+                                                <div className='tm2'>timeslot details</div>
+                                                <div>{item.timeSlot.date}</div>
+                                                <div>{convert(item.timeSlot.start)}</div>
+                                                </div>
+                                                <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to cancel the booking?')){cancelslot(item._id)}}}>cancel</button></div>
+                                        
+                                            </li>
+                                        )
+                                    }):<div></div>
+                                }
+                            </ul>
+                        </div>:
+                        <Loading />
+                    }
+                    {
+                        data.length==0&&loadings?
+                        <div>no slot bookings found</div>:
+                        <div></div>
+                    }
+                </div>
 
+                <div>
+                    <div className='oh'>orders</div>
+                    {
+                        loadingo?
+                        <div>
+                        <ul className="ul-order">
+                            {data?
+                            data.map((item, index) =>{
+                                return(
+                                    <li className='oi' key={index}>
+                                        <div className='timeslot2'>
+                                            <div className='tm2'>timeslot details</div>
+                                            <div>{item.timeSlot.date}</div>
+                                            <div>{convert(item.timeSlot.start)}</div>
+                                        </div>
+                                        <div>
+                                            <details className='det'>
+                                            <summary>order item list</summary>
+                                            
+                                                <ul>
+                                                    {                                                
+                                                        item.items.filter(pro=>{return pro.quantity!=0}).map(prod=>{
+                                                            return(
+                                                                <li className='pi' key={prod.item._id}>{prod.item.name} - {prod.quantity}</li>
+                                                            )
+                                                        })
+                                                    }
+                                                </ul>
+                                            
+                                            </details>
+                                        </div>
+                                        <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to cancel the order?')){cancelorder(item._id)}}}>cancel</button></div>
+                                    </li>
+                                )
+                            }):<div></div>
+                            }
+                        </ul>
+                    </div>:
+                        <Loading />
+                    }
+                    {
+                       data.length==0&&loadingo?
+                       <div>no orders found</div>:
+                       <div></div>
+                    }
+                </div>
 
-     <div className='order'>
-         <div className='oh'> slot booked</div>
-         {  loadings?
-         <div className='order'>
-         <ul>
-         {slotdata?
-         slotdata.map(item=>{
-            return(
-               <li className='oi'>
-                   <div className='timeslot2'>
-                   <div className='tm2'>timeslot details</div>
-                   <div>{item.timeSlot.date}</div>
-                   <div>{convert(item.timeSlot.start)}</div>
-                   </div>
-                   <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel the booking?')){cancelslot(item._id)}}}>cancel</button></div>
-
-               </li>
-            )
-        }):<div></div>
-      }</ul>
-        </div>:
-        <Loading />
-   }
-   {
-        data.length==0&&loadings?
-        <div>no slot bookings found</div>:
-        <div></div>
-     }
+            </div>
         </div>
-
-   </div>
-   
+    </div>   
 )
 
 }
