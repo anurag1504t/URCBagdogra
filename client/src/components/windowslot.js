@@ -130,6 +130,8 @@ return(
              :<option></option>
           }
        </select>
+       {data.length==0&&loading?<div>no slot availaible ont his date</div>:<div></div>}
+
      {time? <button onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
       </div>:<Loading />
 }
