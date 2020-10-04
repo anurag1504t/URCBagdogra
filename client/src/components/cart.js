@@ -137,9 +137,9 @@ return(
                 total+=item.item.price*item.quantity;
                 return (
                     <li className='cartobj'>{item.item.name} - 
-                              <button className='add' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                              <button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                               {item.quantity}
-                              <button className='remove' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
+                              <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                               <div>max quantity - {item.item.maxQuantity}</div>
                               <div>total quantity - {item.item.quantity}</div>
 
@@ -159,10 +159,10 @@ return(
             total amount: {total} INR
         </div>
         <div>
-           <button><Link to='/checkout'>checkout</Link></button> 
+           <button className="cart-button"><Link to='/checkout'>checkout</Link></button> 
         </div>
         <div>
-           <button onClick={()=>{if(window.confirm('are you sure, you want to empty the cart?')){emptycart()}}}>empty cart</button>
+           <button className="cart-button" onClick={()=>{if(window.confirm('are you sure, you want to empty the cart?')){emptycart()}}}>empty cart</button>
            </div>
         </div>):<div></div>
 }

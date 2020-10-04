@@ -11,3 +11,14 @@
 .cartobj{
     font-size:20px;
 }
+
+.cart-button {
+    background-color: #242F3E;
+    font-size:15px;
+    color:floralwhite;
+    margin:10px;
+    padding:10px 20px;
+    border-radius: 20px;
+    border: 1px solid , #242F3E;
+    font-variant:small-caps;
+}

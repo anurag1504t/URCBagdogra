@@ -1,14 +1,13 @@
 
-import React,{ useState ,useContext  } from 'react'
-import {Link} from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
-import { Button } from 'reactstrap'
+import React,{ useState ,useContext  } from "react";
+import {Link} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import {usercontext} from '../App'
-import {serverurl} from '../config'
-import '../stylesheet/login.css';
+import {usercontext} from "../App";
+import {serverurl} from "../config";
+import "../stylesheet/login.css";
 
-import Loading from './loading'
+import Loading from "./loading";
 
 const Login= ()=>{
     const{state,dispatch}=useContext(usercontext)
@@ -68,10 +67,10 @@ const Login= ()=>{
                     <div><input className="col-12" type='text' placeholder='Username' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
                     <div><input className="col-12" type='password' placeholder='Password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
                     <a href="#">Forgot your password?</a>
-                    <Button onClick={()=>postdata()}> login</Button>
+                    <button className="login-button" onClick={()=>postdata()}> login</button>
                     <p>Not Registered yet?
                         <br></br>Apply for Registration</p>
-                    <Link to="/signup"><Button > Register</Button></Link>
+                    <Link to="/signup"><button className="login-button"> Register</button></Link>
                 </div>
             </div>:<Loading />
 }

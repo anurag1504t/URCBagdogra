@@ -4,7 +4,6 @@ import { useHistory,Link } from "react-router-dom"
 import {usercontext} from "../App"
 import {serverurl} from "../config"
 import '../stylesheet/signup.css';
-import { Button } from 'reactstrap'
 import Loading from './loading'
 
 const Signup= ()=>{
@@ -104,10 +103,10 @@ return(
             <option value='false'>not living in</option>
             </select>
         </div>
-       <div>  <input className="button" type='submit' value='Register' /></div> 
+       <div>  <input className="signup-button" type='submit' value='Register' /></div> 
        </form>
         <p>have an account?</p>
-                    <Link to="/login"><Button > login</Button></Link>
+                    <Link to="/login"><button className="signup-button"> login</button></Link>
     </div>
     </div>:
     <Loading />
