@@ -15,7 +15,11 @@ const NavBar=()=> {
     function toggleNav () {
         if(!panel) setPanel(true);
         else setPanel(false);
-        }
+    }
+
+    function toggleFalse () {
+        setPanel(false);
+    }
 
     const renderlist=()=>{
 
@@ -25,38 +29,38 @@ const NavBar=()=> {
                     <Navbar dark expand="md">
                         <div className="container"> 
                             <NavbarToggler onClick={toggleNav} />
-                            <img src={Tiger} width="50px" ></img>              
-                            <NavbarBrand className="rout mr-auto" href="/">URC Bagdogra</NavbarBrand> 
+                            <img src={Tiger} width="70px" ></img>              
+                            <NavbarBrand className="mr-auto" href="/"><div className="home-title">URC Bagdogra</div></NavbarBrand> 
                             <Collapse isOpen={panel} navbar>                            
                             <Nav navbar>
-                                <NavItem className='rout' key="1">
+                                <NavItem className='rout' key="1" onClick={toggleFalse}>
                                     <Link className="nav-link" to="/profile">
                                         <span className="fa fa-home fa-lg"></span> Account
                                     </Link>
                                 </NavItem>                    
-                                <NavItem className='rout' key="3">
+                                <NavItem className='rout' key="3" onClick={toggleFalse}>
                                     <Link className="nav-link" to="/shop">
-                                        <span className="fa fa-store">@</span> Shop
+                                        <span className="fa fa-shopping-bag"></span> Shop
                                     </Link>
                                 </NavItem>
 
-                                <NavItem className='rout' key="4">
+                                <NavItem className='rout' key="4" onClick={toggleFalse}>
                                     <Link className="nav-link" to="/windowslotbooking">
-                                        slot booking 
+                                        <span className="fa fa-calendar"></span> slot booking 
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="5">
+                                {/* <NavItem className='rout' key="5" onClick={toggleFalse}>
                                     <Link className="nav-link" to="/orders">
                                         orders
                                     </Link>
-                                </NavItem>
-                                <NavItem className='rout' key="2">
+                                </NavItem> */}
+                                <NavItem className='rout' key="2" onClick={toggleFalse}>
                                     <Link className="nav-link" to="/cart">
                                         <span className="fa fa-shopping-cart"></span> cart
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="6">
-                                    <Link className="nav-link" onClick={()=>{
+                                <NavItem className='rout' key="6" onClick={toggleFalse}>
+                                    <Link className="nav-link" to="/" onClick={()=>{
                                          fetch(serverurl+"/users/logout",{
                                             method:"get",
                                             headers:{
@@ -91,18 +95,17 @@ const NavBar=()=> {
                         <div className="container" > 
                             <NavbarToggler onClick={toggleNav} />                                           
                             <NavbarBrand className="rout mr-auto" href="/">
-                                <span><img src={Tiger} width="50px"></img></span>
+                                <span><img src={Tiger} width="70px"></img></span>
                                 URC Bagdogra
                             </NavbarBrand> 
                             <Collapse isOpen={panel} navbar> 
-                            <Nav navbar>
-                            
-                                <NavItem className='rout' key="7" >
+                            <Nav navbar>                            
+                                <NavItem className='rout' key="7" onClick={toggleFalse} >
                                     <Link className="nav-link" to="/login">
                                         <span className="fa fa-sign-in"></span> login
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="8" >
+                                <NavItem className='rout' key="8" onClick={toggleFalse} >
                                     <Link className="nav-link" to="/signup">
                                         <span className="fa fa-user-plus"></span> signup
                                     </Link>

@@ -136,9 +136,10 @@ return(
                                 <ul>
                                     {
 
-                                        item.items.filter(pro=>{return pro.quantity!=0}).map(prod=>{
+                                        item.items.filter(pro=>{return pro.quantity!=0}).map((prod, index)=>{
+                                            console.log(prod.item);
                                             return(
-                                            <li className='pi'>{prod.item.name} - {prod.quantity}</li>
+                                            <li className='pi' key={index}>{prod.item.name} - {prod.quantity}</li>
                                             )
                                         })
                                     }

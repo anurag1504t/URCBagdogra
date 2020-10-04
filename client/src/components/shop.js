@@ -3,7 +3,7 @@ import {usercontext} from '../App'
 import {useHistory} from 'react-router-dom'
 import {serverurl} from '../config'
 import Loading from './loading'
-import { Card, CardImg, CardTitle } from 'reactstrap'
+import { Card, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 import '../stylesheet/shop.css'
 
 const Shop= ()=>{
@@ -231,9 +231,10 @@ return(
             {  list?
                 list.map(item=>{
                     return(   
-                        <div className="col-12 col-md-3 mb-3">
+                        <div className="col-6 col-md-2 mb-3">
                             <Card className={cart[item._id]?"product1":"product2"}>
                                 <CardTitle className='t'>{item.name}</CardTitle>
+                                <CardSubtitle>{item.size}</CardSubtitle>
                                 <CardImg width="100%" height="100%" src={item.image} alt={item.name} />
                                 {/* <div><img src={item.image} height='200px' width='200px' /></div> */}
                                 <div className='t'>price : Rs.{item.price}</div>
