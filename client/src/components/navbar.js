@@ -45,11 +45,6 @@ const NavBar=()=> {
                                         slot booking 
                                     </Link>
                                 </NavItem>
-                                <NavItem className='rout' key="5">
-                                    <Link className="nav-link" to="/orders">
-                                        orders
-                                    </Link>
-                                </NavItem>
                                 <NavItem className='rout' key="2">
                                     <Link className="nav-link" to="/cart">
                                         <span className="fa fa-shopping-cart"></span> cart
