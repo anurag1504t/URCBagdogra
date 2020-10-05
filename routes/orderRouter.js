@@ -68,13 +68,15 @@ orderRouter.route('/placeorder')
             Products.findById(cart.items[i].item)
             .then((product) => {                
                 let orderQuantity = Math.min(cart.items[i].quantity, product.quantity);
-                console.log(`Items in cart: ${cart.items[i].quantity}. Max Product quantity: ${product.quantity}. Minimum: ${orderQuantity}`);
-                orderItems.push({item:product._id, quantity:orderQuantity});
-                total +=  orderQuantity*product.price;
-                product.quantity -=  orderQuantity;
-                product.save()
-                .then(console.log("Product Edited Successfully"))
-                .catch(err => res.json({err:"error"}));
+                if(orderQuantity > 0) {                
+                    console.log(`Items in cart: ${cart.items[i].quantity}. Max Product quantity: ${product.quantity}. Minimum: ${orderQuantity}`);
+                    orderItems.push({item:product._id, quantity:orderQuantity});
+                    total +=  orderQuantity*product.price;
+                    product.quantity -=  orderQuantity;
+                    product.save()
+                    .then(console.log("Product Edited Successfully"))
+                    .catch(err => res.json({err:"error"}));
+                }
             }, (err) => next(err))
             .catch((err) => res.json({err}));
         }

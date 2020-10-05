@@ -162,6 +162,46 @@ userRouter.post('/login', (req, res, next) => {
     }) (req, res, next);
 });
 
+userRouter.post("/changepwd", authenticate.verifyUser, (req, res, next) => {
+    User.findById(req.user._id)
+    .then((user) => {
+        console.log(user);
+        if (user){
+            user.changePassword(req.body.pass, req.body.newpass, function(err, user){
+                if (err) {
+                    console.log(err);
+                    next(err);
+                } 
+                else {
+                    res.json('password changed successfully !');
+                }
+            });
+        } else {
+            res.status(404).json({message: 'This user does not exist'});
+        }
+    },function(err){
+        console.error(err);
+    })
+});
+
+userRouter.post("/resetpwd/:userId", (req, res, next) => {
+    User.findById(req.params.userId)
+    .then((user) => {
+        if (user){
+            user.setPassword("Temp@1234", function(){
+                user.save()
+                .then((user) => console.log(user))
+                .catch((err) => next(err));
+                res.status(200).json('Password reset successful');                
+            });
+        } else {
+            res.status(404).json({message: 'This user does not exist'});
+        }
+    },function(err){
+        console.error(err);
+    })
+});
+
 userRouter.get('/checkJWTtoken', (req, res) => {
     passport.authenticate('jwt', {session: false}, (err, user, info) => {
         if (err)

@@ -24,10 +24,11 @@ const submitpwd=()=>{
         setmsg("password length should me atleast 6");return false
     }
     setloading(false)
-    fetch(serverurl+"/changepwd",{
+    fetch(serverurl+"/users/changepwd",{
         method:"post",
         headers:{
-            "Content-Type":"application/json"
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("token")
         },
         body:JSON.stringify({
             pass,
