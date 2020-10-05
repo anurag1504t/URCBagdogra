@@ -43,6 +43,17 @@ userRouter.route('/allusers')
     }).catch(err=>res.json({err}))
 })
 
+userRouter.route('/getuserdetails')
+.get(authenticate.verifyUser, function(req, res, next) {
+    User.findOne({username:req.user.username})
+    .then((user) => {
+        res.statusCode = 200;
+        res.setHeader('Content-Type', 'application/json');
+        res.json(user);
+    })
+    .catch((err) => res.json({err}));
+})
+
 userRouter.route('/')
 .get(authenticate.verifyUser, function(req, res, next) {
     User.find({})

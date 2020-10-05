@@ -25,7 +25,7 @@ const Profile= ()=>{
 
 
    useEffect(()=>{
-      fetch(`${serverurl}/users/${state.username}`,{
+      fetch(`${serverurl}/users/getuserdetails`,{
          method:"get",
          headers:{
             Authorization:"Bearer "+localStorage.getItem("token"),
