@@ -204,22 +204,31 @@ return(
 <div className='list'>
     {
         list&&loading?
-        list.map(item=>{
+        <table>
+            <tr>
+                <th>image</th>
+                <th>name</th>
+                <th>size</th>
+                <th>quantity</th>
+                <th>price</th>
+                <th>max quantity</th>
+            </tr>
+        {list.map(item=>{
             return(
-            <div className='product2'>
-                <div><img src={item.image} height='100px' width='100px' /></div>
-                <div>name: {item.name}</div>
-                <div>size: {item.size}</div>
-                <div>price: {item.price}</div>
-                <div>quantity<input className='ip' id={item.id} value={quantitylist[item._id]} onChange={(e)=>setq(item._id,e.target.value)} /></div>
-                <div>price<input className='ip' id={item.id} value={pricelist[item._id]} onChange={(e)=>setp(item._id,e.target.value)} /></div>
-                <div>max quantity<input className='ip' id={item.id} value={maxquantitylist[item._id]} onChange={(e)=>setmxq(item._id,e.target.value)} /></div>
-                <div>
+            <tr>
+                <td><img src={item.image} height='100px' width='100px' /></td>
+                <td>name: {item.name}</td>
+                <td>size: {item.size}</td>
+                <td>quantity<input className='ip' id={item.id} value={quantitylist[item._id]} onChange={(e)=>setq(item._id,e.target.value)} /></td>
+                <td>price<input className='ip' id={item.id} value={pricelist[item._id]} onChange={(e)=>setp(item._id,e.target.value)} /></td>
+                <td>max quantity<input className='ip' id={item.id} value={maxquantitylist[item._id]} onChange={(e)=>setmxq(item._id,e.target.value)} /></td>
+                <td>
                     <button onClick={()=>updateq(item._id)}>submit</button>
-                </div>
-            </div>
+                </td>
+            </tr>
             )
-        }):
+        })}</table>
+        :
             <Loading />
     }</div>
       {
