@@ -5,11 +5,18 @@
     /* margin:20px; */
     display: flex;
     flex-direction: column;
-    align-items: center;;
+    align-items: center;
+    
+    padding-bottom:400px;
+    height: calc(100% - 60px);
+
+
+
 }
 
 .cartobj{
     font-size:20px;
+    border-bottom: 2px solid  #242F3E;
 }
 
 .cartlist{
@@ -19,10 +26,23 @@
 .cart-button {
     background-color: #242F3E;
     font-size:15px;
-    color:floralwhite;
+    color:white;
     margin:10px;
     padding:10px 20px;
     border-radius: 20px;
-    border: 1px solid , #242F3E;
+    border: 1px solid ,  #242F3E;
     font-variant:small-caps;
+}
+
+.yoyo{
+    padding:20px;
+    padding-right: 200px;
+    border-radius: 25px;
+    border-color:black;
+    background-color:lightsteelblue;
+    border: 5px solid  #242F3E;
+
+}
+.h3{
+    color:#242F3E;
 }

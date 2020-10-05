@@ -130,14 +130,20 @@ const emptycart=()=>{
 return(
 
    <div className='main-cart'>
+   <br></br>
+ <br></br>
+ <br></br>
+ <br></br>
+ <br></br>
+ 
       <div>{msg}</div>
+      <div className="yoyo">
        <ul className='cartlist'>
         {data&&loading?
             data.map(item=>{
                 total+=item.item.price*item.quantity;
                 return (
-                    <li className='cartobj'>{item.item.name} - 
-                              <button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                    <li className='cartobj'>{<h3>{item.item.name}</h3>}    Current Quantity:<button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                               {item.quantity}
                               <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                               <div>max quantity - {item.item.maxQuantity}</div>
@@ -151,21 +157,27 @@ return(
             <Loading />
         }
         </ul>
+        
         {loading?(
         data.length==0?
-        <div>cart is empty</div>:
+        <div>
+        <h3>Your Shopping Cart is empty</h3>
+        <p>To add items go to the shop page</p></div>:
         <div>
         <div className='ta'>
             total amount: {total} INR
         </div>
-        <div>
+        <div className="inline">
            <button className="cart-button"><Link to='/checkout'>checkout</Link></button> 
-        </div>
-        <div>
+        
            <button className="cart-button" onClick={()=>{if(window.confirm('are you sure, you want to empty the cart?')){emptycart()}}}>empty cart</button>
            </div>
         </div>):<div></div>
+        
 }
+</div>
+
+ 
    </div>
 
 )

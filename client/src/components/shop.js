@@ -232,6 +232,7 @@ return(
                 list.map(item=>{
                     return(   
                         <div className="col-6 col-md-2 mb-3">
+                        <div className="sizu">
                             <Card className={cart[item._id]?"product1":"product2"}>
                                 <CardTitle className='t'>{item.name}</CardTitle>
                                 <CardSubtitle>{item.size}</CardSubtitle>
@@ -249,6 +250,7 @@ return(
                                 :<div>not availaible</div>
                                }
                             </Card>
+                            </div>
                         </div>
                     )
                 }):

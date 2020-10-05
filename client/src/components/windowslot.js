@@ -45,7 +45,7 @@ const getmindate=()=>{
    dt.setDate(dt.getDate()+1);
    return dt;
 }
-
+ 
 const getdate=()=>{
    settime("")
 
@@ -127,10 +127,17 @@ if(i*10%10==0){
         <div className='main-windowslot'>
             
             <h1>Welcome to URC Bagdogra Online Token Issuing System</h1>
+            <br></br>
+ <br></br>
+ <br></br>
+ 
+ 
+ 
             <hr></hr>
             <div>{msg}</div>
             {loading?<div className="timeslot-window-container">
                 <div>Choose a Date to select a time slot</div>
+                <div className="time">
                 <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
                 <br></br>
                 <button className='windowslot-button' onClick={()=>getdate()}>check</button>
@@ -147,11 +154,19 @@ if(i*10%10==0){
                     }
                 </select>:<div></div>
                }
+               </div>
                 {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
 
                 {time? <button className="windowslot-button" onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
                 </div>:<Loading />
             }
+            <br></br>
+            <br></br>
+            <br></br>
+            
+            
+            
+            
         </div>
     )
 }
