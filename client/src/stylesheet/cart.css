@@ -12,6 +12,10 @@
     font-size:20px;
 }
 
+.cartlist{
+    list-style-type: none;
+}
+
 .cart-button {
     background-color: #242F3E;
     font-size:15px;

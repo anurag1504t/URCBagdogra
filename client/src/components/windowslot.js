@@ -42,12 +42,19 @@ const WindowSlot= ()=>{
 
 const getmindate=()=>{
    let dt=new Date();
-   dt.setDate(dt.getDate()+2);
+   dt.setDate(dt.getDate()+1);
    return dt;
 }
 
 const getdate=()=>{
    settime("")
+
+   if(!date){
+      setmsg("choose date")
+      return false
+   }else{
+      setmsg("")
+   }
    setloading(false)
    fetch(`${serverurl}/timeslot/getwindowslotuser`,{
       method:"post",
@@ -76,6 +83,12 @@ const getdate=()=>{
 
 const submitorder=()=>{
    if(!time) return 0;
+   if(!date){
+      setmsg("choose date")
+      return false
+   }else{
+      setmsg("")
+   }
    setloading(false)
    fetch(`${serverurl}/windoworders/placeorder`,{
       method:"post",
@@ -112,16 +125,17 @@ if(i*10%10==0){
 
     return(
         <div className='main-windowslot'>
-            <div>{msg}</div>
+            
             <h1>Welcome to URC Bagdogra Online Token Issuing System</h1>
             <hr></hr>
+            <div>{msg}</div>
             {loading?<div className="timeslot-window-container">
                 <div>Choose a Date to select a time slot</div>
                 <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
                 <br></br>
                 <button className='windowslot-button' onClick={()=>getdate()}>check</button>
                 <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
-                <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
+               {data.length!=0? <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
                     {
                         data?
                         data.map((item, index)=>{
@@ -131,7 +145,8 @@ if(i*10%10==0){
                         })
                         :<option></option>
                     }
-                </select>
+                </select>:<div></div>
+               }
                 {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
 
                 {time? <button className="windowslot-button" onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}

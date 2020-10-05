@@ -131,7 +131,7 @@ return(
 
    <div className='main-cart'>
       <div>{msg}</div>
-       <ul>
+       <ul className='cartlist'>
         {data&&loading?
             data.map(item=>{
                 total+=item.item.price*item.quantity;

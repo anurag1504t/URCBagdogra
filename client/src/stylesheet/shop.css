@@ -106,7 +106,11 @@ select {
     display: block;
   }
   
-  .dropdown-content span:hover {background-color: #f1f1f1}
+  .dropdown-content span:hover {
+    background-color:  #4CAF50;
+    color:white;
+    cursor: pointer;
+  }
   
   .dropdown:hover .dropdown-content {
     display: block;

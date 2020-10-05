@@ -40,12 +40,18 @@ const Checkout= ()=>{
 
 const getmindate=()=>{
    let dt=new Date();
-   dt.setDate(dt.getDate()+2);
+   dt.setDate(dt.getDate()+1);
    return dt;
 }
 
 const getdate=()=>{
    settime("")
+   if(!date){
+      setmsg("choose date")
+      return false
+   }else{
+      setmsg("")
+   }
    setloading(false)
 
    fetch(`${serverurl}/timeslot/getpickupslotuser`,{
@@ -75,6 +81,12 @@ const getdate=()=>{
 
 const submitorder=()=>{
    if(!time) return 0;
+   if(!date){
+      setmsg("choose date")
+      return false
+   }else{
+      setmsg("")
+   }
    setloading(false)
    fetch(`${serverurl}/orders/placeorder`,{
       method:"post",
@@ -118,7 +130,7 @@ return(
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
        <button className='d' onClick={()=>getdate()}>check</button>
 <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
-       <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
+      {data.length!=0? <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
           {
              data?
              data.map(item=>{
@@ -128,7 +140,8 @@ return(
              })
              :<option></option>
           }
-       </select>
+       </select>:<div></div>
+         }
        {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
       {time?<button onClick={()=>{if(window.confirm('are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
       </div>:<Loading />
