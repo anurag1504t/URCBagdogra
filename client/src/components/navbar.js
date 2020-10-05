@@ -94,10 +94,8 @@ const NavBar=()=> {
                     <Navbar dark expand="md" >
                         <div className="container" > 
                             <NavbarToggler onClick={toggleNav} />                                           
-                            <NavbarBrand className="rout mr-auto" href="/">
-                                <span><img src={Tiger} width="70px"></img></span>
-                                URC Bagdogra
-                            </NavbarBrand> 
+                            <img src={Tiger} width="70px" ></img>              
+                            <NavbarBrand className="mr-auto" href="/"><div className="home-title">URC Bagdogra</div></NavbarBrand>
                             <Collapse isOpen={panel} navbar> 
                             <Nav navbar>                            
                                 <NavItem className='rout' key="7" onClick={toggleFalse} >

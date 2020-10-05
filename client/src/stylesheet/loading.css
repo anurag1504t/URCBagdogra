@@ -49,5 +49,6 @@
     animation:loadinganimation 0.5s infinite;
     animation-direction: alternate;
     border-radius:80px;
-    color:white
+    color:white;
+    vertical-align: middle;
 }

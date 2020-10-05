@@ -14,6 +14,13 @@
 
 }
 
+.time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: justify;
+}
+
 .cartobj{
     font-size:20px;
     border-bottom: 2px solid  #242F3E;
