@@ -147,7 +147,7 @@ return(
                         <div>                            
                             <div className='dd'>Hi, <em>{pdata.name}</em></div>
                             <br></br>
-                            <img src={Officer} width="300px" ></img>
+                            <img className="profile-image" src={Officer} width="300px" ></img>
                             <div className='dd'>@{pdata.username}</div>
                             <div className='dd'><span className="fa fa-envelope"></span>  {pdata.email}</div>
                             <div className='dd'><spam className="fa fa-phone"></spam>  {pdata.mobileNumber}</div>
@@ -236,7 +236,9 @@ return(
                             }
                         </ul>
                     </div>:
+                    <div>
                         <Loading />
+                        </div>
                     }
                     {
                        data.length==0&&loadingo?

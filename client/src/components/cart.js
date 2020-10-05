@@ -130,26 +130,38 @@ const emptycart=()=>{
 return(
 
    <div className='main-cart'>
-   <br></br>
+   {/* <br></br>
  <br></br>
  <br></br>
  <br></br>
- <br></br>
+ <br></br> */}
  
       <div>{msg}</div>
-      <div className="yoyo">
-       <ul className='cartlist'>
+      <div className='main-cart'>
+       <ul className='cartlist row'>
         {data&&loading?
             data.map(item=>{
                 total+=item.item.price*item.quantity;
                 return (
-                    <li className='cartobj'>{<h3>{item.item.name}</h3>}    Current Quantity:<button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
-                              {item.quantity}
-                              <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
-                              <div>max quantity - {item.item.maxQuantity}</div>
-                              <div>total quantity - {item.item.quantity}</div>
-
-                              <div>price - Rs.{item.item.price}</div>
+                    <li className='col-12 col-md-3 m-1 m-lg-5 mb-1  cartobj'>
+                        <div className="row cart-card">
+                            <div className="col-12 col-md-6 mb-3 cart-image">
+                                <img width="100%" height="100%" src={item.item.image} alt={item.item.name} />
+                            </div>
+                            <div className = "col-12 col-md-6 mb-3 cart-content">
+                                <div>                                
+                                    <h4>{item.item.name}</h4>
+                                    Current Quantity:<button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                                    {item.quantity}
+                                    <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
+                                </div>
+                                <div>
+                                    Price: ₹ {item.item.price}<br></br>
+                                    Subtotal: ₹ {item.item.price*item.quantity}
+                                </div>
+                            </div>
+                        </div>
+                        
                     </li>
                 )
             })
@@ -160,7 +172,7 @@ return(
         
         {loading?(
         data.length==0?
-        <div>
+        <div className="empty-cart">
         <h3>Your Shopping Cart is empty</h3>
         <p>To add items go to the shop page</p></div>:
         <div>
