@@ -90,3 +90,18 @@
     color:black;
     font-variant:small-caps;
 }
+
+.profile-instruction {
+    color: floralwhite;
+    background-color:  #242F3E;
+    padding:20px;
+    font-size:20px;
+    font-variant: small-caps;
+    margin:20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 50px;
+    /* text-align: center; */
+    /* vertical-align: middle; */
+}

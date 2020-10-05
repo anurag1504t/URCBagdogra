@@ -127,13 +127,7 @@ if(i*10%10==0){
         <div className='main-windowslot'>
             
             <h1>Welcome to URC Bagdogra Online Token Issuing System</h1>
-            <br></br>
- <br></br>
- <br></br>
- 
- 
- 
-            <hr></hr>
+            <br></br> 
             <div>{msg}</div>
             {loading?<div className="timeslot-window-container">
                 <div>Choose a Date to select a time slot</div>

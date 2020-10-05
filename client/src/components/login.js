@@ -2,7 +2,7 @@
 import React,{ useState ,useContext  } from "react";
 import {Link} from "react-router-dom";
 import { useHistory } from "react-router-dom";
-
+import { Alert } from "reactstrap";
 import {usercontext} from "../App";
 import {serverurl} from "../config";
 import "../stylesheet/login.css";
@@ -54,8 +54,13 @@ const Login= ()=>{
         })
     }
 
+    const forgetpwd = () => {
+        setmsg("Contact Admin to recieve temporary password.")
+        setloading(true)
+    }
+
     return(
-        <div className="container">
+        <div className="container main-login">
             {loading?
             <div className='inside'>
                 <div>
@@ -66,7 +71,7 @@ const Login= ()=>{
                     <div className='message'>{msg}</div>
                     <div><input className="col-12" type='text' placeholder='Username' value={username} onChange={(e)=>setuid(e.target.value)} /></div> 
                     <div><input className="col-12" type='password' placeholder='Password' value={password} onChange={(e)=>setpassword(e.target.value)} /></div> 
-                    <a href="#">Forgot your password?</a>
+                    <a href="#" onClick={() => forgetpwd()}>Forgot your password?</a>
                     <button className="login-button" onClick={()=>postdata()}> login</button>
                     <p>Not Registered yet?
                         <br></br>Apply for Registration</p>

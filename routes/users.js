@@ -45,8 +45,9 @@ userRouter.route('/allusers')
 
 userRouter.route('/getuserdetails')
 .get(authenticate.verifyUser, function(req, res, next) {
-    User.findOne({username:req.user.username})
+    User.findById(req.user._id)
     .then((user) => {
+        console.log(user);
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(user);

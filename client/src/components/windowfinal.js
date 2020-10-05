@@ -2,7 +2,7 @@ import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
 import {Link, useParams} from 'react-router-dom'
-
+import "../stylesheet/windowfinal.css"
 import Loading from './loading'
 
 const WindowFinal= ()=>{
@@ -53,12 +53,14 @@ const WindowFinal= ()=>{
 
 return(
 
-   <div className='main'>
-      <div>
+   <div className='main-windowfinal'>
+      <div><h1>your slot is booked successfully</h1></div>
+      <br></br>
+      <div className="timeslot-finalwindow-container">
          {
             data.timeslot&&loading?
-            <div className='rout'>
-              <div>your slot is booked successfully</div>
+            <div>
+              
               <div className='timeslot'>
               <div className='tm'>timeslot details</div>
                <div>{data.timeslot.date}</div>
@@ -68,7 +70,17 @@ return(
                <Loading />
          }
       </div>
-       <div className='rout'>instructions for the visiting URC</div>
+      <br></br>
+      <div><h3>instructions for Shopping at URC</h3></div>
+      <div>
+      <ul className="list">
+         <li key="1">please carry your canteen card along with you</li>
+         <li key="2">the shopping and billing process has to be completed within booked time slot else items will not be billed.</li>
+         <li key="3">social distancing norms must be followed by all</li>
+         <li key="4">no entry without mask</li>
+         <li key="5">canteen staff is authorised by orders of oic urc to cancel your booking if you are found wanting of following above instructions</li>
+      </ul>
+      </div>
    </div>
 
 )

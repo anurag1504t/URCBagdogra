@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {serverurl} from "../config";
 import { useParams } from "react-router-dom";
-
+import "../stylesheet/final.css";
 import Loading from "./loading";
 
 const Final= ()=>{
@@ -52,13 +52,14 @@ const Final= ()=>{
 
 return(
 
-   <div className='main'>
+   <div className='main-final'>
       <div>{msg}</div>
-      <div>
+      <div><h1>your order is placed successfully</h1></div>
+      <br></br>
+      <div className="order-final-container">
          {
             data.timeslot&&loading?
-            <div className='rout'>
-              <div>your order is placed successfully</div>
+            <div>
               <div className='timeslot'>
               <div className='tm'>timeslot details</div>
                <div>{data.timeslot.date}</div>
@@ -68,7 +69,17 @@ return(
                <Loading />
          }
       </div>
-       <div className='rout'>instructions for the order pickup</div>
+      <br></br>
+      <div><h3>instructions for Order Pickup at URC</h3></div>
+      <div>
+      <ul className="list">
+         <li key="1">please carry your canteen card along with you</li>
+         <li key="2">the shopping and billing process has to be completed within booked time slot else items will not be billed.</li>
+         <li key="3">social distancing norms must be followed by all</li>
+         <li key="4">no entry without mask</li>
+         <li key="5">canteen staff is authorised by orders of oic urc to cancel your booking if you are found wanting of following above instructions</li>
+      </ul>
+      </div>
    </div>
 
 )

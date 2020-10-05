@@ -33,6 +33,7 @@ const Profile= ()=>{
       }).then(res=>res.json())
       .then(result=>{
          setpdata(result)
+         console.log(result);
          setloadingp(true)
       }).catch(err=>{
          setmsg("error loading user details")
@@ -138,7 +139,7 @@ const cancelslot=(id)=>{
 return(
 
     <div className='main-profile'>
-        <div className="row">{msg}</div>
+        <div>{msg}</div>
         <div className="row">
             <div className="user-details col-12 col-md-4 mb-4">
                 {loadingp?
@@ -150,7 +151,7 @@ return(
                             <img className="profile-image" src={Officer} width="300px" ></img>
                             <div className='dd'>@{pdata.username}</div>
                             <div className='dd'><span className="fa fa-envelope"></span>  {pdata.email}</div>
-                            <div className='dd'><spam className="fa fa-phone"></spam>  {pdata.mobileNumber}</div>
+                            <div className='dd'><span className="fa fa-phone"></span>  {pdata.mobileNumber}</div>
                         </div>
                         <div className='main-profile'>
                             <div className='rout2'><Link to='/changepwd'>change password</Link></div> 
@@ -249,6 +250,22 @@ return(
 
             </div>
         </div>
+        
+
+        <div className="profile-instruction">        
+            <div><h3>instructions for Order Pickup/Shopping at URC</h3></div>
+            <div>
+            <ul className="list">
+                <li key="1">please carry your canteen card along with you</li>
+                <li key="2">the shopping and billing process has to be completed within booked time slot else items will not be billed.</li>
+                <li key="3">social distancing norms must be followed by all</li>
+                <li key="4">no entry without mask</li>
+                <li key="5">canteen staff is authorised by orders of oic urc to cancel your booking if you are found wanting of following above instructions</li>
+            </ul>
+            </div>
+        </div>
+
+
     </div>   
 )
 

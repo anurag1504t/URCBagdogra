@@ -4,6 +4,7 @@ import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import Loading from './loading'
+import "../stylesheet/checkout.css";
 
 const Checkout= ()=>{
 
@@ -123,12 +124,14 @@ if(i*10%10==0){
 
 return(
 
-   <div className='main'>
+   <div className='main-checkout'>
+      <h1>Select a time slot to pick order</h1>
+      <br></br>
       <div>{msg}</div>
-      {loading?<div>
-       <div className='rout'>select time slot</div>
+      {loading?<div className="timeslot-checkout-container">
+      
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />
-       <button className='d' onClick={()=>getdate()}>check</button>
+       <button className='checkout-button' onClick={()=>getdate()}>check</button>
 <div className='sel'>{dateshow?dateshow.toDateString():""}</div>
       {data.length!=0? <select className='sel' value={time} onChange={(e)=>settime(e.target.value)}>
           {
@@ -143,9 +146,12 @@ return(
        </select>:<div></div>
          }
        {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
-      {time?<button onClick={()=>{if(window.confirm('are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
+      {time?<button className='checkout-button' onClick={()=>{if(window.confirm('Are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
       </div>:<Loading />
 }
+            <br></br>
+            <br></br>
+            <br></br>
    </div>
 
 )
