@@ -13,7 +13,7 @@ import Shop from './components/shop'
 import Final from './components/final'
 import Info from './components/info'
 import Changepwd from './components/changepwd'
-
+import Changeslot from './components/changeslot'
 import WindowFinal from './components/windowfinal'
 import WindowSlotBook from './components/windowslot'
 
@@ -80,6 +80,9 @@ const Routing=()=>{
             </Route>
             <Route path='/windowfinal/:id'>
                 <WindowFinal />
+            </Route>
+            <Route path='/changeslot/:oid'>
+                <Changeslot />
             </Route>
             <Route path='/windowslotbooking'>
                 <WindowSlotBook />

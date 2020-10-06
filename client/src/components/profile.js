@@ -1,7 +1,7 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useHistory, useParams} from 'react-router-dom'
 import "../stylesheet/profile.css"
 import ReactLoading from "react-loading";
 import Loading from './loadingbar'
@@ -18,7 +18,7 @@ const Profile= ()=>{
    const [loadingo,setloadingo]=useState(false)
    const [loadings,setloadings]=useState(false)
    const [loadingp,setloadingp]=useState(false)
-
+    const history=useHistory()
    const [msg,setmsg]=useState("")
    const [slotdata,setslotdata]=useState([])
    const {state,dispatch}=useContext(usercontext)
@@ -136,6 +136,9 @@ const cancelslot=(id)=>{
 
     })
 }
+const changeslot=(id)=>{
+    history.push(`/changeslot/${id}`)
+}
 return(
 
     <div className='main-profile'>
@@ -193,7 +196,7 @@ return(
                         <Loading />
                     }
                     {
-                        data.length==0&&loadings?
+                        slotdata.length==0&&loadings?
                         <div>no slot bookings found</div>:
                         <div></div>
                     }
@@ -210,9 +213,12 @@ return(
                                 return(
                                     <li className='oi' key={index}>
                                         <div className='timeslot2'>
+                                            {item.timeSlot.date!=0?<div>
                                             <div className='tm2'>timeslot details</div>
                                             <div>{item.timeSlot.date}</div>
                                             <div>{convert(item.timeSlot.start)}</div>
+                                            </div>:<div>timeslot cancelled by admin choose new time slot</div>
+                                            }
                                         </div>
                                         <div>
                                             <details className='det'>
@@ -230,6 +236,7 @@ return(
                                             
                                             </details>
                                         </div>
+                                        <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to change the slot?')){changeslot(item._id)}}}>change slot</button></div>
                                         <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to cancel the order?')){cancelorder(item._id)}}}>cancel</button></div>
                                     </li>
                                 )

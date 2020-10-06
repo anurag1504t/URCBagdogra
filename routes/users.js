@@ -184,11 +184,12 @@ userRouter.post("/changepwd", authenticate.verifyUser, (req, res, next) => {
     })
 });
 
-userRouter.post("/resetpwd/:userId", (req, res, next) => {
-    User.findById(req.params.userId)
+userRouter.post("/resetpwd", (req, res, next) => {
+    const{pass,username}=req.body
+    User.findOne({username:username})
     .then((user) => {
         if (user){
-            user.setPassword("Temp@1234", function(){
+            user.setPassword(pass, function(){
                 user.save()
                 .then((user) => console.log(user))
                 .catch((err) => next(err));

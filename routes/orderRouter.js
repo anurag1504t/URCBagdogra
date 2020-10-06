@@ -54,6 +54,32 @@ orderRouter.route('/allorders')
 })
 
 
+orderRouter.route('/changetimeslot')
+.post(authenticate.verifyUser,(req, res, next) =>{
+    const orderid=req.body.orderid
+    const tid=req.body.timeslotid
+    Orders.findById(orderid)
+    .then(order=>{
+        if(!order.buyer==req.user._id) return res.json({err:"not authorized"})
+        pickupslot.findById(order.timeSlot)
+        .then(tm=>{
+            tm.orders=tm.orders-1;
+            tm.save()
+            .then(tms=>{
+
+            })
+        })
+        pickupslot.findById(tid)
+        .then(timeslot=>{
+            order.timeSlot=timeslot._id
+            order.save()
+            .then(orders=>{
+                return res.json({msg:"success",id:orders._id})
+            }).catch(err=>{res.json({err:"error"})})
+        })
+    }).catch(err=>res.json({err}))
+})
+
 // Anurag's Code placeorder
 orderRouter.route('/placeorder')
 .post(authenticate.verifyUser,(req, res, next) => {

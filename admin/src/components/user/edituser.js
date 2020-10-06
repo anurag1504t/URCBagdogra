@@ -4,6 +4,7 @@ import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import Loading from '../loading'
 import Usernav from '../usernav'
+import { scryRenderedDOMComponentsWithClass } from 'react-dom/test-utils'
 const UserEdit= ()=>{
 
    const [data,setdata]=useState({})
@@ -17,7 +18,7 @@ const UserEdit= ()=>{
    const [slot,setslot]=useState(false)
    const [shop,setshop]=useState(false)
    const [loading,setloading]=useState(false)
-
+    const [pass,setpass]=useState("")
 
     useEffect(()=>{
         console.log(username)
@@ -105,6 +106,29 @@ const deluser=()=>{
         setmsg("error deleting user")
      })
 }
+const resetpass=()=>{
+    if(pass.length<8){
+        setmsg("password length should be 8")
+        return false;
+    }
+    fetch(`${serverurl}/users/resetpwd`,{
+        method:"post",
+        headers:{
+           "Content-Type":"application/json",
+           "Authorization":"Bearer "+localStorage.getItem("token")
+        },
+        body:JSON.stringify({
+           username:username,pass:pass
+        })
+     }).then(res=>res.json())
+     .then(result=>{
+        console.log(result)
+        setmsg("password reset successfully")
+     }).catch(err=>{
+        console.log(err)
+        setmsg("error resetting password")
+     })
+}
 
 return(
 
@@ -121,6 +145,9 @@ return(
     <div>live in <button onClick={()=>togglelive()} className={live?"greenbutton":"redbutton"}>{live?"yes":"no"}</button></div>
     <div>slot booking <button onClick={()=>toggleslot()} className={slot?"greenbutton":"redbutton"}>{slot?"allowed":"not allowed"}</button></div>
     <div>online order <button onClick={()=>toggleorder()} className={shop?"greenbutton":"redbutton"}>{shop?"allowed":"not allowed"}</button></div>
+    <div><input type='text' value={pass} onChange={(e)=>setpass(e.target.value)} placeholder='reset password' />
+    <button onClick={()=>resetpass()}>reset password</button>
+    </div>
     <div><button onClick={()=>edituser()}>submit</button></div>
     <div><button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to delete this user?')){deluser()}}}>delete user</button></div>
         </div>:

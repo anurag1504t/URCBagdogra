@@ -1,11 +1,13 @@
 var express = require('express');
 const bodyParser = require('body-parser');
 var UserRequest = require('../models/userRequest');
+const Orders = require('../models/order');
 var User = require('../models/user');
 var pickupslot=require('../models/pickupslot')
 var windowslot=require('../models/windowslot')
 const SystemInfo = require('../models/system');
 var authenticate = require('../authenticate');
+const windowOrders = require('../models/windoworder');
 
 const timeslotRouter = express.Router();
 timeslotRouter.use(bodyParser.json());
@@ -25,6 +27,7 @@ timeslotRouter.route('/')
 timeslotRouter.route('/getwindowslot')
 .post((req,res,next) => {
     windowslot.find({date:req.body.date})
+    .sort("start")
     .then((timeslot) => {
         var t=[]
         for(i in timeslot){
@@ -36,35 +39,56 @@ timeslotRouter.route('/getwindowslot')
 })
 timeslotRouter.route('/setwindowslot')
 .post((req,res,next) => {
-    var l={}
-    for(var i=8.5;i<6;i++) l[i]=0;
 
+    var l={}
+    var r=[]
+    for(var i=8.5;i<6;i++) l[i]=0;
+    var arr=req.body.arr
+    var a=arr;
+    console.log(a);
     windowslot.find({date:req.body.date})
     .then((timeslot) => {
         for(i in timeslot){
-            l[timeslot[i].start]=timeslot[i].orders
+            l[timeslot[i].start]={orders:timeslot[i].orders,id:timeslot[i]._id}
+            if(a.indexOf(timeslot[i].start)!=-1) {
+                a[a.indexOf(timeslot[i].start)]=a[a.length-1];a.pop();console.log(a)
+                }
+            else{r.push(timeslot[i]._id);console.log("r"+timeslot[i].start);}
         }
+        a.sort()
+        console.log(a)
+        console.log(r)
     })
     .catch((err) => console.log(err));
-
-    windowslot.deleteMany({date:req.body.date})
-    .exec((err,result)=>{})
+    console.log("aaaa");
+    windowslot.findOne({start:0})
+    .then(tm=>{
     
-    var arr=req.body.arr
-    for(i in arr){
-        var s=windowslot({date:req.body.date,start:arr[i],end:arr[i]+0.5,orders:l[arr[i]]})
-        s.save()
-        .then(item=>{
-
-        }).catch(err=>res.json({err:"error saving"}))
-    }
-    return res.json({msg:"success"})
+        windowOrders.deleteMany({timeSlot:{$in:r}})
+        .exec((err,result)=>{
+        console.log(result)
+        windowslot.deleteMany({_id:{$in:r}})
+        .exec((errr,resultss)=>{
+            console.log(resultss)
+            for(i in a){
+                var s=windowslot({date:req.body.date,start:a[i],end:a[i]+0.5,orders:0})
+                s.save()
+                .then(item=>{
+        
+                }).catch(errrr=>res.json({err:"error saving"}))
+            }
+            return res.json({msg:"success"})
+        })
+    })
+        
+})
 })
 
 
 timeslotRouter.route('/getwindowslotuser')
 .post((req,res,next) => {
     windowslot.find({date:req.body.date})
+    .sort("start")
     .then((timeslot) => {
         timeslot=timeslot.filter(item=>item.orders!=item.maxOrders)
         return res.json({timeslot:timeslot})
@@ -77,6 +101,7 @@ timeslotRouter.route('/getwindowslotuser')
 timeslotRouter.route('/getpickupslot')
 .post((req,res,next) => {
     pickupslot.find({date:req.body.date})
+    .sort("start")
     .then((timeslot) => {
         var t=[]
         for(i in timeslot){
@@ -89,34 +114,55 @@ timeslotRouter.route('/getpickupslot')
 timeslotRouter.route('/setpickupslot')
 .post((req,res,next) => {
     var l={}
+    var r=[]
     for(var i=8.5;i<6;i++) l[i]=0;
-
+    var arr=req.body.arr
+    var a=arr;
+    console.log(a);
     pickupslot.find({date:req.body.date})
     .then((timeslot) => {
         for(i in timeslot){
-            l[timeslot[i].start]=timeslot[i].orders
+            l[timeslot[i].start]={orders:timeslot[i].orders,id:timeslot[i]._id}
+            if(a.indexOf(timeslot[i].start)!=-1) {
+                a[a.indexOf(timeslot[i].start)]=a[a.length-1];a.pop();console.log(a)
+                }
+            else{r.push(timeslot[i]._id);console.log("r"+timeslot[i].start);}
         }
+        a.sort()
+        console.log(a)
+        console.log(r)
     })
     .catch((err) => console.log(err));
-
-    pickupslot.deleteMany({date:req.body.date})
-    .exec((err,result)=>{})
+    console.log("aaaa");
+    pickupslot.findOne({start:0})
+    .then(tm=>{
     
-    var arr=req.body.arr
-    for(i in arr){
-        var s=pickupslot({date:req.body.date,start:arr[i],end:arr[i]+0.5,orders:l[arr[i]]})
-        s.save()
-        .then(item=>{
-
-        }).catch(err=>res.json({err:"error saving"}))
-    }
-    return res.json({msg:"success"})
+    Orders.updateMany({timeSlot:{$in:r}},{timeSlot:tm._id},function(err,result){
+        console.log(result)
+        pickupslot.deleteMany({_id:{$in:r}})
+        .exec((err,resultss)=>{
+            console.log(resultss)
+            for(i in a){
+                var s=pickupslot({date:req.body.date,start:a[i],end:a[i]+0.5,orders:0})
+                s.save()
+                .then(item=>{
+        
+                }).catch(errr=>res.json({err:"error saving"}))
+            }
+            return res.json({msg:"success"})
+        })
+    })
+        
+})
+    
+   
 })
 
 
 timeslotRouter.route('/getpickupslotuser')
 .post((req,res,next) => {
     pickupslot.find({date:req.body.date})
+    .sort("start")
     .then((timeslot) => {
         timeslot=timeslot.filter(item=>item.orders!=item.maxOrders)
         return res.json({timeslot:timeslot})

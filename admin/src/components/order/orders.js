@@ -146,9 +146,12 @@ return(
                 <div>amount: Rs. {item.amount}</div>
                 <div className='timeslot'>
               <div className='tm'>timeSlot details</div>
+              {item.timeSlot.date!=0?<div>
                <div>{item.timeSlot.date}</div>
                <div>{convert(item.timeSlot.start)}</div>
-               </div></Link>
+               </div>:<div>you cancelled this timeslot</div>}
+               </div>
+               </Link>
                 <div><button onClick={()=>{if(window.confirm('are you sure, you want to mark it as completed?')){completeorder(item._id)}}}>completed</button></div>
                 <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel this order?')){cancelorder(item._id)}}}>cancel</button></div>
             </div>
