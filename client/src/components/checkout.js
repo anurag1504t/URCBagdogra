@@ -82,6 +82,19 @@ const getdate=()=>{
    })
 } 
 
+const orderfailed=async()=>{
+   let result = await confirm(
+      {
+          title: ( "dear user"),
+          message: "sufficient products are not availaible.empty your cart and add availaible products.",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: ""
+      }
+  ); 
+  history.push('/cart')
+}
+
 const submitorder=async ()=>{
    if(!time) return 0;
    if(!date){
@@ -115,7 +128,7 @@ const submitorder=async ()=>{
        console.log(result)
        if(result.err){
          setloading(true)
-         setmsg("error posting order")
+         orderfailed()
        }else{
 
          history.push(`/final/${result.id}`)

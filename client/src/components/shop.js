@@ -15,6 +15,8 @@ const Shop= ()=>{
    const [query,setquery]=useState("")
    const [page,setpage]=useState(1)
    const [loading,setloading]=useState(false)
+   const [initload,setinitload]=useState(false)
+
    const [pages,setpages]=useState([1])
    const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'category',value:'all'})
@@ -69,6 +71,7 @@ const Shop= ()=>{
     .then(result=>{
        console.log(result)
        updatecart(result.items)
+       setinitload(true)
     }).catch(err=>{
       setmsg("error loading the page")
    })
@@ -227,7 +230,7 @@ return(
    <div className='main-shop'>
 <div>{msg}</div>
       {
-      loading?
+      loading&&initload?
       <div className='main-shop'>
             <div className="row row-shop">
                 <div className='dropdown category col'>
