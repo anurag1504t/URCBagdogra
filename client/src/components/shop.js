@@ -51,10 +51,10 @@ const Shop= ()=>{
         }
      }).then(res=>res.json())
      .then(result=>{
-        console.log("categories "+result.category)
+        console.log(result.category)
        let d=[]
        for(var i=0;i<result.category.length;i++){
-        d.push(result.category[i].name)
+        d.push(result.category[i])
        }
        setcategory(d);
      }).catch(err=>{
@@ -103,6 +103,8 @@ const Shop= ()=>{
     setprod(d);
  }
  const getresult=(pg)=>{
+   setmsg("")
+
     console.log("with pg "+pg)
     setloading(false)
      let url=''
@@ -169,6 +171,7 @@ const changeb=(id,bool)=>{
 }
 
    const addtocart=(id)=>{
+      setmsg("")
       if(ab[id]==false) return false
       changeb(id,false)
       fetch(`${serverurl}/cart/add/${id}`,{
@@ -196,6 +199,8 @@ const changeb=(id,bool)=>{
    }
 
    const removefromcart=(id)=>{
+      setmsg("")
+
       fetch(`${serverurl}/cart/remove/${id}`,{
          method:"put",
          headers:{
@@ -280,6 +285,13 @@ return(
                 <Loading />
             }
        
+        </div>
+        <div>
+           {
+              list.length==0&&loading?
+              <div>no products found</div>
+              :<div></div>
+           }
         </div>
         <div>
             {

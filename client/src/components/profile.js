@@ -5,6 +5,7 @@ import {Link, useHistory, useParams} from 'react-router-dom'
 import "../stylesheet/profile.css"
 import ReactLoading from "react-loading";
 import Loading from './loadingbar'
+import confirm from "reactstrap-confirm";
 
 import Tiger from "../img/Tiger.png";
 import Officer from "../img/officer.jpg";
@@ -51,7 +52,7 @@ const Profile= ()=>{
       .then(result=>{
          console.log(result)
           if(result.err){
-
+            setmsg("error loading orders")
           }else{
             setdata(result.orders)
           }
@@ -72,6 +73,7 @@ const Profile= ()=>{
     .then(result=>{
        console.log(result)
         if(result.err){
+            setmsg("error loading bookings")
 
         }else{
           setslotdata(result.orders)
@@ -80,7 +82,7 @@ const Profile= ()=>{
 
     }).catch(err=>{
        console.log(err)
-       setmsg("error loading orders")
+       setmsg("error loading bookings")
 
     })
  },[])
@@ -96,7 +98,21 @@ const Profile= ()=>{
     return Math.floor(i)+".30-"+(Math.floor(i)+1)+".00"+c
  }
  }
- const cancelorder=(id)=>{
+ const cancelorder=async (id)=>{
+     setmsg("")
+    let result = await confirm(
+        {
+            title: ( "dear user"),
+            message: "are you sure, you want to cancel the order?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false;
+    else{
+        setloadingo(false)
+    }
    fetch(`${serverurl}/orders/cancelorder/${id}`,{
        method:"delete",
        headers:{
@@ -108,15 +124,33 @@ const Profile= ()=>{
         console.log(result)
         let d=data.filter(item=>{return item._id!=id})
         setdata(d)
-        setmsg("order cancelled")
+        if(result.err) setmsg("error cancelling order")
+        else setmsg("order cancelled")
+        setloadingo(true)
 
     }).catch(err=>{
        console.log(err)
        setmsg("error cancelling order")
+       setloadingo(true)
 
     })
 }
-const cancelslot=(id)=>{
+const cancelslot=async (id)=>{
+    setmsg("")
+
+    let result = await confirm(
+        {
+            title: ( "dear user"),
+            message: "are you sure, you want to cancel the booking?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false;
+    else{
+        setloadings(false)
+    }
    fetch(`${serverurl}/windoworders/${id}`,{
        method:"delete",
        headers:{
@@ -127,17 +161,35 @@ const cancelslot=(id)=>{
     .then(result=>{
         console.log(result)
         let d=slotdata.filter(item=>{return item._id!=id})
-        setmsg("slot cancelled")
+        if(result.err) setmsg("error cancelling booking")
+        else setmsg("booking cancelled")
+        setloadings(true)
 
         setslotdata(d)
     }).catch(err=>{
        console.log(err)
        setmsg("error cancelling slot")
+       setloadings(true)
 
     })
 }
-const changeslot=(id)=>{
-    history.push(`/changeslot/${id}`)
+const changeslot=async (id)=>{
+    setmsg("")
+
+    let result = await confirm(
+        {
+            title: ( "dear user"),
+            message: "are you sure, you want to change the slot?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false;
+    else{
+        history.push(`/changeslot/${id}`)
+    }
+    
 }
 return(
 
@@ -185,7 +237,7 @@ return(
                                                 <div>{item.timeSlot.date}</div>
                                                 <div>{convert(item.timeSlot.start)}</div>
                                                 </div>
-                                                <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to cancel the booking?')){cancelslot(item._id)}}}>cancel</button></div>
+                                                <div><button className="profile-button" onClick={()=>{cancelslot(item._id)}}>cancel</button></div>
                                         
                                             </li>
                                         )
@@ -236,8 +288,8 @@ return(
                                             
                                             </details>
                                         </div>
-                                        <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to change the slot?')){changeslot(item._id)}}}>change slot</button></div>
-                                        <div><button className="profile-button" onClick={()=>{if(window.confirm('are you sure, you want to cancel the order?')){cancelorder(item._id)}}}>cancel</button></div>
+                                        <div><button className="profile-button" onClick={()=>{changeslot(item._id)}}>change slot</button></div>
+                                        <div><button className="profile-button" onClick={()=>{cancelorder(item._id)}}>cancel</button></div>
                                     </li>
                                 )
                             }):<div></div>

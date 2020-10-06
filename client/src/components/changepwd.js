@@ -1,7 +1,8 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../App'
 import {serverurl} from '../config'
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
+import confirm from "reactstrap-confirm";
 
 import Loading from './loading'
 
@@ -12,8 +13,21 @@ const Pwdchange= ()=>{
    const [pass,setpass]=useState("")
    const [newpass,setnewpass]=useState("")
    const [newpass2,setnewpass2]=useState("")
-
+    const history=useHistory()
    const {state,dispatch}=useContext(usercontext)
+
+const passchanged=async()=>{
+    let result = await confirm(
+        {
+            title: ( "dear user"),
+            message: "your password has changed successfully",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: ""
+        }
+    ); 
+    history.push('/profile')
+}
 
 const submitpwd=()=>{
     setmsg("")
@@ -43,7 +57,7 @@ const submitpwd=()=>{
             setmsg("error changing password")
         }
         else{
-            setmsg("password changed successfully")
+            passchanged()
         }
         setnewpass2("")
         setnewpass("")

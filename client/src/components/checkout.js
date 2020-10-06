@@ -5,6 +5,7 @@ import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import Loading from './loading'
 import "../stylesheet/checkout.css";
+import confirm from "reactstrap-confirm";
 
 const Checkout= ()=>{
 
@@ -72,6 +73,7 @@ const getdate=()=>{
       }
       setloading(true)
       setdateshow(date)
+      if(result.err) setmsg("error loading")
        console.log(result)
    }).catch(err=>{
       setloading(true)
@@ -80,7 +82,7 @@ const getdate=()=>{
    })
 } 
 
-const submitorder=()=>{
+const submitorder=async ()=>{
    if(!time) return 0;
    if(!date){
       setmsg("choose date")
@@ -88,7 +90,17 @@ const submitorder=()=>{
    }else{
       setmsg("")
    }
-   setloading(false)
+   let result = await confirm(
+      {
+          title: ( "dear user"),
+          message: "are you sure, you want to place the order with this pickup slot?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false;
+  else setloading(false)
    fetch(`${serverurl}/orders/placeorder`,{
       method:"post",
       headers:{
@@ -152,7 +164,7 @@ return(
        </select>:<div></div>
          }
        {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
-      {time?<button className='checkout-button' onClick={()=>{if(window.confirm('Are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
+      {time?<button className='checkout-button' onClick={()=>{submitorder()}}>place order</button>:<span></span>}
       </div>:<Loading />
 }
             <br></br>

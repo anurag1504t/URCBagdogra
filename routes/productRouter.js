@@ -25,14 +25,18 @@ productRouter.route('/')
 productRouter.route('/getcategory')
 .get(authenticate.verifyUser,(req,res,next) => {
     console.log("getcategory route")
-    Category.find({})
+    /*Category.find({})
     .then((cat) => {
         console.log(cat)
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json({category:cat});
     })
-    .catch((err) => res.json({err}));
+    .catch((err) => res.json({err}));*/
+    Products.find().distinct('category',function(err,result){
+        if(err) res.json({err})
+        else res.json({category:result})
+    })
 })
 
 productRouter.route('/search')

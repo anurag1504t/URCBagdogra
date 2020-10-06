@@ -5,6 +5,7 @@ import {Link,useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import "../stylesheet/windowslot.css";
 import Loading from './loading'
+import confirm from "reactstrap-confirm";
 
 const WindowSlot= ()=>{
 
@@ -71,6 +72,7 @@ const getdate=()=>{
        if(result.timeslot[0]){
           settime(result.timeslot[0]._id)
        }
+       if(result.err) setmsg("error loading")
        setdateshow(date)
       setloading(true)
       console.log(result)
@@ -81,7 +83,7 @@ const getdate=()=>{
    })
 } 
 
-const submitorder=()=>{
+const submitorder=async ()=>{
    if(!time) return 0;
    if(!date){
       setmsg("choose date")
@@ -89,7 +91,17 @@ const submitorder=()=>{
    }else{
       setmsg("")
    }
-   setloading(false)
+   let result = await confirm(
+      {
+          title: ( "dear user"),
+          message: "are you sure, you want to book this time slot?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false;
+  else setloading(false)
    fetch(`${serverurl}/windoworders/placeorder`,{
       method:"post",
       headers:{
@@ -151,7 +163,7 @@ if(i*10%10==0){
                </div>
                 {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
 
-                {time? <button className="windowslot-button" onClick={()=>{if(window.confirm('are you sure, you want to book the slot?')){submitorder()}}}>book slot</button>:<span></span>}
+                {time? <button className="windowslot-button" onClick={()=>{submitorder()}}>book slot</button>:<span></span>}
                 </div>:<Loading />
             }
             <br></br>

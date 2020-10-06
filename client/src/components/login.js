@@ -6,6 +6,8 @@ import { Alert } from "reactstrap";
 import {usercontext} from "../App";
 import {serverurl} from "../config";
 import "../stylesheet/login.css";
+import confirm from "reactstrap-confirm";
+
 
 import Loading from "./loading";
 
@@ -18,8 +20,10 @@ const Login= ()=>{
     const [loading, setloading] = useState(true);
 
 
-    const postdata = () => {
+    const postdata= ()=> {
+
         setloading(false)
+        setmsg("")
         fetch(serverurl+"/users/login",{
             method:"post",
             headers:{
@@ -54,8 +58,16 @@ const Login= ()=>{
         })
     }
 
-    const forgetpwd = () => {
-        setmsg("Contact Admin to recieve temporary password.")
+    const forgetpwd = async () => {
+        let result = await confirm(
+            {
+                title: ( "forgot password"),
+                message: "contact admin to reset your password",
+                confirmText: "ok",
+                confirmColor: "primary",
+                cancelText: ""
+            }
+        ); 
         setloading(true)
     }
 

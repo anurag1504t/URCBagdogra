@@ -12,7 +12,8 @@ const productSchema = new Schema({
     },
     quantity: {
         type: Number,
-        required: true
+        required: true,
+        min:0
     },
     image: {
         type: String,
@@ -21,7 +22,7 @@ const productSchema = new Schema({
     maxQuantity: {
         type: Number,
         min: 1,
-        max: 24
+        max: 100
     },
     price:{
         type:Number,

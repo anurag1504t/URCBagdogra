@@ -27,7 +27,7 @@ const Final= ()=>{
          console.log(result)
          setloading(true)
           if(result.err){
-
+            setmsg("error loading")
           }else{
             setdata(result)
           }

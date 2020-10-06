@@ -4,6 +4,7 @@ import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import Loading from './loading'
 import '../stylesheet/cart.css'
+import confirm from "reactstrap-confirm";
 
 
 const Cart= ()=>{
@@ -73,6 +74,8 @@ const load=()=>{
    }
 
    const addtocart=(id)=>{
+      setmsg("")
+
       fetch(`${serverurl}/cart/add/${id}`,{
          method:"put",
          headers:{
@@ -93,6 +96,8 @@ const load=()=>{
    }
 
    const removefromcart=(id)=>{
+      setmsg("")
+
       fetch(`${serverurl}/cart/remove/${id}`,{
          method:"put",
          headers:{
@@ -111,7 +116,20 @@ const load=()=>{
          setmsg("error removing from the cart")
       })
    }
-const emptycart=()=>{
+const emptycart=async ()=>{
+   setmsg("")
+   let result = await confirm(
+      {
+          title: ( "dear user"),
+          message: "are you sure you want to empty the cart?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false;
+  else setloading(false)
+
    fetch(`${serverurl}/cart/emptycart`,{
       method:"get",
       headers:{
@@ -122,7 +140,9 @@ const emptycart=()=>{
    .then(result=>{
       console.log(result)
       updatecart(result.items);
+      setloading(true)
    }).catch(err=>{
+      setloading(true)
       console.log(err)
       setmsg("error emptying the cart")
    })
@@ -180,9 +200,9 @@ return(
             total amount: {total} INR
         </div>
         <div className="inline">
-           <button className="cart-button"><Link to='/checkout'>checkout</Link></button> 
+        <Link to='/checkout'> <button className="cart-button">checkout</button></Link> 
         
-           <button className="cart-button" onClick={()=>{if(window.confirm('are you sure, you want to empty the cart?')){emptycart()}}}>empty cart</button>
+           <button className="cart-button" onClick={()=>{emptycart()}}>empty cart</button>
            </div>
         </div>):<div></div>
         

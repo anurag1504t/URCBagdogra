@@ -105,15 +105,26 @@ orderRouter.route('/placeorder')
                 total+=list[products[i]._id]*products[i].price;
             }
             if(total==0) return res.json({err:"cannot place order"})
-            let flag=1;let p=products[products.length-1]._id
+            total=0;
             console.log(list)
             for(let i in products){
-                let q=products[i].quantity-list[products[i]._id];
-                console.log("q is "+q)
-                let d= await Products.findByIdAndUpdate(products[i]._id,{quantity:q},{new:true})
+                let d= await Products.findById(products[i]._id)
+                .then(async function(prod){
+                    let q=Math.min(prod.quantity,list[products[i]._id])
+                    list[products[i]._id]=q;
+                    prod.quantity=prod.quantity-q;
+                   await prod.save()
+                    .then(prodt=>{
+                    list[products[i]._id]=q;
+                    total+=list[products[i]._id]*prodt.price;
+                    }).catch(err=>{
+                    list[products[i]._id]=0;
+                    total+=0;
+                    })
+                }).catch(err=>console.log(err))
                 
             }
-
+            if(total<=0) return res.json({err:"cannot place order"})
             var orderitems=[]
             for(let i in list){
                 if(list[i]>0){

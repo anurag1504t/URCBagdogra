@@ -5,6 +5,7 @@ import {usercontext} from "../App"
 import {serverurl} from "../config"
 import '../stylesheet/signup.css';
 import Loading from './loading'
+import confirm from "reactstrap-confirm";
 
 const Signup= ()=>{
     const{state,dispatch}=useContext(usercontext)
@@ -21,7 +22,7 @@ const Signup= ()=>{
 
 
     const validate=()=>{
-        console.log(password,username,name,email,mobile)
+        setmsg("")
         if(!password||!email||!name||!username||!mobile){
             setmsg("fill all the fields")
             return 0;
@@ -50,6 +51,7 @@ const Signup= ()=>{
     }
 
     const submitform=(e)=>{
+        setmsg("")
         e.preventDefault();
         if(!validate()) return 0;
         setloading(false)
@@ -67,7 +69,7 @@ const Signup= ()=>{
         .then(data=>{
             setloading(true)
             if(data.err){
-                setmsg("try changing username or email")
+                setmsg("error. try changing username or email")
             }
             else{
                 history.push(`/signupmsg/${data.name}`)

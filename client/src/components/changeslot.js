@@ -5,6 +5,7 @@ import {Link,useHistory, useParams} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import Loading from './loading'
 import "../stylesheet/checkout.css";
+import confirm from "reactstrap-confirm";
 
 const Changeslot= ()=>{
 
@@ -72,6 +73,7 @@ const getdate=()=>{
          settime(result.timeslot[0]._id)
       }
       setloading(true)
+      if(result.err) setmsg("error loading")
       setdateshow(date)
        console.log(result)
    }).catch(err=>{
@@ -81,7 +83,7 @@ const getdate=()=>{
    })
 } 
 
-const submitorder=()=>{
+const submitorder=async ()=>{
    if(!time) return 0;
    if(!date){
       setmsg("choose date")
@@ -89,7 +91,18 @@ const submitorder=()=>{
    }else{
       setmsg("")
    }
-   setloading(false)
+   let result = await confirm(
+      {
+          title: ( "dear user"),
+          message: "are you sure, you want to change pickup slot?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false;
+  else setloading(false)
+
    fetch(`${serverurl}/orders/changetimeslot`,{
       method:"post",
       headers:{
@@ -105,10 +118,14 @@ const submitorder=()=>{
        console.log(result)
        if(!result.err)
        history.push(`/final/${result.id}`)
+       else{
+       setmsg("error changing timeslot")
+       settime("")
+      }
    }).catch(err=>{
       console.log(err)
       setloading(true)
-      setmsg("error loading")
+      setmsg("error changing timeslot")
       settime("")
    })
 }
@@ -149,7 +166,7 @@ return(
        </select>:<div></div>
          }
        {data.length==0&&loading?<div>no slot availaible on this date</div>:<div></div>}
-      {time?<button className='checkout-button' onClick={()=>{if(window.confirm('Are you sure, you want to place the order?')){submitorder()}}}>place order</button>:<span></span>}
+      {time?<button className='checkout-button' onClick={()=>{submitorder()}}>place order</button>:<span></span>}
       </div>:<Loading />
 }
             <br></br>

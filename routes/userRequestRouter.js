@@ -27,7 +27,6 @@ userRequestRouter.route('/allreq')
 
 userRequestRouter.route('/req')
 .post((req, res, next) => {
-    console.log("gr")
     User.findOne({username: req.body.username})
     .then(user => {
         if(user) {
