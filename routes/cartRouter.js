@@ -75,7 +75,7 @@ cartRouter.route('/add/:itemId')
         if (cart != null) {
             var changed = false;
             for (var i = (cart.items.length -1); i >= 0; i--) {
-                if(cart.items[i].item == req.params.itemId) {
+                if(cart.items[i].item.equals(req.params.itemId)) {
                     changed = true;
                     cart.items[i].quantity = cart.items[i].quantity + 1;
                     break;
@@ -115,7 +115,16 @@ cartRouter.route('/remove/:itemId')
                 if(cart.items[i].item == req.params.itemId) {
                     changed = true;
                     if(cart.items[i].quantity > 0) {
-                        cart.items[i].quantity = cart.items[i].quantity - 1;
+                        
+                        
+
+                        if(cart.items[i].quantity==1){
+                            cart.items[i]=cart.items[cart.items.length-1];
+                            cart.items.pop()
+                        }else{
+                            cart.items[i].quantity = cart.items[i].quantity - 1;
+                        }
+                        
                         cart.save()
                         .then((cart) => {
                             Carts.findById(cart._id)

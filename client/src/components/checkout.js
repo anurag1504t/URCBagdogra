@@ -101,7 +101,13 @@ const submitorder=()=>{
    }).then(res=>res.json())
    .then(result=>{
        console.log(result)
-       history.push(`/final/${result.id}`)
+       if(result.err){
+         setloading(true)
+         setmsg("error posting order")
+       }else{
+
+         history.push(`/final/${result.id}`)
+       }
    }).catch(err=>{
       console.log(err)
       setloading(true)
