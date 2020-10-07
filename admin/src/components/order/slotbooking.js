@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import OrderNav from '../ordernav'
 import DatePicker from 'react-date-picker'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const SlotBooked= ()=>{
 
    const [data,setdata]=useState([])
@@ -19,9 +21,6 @@ const SlotBooked= ()=>{
    const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'all',value:'all'})
    
-    useEffect(()=>{
-      getresult(1)
-  },[])
 
   useEffect(() => {
       getresult(1)
@@ -37,6 +36,7 @@ const searchdate=()=>{
  }
  const getresult=(pg)=>{
     setloading(false)
+    setmsg("")
      let url=''
     if(prod.type=='all'){
             url='/windoworders/allorders'
@@ -55,8 +55,8 @@ const searchdate=()=>{
         })
      }).then(res=>res.json())
      .then(result=>{
-        console.log(result)
-        setdata(result.orders)
+      if(result.err) setmsg("error loading")
+       else{ setdata(result.orders)
         setpage(pg)
         let l=pg-1>5?5:pg-1;
         let r=result.pages-pg>5?5:result.pages
@@ -70,16 +70,28 @@ const searchdate=()=>{
         }
         setpages(d)
         setpagenum(result.pages)
+      }
         setloading(true)
      }).catch(err=>{
-        console.log(err)
         setloading(true)
         setmsg("error loading")
      })
  }
 
-    
-    const cancelorder=(id)=>{
+
+    const removeorder=async (id)=>{
+
+      setmsg("")
+      let result = await confirm(
+         {
+             title: ( "dear admin"),
+             message: "do you really want to remove this booking?",
+             confirmText: "ok",
+             confirmColor: "primary",
+             cancelText: "cancel"
+         }
+     ); 
+     if(result==false) return false
         fetch(`${serverurl}/windoworders/${id}`,{
             method:"delete",
             headers:{
@@ -87,34 +99,26 @@ const searchdate=()=>{
                "Authorization":"Bearer "+localStorage.getItem("token")
             }
          }).then(res=>res.json())
-         .then(result=>{
-             console.log(result)
-             let d=data.filter(item=>{return item._id!=id})
-             setdata(d)
-               setmsg("")
-
-         }).catch(err=>{
-            console.log(err)
-            setmsg("error cancelling booking")
-         })
-    }
-
-    const completeorder=(id)=>{
-        fetch(`${serverurl}/windoworders/${id}`,{
-            method:"delete",
-            headers:{
-               "Content-Type":"application/json",
-               "Authorization":"Bearer "+localStorage.getItem("token")
-            }
-         }).then(res=>res.json())
-         .then(result=>{
-             console.log(result)
-             let d=data.filter(item=>{return item._id!=id})
-             setdata(d)
+         .then(async result=>{
+             
              setmsg("")
+             if(result.err) setmsg("error removing booking")
+             else{
+               let resultt = await confirm(
+                  {
+                      title: ( "dear admin"),
+                      message: "booking is removed",
+                      confirmText: "ok",
+                      confirmColor: "primary",
+                      cancelText: ""
+                  }
+              ); 
+               setmsg("order cancelled successfully")
+               let d=data.filter(item=>{return item._id!=id})
+               setdata(d)
+            }
          }).catch(err=>{
             setmsg("error completing booking")
-            console.log(err)
          })
     }
     const convert=(i)=>{
@@ -152,8 +156,7 @@ return(
                <div>{item.timeSlot.date}</div>
                <div>{convert(item.timeSlot.start)}</div>
                </div>
-                <div><button onClick={()=>{if(window.confirm('are you sure, you want to mark as complete?')){completeorder(item._id)}}}>completed</button></div>
-                <div><button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to cancel the booking?')){cancelorder(item._id)}}}>cancel</button></div>
+                <div><button className='redbutton' onClick={()=>{removeorder(item._id)}}>remove</button></div>
 
             </div>
             )

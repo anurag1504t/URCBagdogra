@@ -67,17 +67,18 @@ const getdate=()=>{
       })
    }).then(res=>res.json())
    .then(result=>{
-       setdata(result.timeslot)
+       
+      setdateshow(date)
+      if(result.err) setmsg("error loading")
+      else{
+         setdata(result.timeslot)
        if(result.timeslot[0]){
          settime(result.timeslot[0]._id)
       }
+      }
       setloading(true)
-      setdateshow(date)
-      if(result.err) setmsg("error loading")
-       console.log(result)
    }).catch(err=>{
       setloading(true)
-      console.log(err)
       setmsg("error loading")
    })
 } 
@@ -125,7 +126,6 @@ const submitorder=async ()=>{
       })
    }).then(res=>res.json())
    .then(result=>{
-       console.log(result)
        if(result.err){
          setloading(true)
          orderfailed()
@@ -134,7 +134,6 @@ const submitorder=async ()=>{
          history.push(`/final/${result.id}`)
        }
    }).catch(err=>{
-      console.log(err)
       setloading(true)
       setmsg("error loading")
       settime("")

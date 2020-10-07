@@ -3,6 +3,7 @@ import {usercontext} from '../../App'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
 
 const Sys= ()=>{
 
@@ -19,10 +20,12 @@ const Sys= ()=>{
             method:"get"
          }).then(res=>res.json())
          .then(result=>{
+             if(result.err) setmsg("error loading")
+             else{
             setdata(result)
             console.log(result)
             setshop(result.data.shop)
-            setslot(result.data.slot)
+            setslot(result.data.slot)}
             setloading(true)
          }).catch(err=>{
              setloading(true)
@@ -45,8 +48,19 @@ const Sys= ()=>{
         }
     }
 
-const submitdata=()=>{
-    setloading(false)
+const submitdata=async ()=>{
+    setmsg("")
+   let result = await confirm(
+      {
+          title: ( "dear admin"),
+          message: "do you really want to change the status of the shop?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false
+  else setloading(false)
     fetch(`${serverurl}/sys`,{
         method:"put",
         headers:{
@@ -57,15 +71,70 @@ const submitdata=()=>{
            shop:shop,slot:slot
         })
      }).then(res=>res.json())
-     .then(result=>{
-        console.log(result)
-        setloading(true)
+     .then(async result=>{
+        if(result.err) setmsg("error changing")
+        else{
+            setshop(result.d.shop)
+            setslot(result.d.slot)
+            let resultt = await confirm(
+                {
+                    title: ( "dear admin"),
+                    message: "successfully changed status",
+                    confirmText: "ok",
+                    confirmColor: "primary",
+                    cancelText: ""
+                }
+            ); 
+            
         setmsg("successfully changed status")
+        }
+        setloading(true)
      }).catch(err=>{
-        console.log(err)
         setloading(true)
         setmsg("error updating data")
      })
+}
+
+const deltimeslot=async ()=>{
+    setmsg("")
+    let result = await confirm(
+       {
+           title: ( "dear admin"),
+           message: "do you really want to delete old timeslot data?",
+           confirmText: "ok",
+           confirmColor: "primary",
+           cancelText: "cancel"
+       }
+   ); 
+   if(result==false) return false
+   else setloading(false)
+     fetch(`${serverurl}/timeslot/deletetimeslots`,{
+         method:"post",
+         headers:{
+            "Content-Type":"application/json",
+            "Authorization":"Bearer "+localStorage.getItem("token")
+         }
+      }).then(res=>res.json())
+      .then(async result=>{
+         if(result.err) setmsg("error deleting data")
+         else{
+         setmsg("successfully deleted data")
+         let resultt = await confirm(
+            {
+                title: ( "dear admin"),
+                message: "successfully deleted old data",
+                confirmText: "ok",
+                confirmColor: "primary",
+                cancelText: ""
+            }
+        ); 
+         }
+         
+        setloading(true)
+      }).catch(err=>{
+         setloading(true)
+         setmsg("error deleting data")
+      })
 }
 
 return(
@@ -78,6 +147,9 @@ return(
                 <div>slot booking <button onClick={()=>toggleslot()} className={slot?"greenbutton":"redbutton"}>{slot?"allowed":"not allowed"}</button></div>
     <div>online order <button onClick={()=>toggleshop()} className={shop?"greenbutton":"redbutton"}>{shop?"allowed":"not allowed"}</button></div>
     <div><button onClick={()=>submitdata()}>submit</button></div>
+
+        <div><button onClick={()=>deltimeslot()}>delete old timeslots data</button></div>
+
             </div>:
             <Loading />
        }

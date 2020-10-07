@@ -4,6 +4,8 @@ import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const Productdetails= ()=>{
 
    const [data,setdata]=useState([])
@@ -21,8 +23,9 @@ const Productdetails= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
-            setdata(result)
             setloading(true)
+            if(result.err) setmsg("error loading product")
+            else setdata(result)
          }).catch(err=>{
             setmsg("error loading")
             setloading(true)
@@ -45,7 +48,6 @@ return(
                 <div>quantity: {data.quantity}</div>
                 <div>max Quantity: {data.maxQuantity}</div>
                 <div>category: {data.category}</div>
-                <div>percent: {data.onlinePercentage}</div>
                 <Link to={`/editproduct/${data._id}`}><button>edit product</button></Link>
 
         </div>:

@@ -24,6 +24,68 @@ timeslotRouter.route('/')
     })
 });
 
+timeslotRouter.route('/deletetimeslots')
+.post(async (req,res,next) => {
+    var ps=0,ws=0;
+    let dt=new Date()
+    dt.setDate(dt.getDate()-1)
+    dt=dt.toDateString()
+    dt=Date.parse(dt)
+
+    await pickupslot.find({})
+    .then(async timeslots=>{
+        for(let i in timeslots){
+            if(timeslots[i].date!=0){
+                let td=Date.parse(timeslots[i].date)
+                if(td<dt){
+                    await pickupslot.findById(timeslots[i]._id)
+                    .then(async pkslot=>{
+                        pkslot.date=1
+                        await pkslot.save()
+                        .then(async t=>{
+                            await Orders.deleteMany({timeSlot:pkslot._id})
+                            .then(o=>{})
+                            .catch(err=>{console.log(err)})
+                        }).catch(err=>console.log(err))
+                    })
+                }
+            }
+        }
+    }).catch(err=>console.log(err))
+
+    await pickupslot.deleteMany({date:"1"})
+    .then(del=>{
+        ps=1;
+    }).catch(err=>console.log(err))
+
+    await windowslot.find({})
+    .then(async timeslots=>{
+        for(let i in timeslots){
+            if(timeslots[i].date!=0){
+                let td=Date.parse(timeslots[i].date)
+                if(td<dt){
+                    await windowslot.findById(timeslots[i]._id)
+                    .then(async pkslot=>{
+                        pkslot.date=1
+                        await pkslot.save()
+                        .then(t=>{
+
+                        }).catch(err=>console.log(err))
+                    })
+                }
+            }
+        }
+    }).catch(err=>console.log(err))
+
+    await windowslot.deleteMany({date:"1"})
+    .then(del=>{
+        ws=1;
+    }).catch(err=>console.log(err))
+
+    if(ps&&ws) res.json({msg:"success"})
+    else res.json({err:"error"})
+})
+
 timeslotRouter.route('/getwindowslot')
 .post((req,res,next) => {
     windowslot.find({date:req.body.date})

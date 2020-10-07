@@ -4,6 +4,8 @@ import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const Productlist= ()=>{
 
    const [data,setdata]=useState([])
@@ -26,14 +28,14 @@ const Productlist= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
-            console.log("categories "+result.category)
+             if(result.err) setmsg("error loading category")
+             else{
            let d=[]
            for(var i=0;i<result.category.length;i++){
-            d.push(result.category[i].name)
+            d.push(result.category[i])
            }
-           setcategory(d);
+           setcategory(d);}
          }).catch(err=>{setmsg("error loading category")})
-    getresult(1)
     },[])
 
     useEffect(() => {
@@ -49,6 +51,7 @@ const Productlist= ()=>{
       setprod(d);
    }
    const getresult=(pg)=>{
+       setmsg("")
       setloading(false)
        let url=''
       if(prod.type=='category'){
@@ -72,7 +75,8 @@ const Productlist= ()=>{
           })
        }).then(res=>res.json())
        .then(result=>{
-          console.log(result)
+        if(result.err) setmsg("error loading")
+        else{
           setdata(result.products)
           setlist(result.products)
           setpage(pg)
@@ -88,9 +92,9 @@ const Productlist= ()=>{
           }
           setpages(d)
           setpagenum(result.pages)
+        }
           setloading(true)
        }).catch(err=>{
-          console.log(err)
           setloading(true)
             setmsg("error loading products")
        })
@@ -100,10 +104,9 @@ const filterproduct=(quer)=>{
     setquery(quer)
     let userpattern=new RegExp(quer,"i")
     let dd=data.filter(val=>{
-        return userpattern.test(val.name)
+        return userpattern.test(val.name)||userpattern.test(val.category)
     })
     setlist(dd);
-    console.log(list)
    }
 
 return(
@@ -152,8 +155,7 @@ return(
                 <div>quantity: {item.quantity}</div>
                 <div>price: {item.price}</div>
                 <div>max quantity: {item.maxQuantity}</div>
-                <div>category: {item.category}</div>
-                <div>percent: {item.onlinePercentage}</div></Link>
+                <div>category: {item.category}</div></Link>
                 <div>
                     <Link to={`/editproduct/${item._id}`}><button>edit product</button></Link>
                 </div>

@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import {serverurl} from "../config";
 import { useParams } from "react-router-dom";
 import "../stylesheet/final.css";
 import Loading from "./loading";
+import {usercontext} from '../App'
 
 const Final= ()=>{
 
    const [data,setdata]=useState({})
-   // const {state,dispatch}=useContext(usercontext)
+    const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
    const [msg,setmsg]=useState("")
    const {id}=useParams()
@@ -24,7 +25,6 @@ const Final= ()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
          setloading(true)
           if(result.err){
             setmsg("error loading")
@@ -34,7 +34,6 @@ const Final= ()=>{
       }).catch(err=>{
          setloading(true)
          setmsg("error loading")
-         console.log(err)
       })
    },[])
 

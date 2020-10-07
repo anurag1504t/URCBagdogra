@@ -27,6 +27,8 @@ const WindowSlot= ()=>{
          }
       }).then(res=>res.json())
       .then(result=>{
+         if(result.err) history.push('/info/slclose')
+         else{
          if(!result.data.userslot){
             history.push('/info/slrestrict')
          }
@@ -36,6 +38,7 @@ const WindowSlot= ()=>{
          else{
             setloading(true)
          }
+      }
       }).catch(err=>{
          history.push('/')
       })
@@ -68,16 +71,17 @@ const getdate=()=>{
       })
    }).then(res=>res.json())
    .then(result=>{
-       setdata(result.timeslot)
-       if(result.timeslot[0]){
-          settime(result.timeslot[0]._id)
-       }
+       
        if(result.err) setmsg("error loading")
+       else{
+         setdata(result.timeslot)
+         if(result.timeslot[0]){
+            settime(result.timeslot[0]._id)
+         }
+       }
        setdateshow(date)
       setloading(true)
-      console.log(result)
    }).catch(err=>{
-      console.log(err)
       setloading(true)
       setmsg("error loading")
    })
@@ -113,12 +117,13 @@ const submitorder=async ()=>{
       })
    }).then(res=>res.json())
    .then(result=>{
-       console.log(result)
-       history.push(`/windowfinal/${result.id}`)
-   }).catch(err=>{
-      console.log(err)
+      if(result.err) setmsg("error booking the slot")
+      else history.push(`/windowfinal/${result.id}`)
       setloading(true)
-      setmsg("error loading")
+      settime("")
+   }).catch(err=>{
+      setloading(true)
+      setmsg("error booking the slot")
       settime("")
    })
 }

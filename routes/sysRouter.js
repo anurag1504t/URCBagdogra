@@ -24,7 +24,7 @@ sysRouter.route('/')
         data.slot=req.body.slot;
         data.save()
         .then(d=>{
-            return res.json({msg:"success"})
+            return res.json({msg:"success",d:d})
         }).catch(err=>res.json({err}))
     })
     .catch((err) => res.json({err}));

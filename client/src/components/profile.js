@@ -33,8 +33,8 @@ const Profile= ()=>{
          }
       }).then(res=>res.json())
       .then(result=>{
-         setpdata(result)
-         console.log(result);
+          if(result.err) setmsg("error loading user details")
+         else setpdata(result)
          setloadingp(true)
       }).catch(err=>{
          setmsg("error loading user details")
@@ -50,7 +50,6 @@ const Profile= ()=>{
          }
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
           if(result.err){
             setmsg("error loading orders")
           }else{
@@ -58,7 +57,6 @@ const Profile= ()=>{
           }
           setloadingo(true)
       }).catch(err=>{
-         console.log(err)
          setmsg("error loading orders")
       })
    },[])
@@ -71,7 +69,6 @@ const Profile= ()=>{
        }
     }).then(res=>res.json())
     .then(result=>{
-       console.log(result)
         if(result.err){
             setmsg("error loading bookings")
 
@@ -81,7 +78,6 @@ const Profile= ()=>{
         setloadings(true)
 
     }).catch(err=>{
-       console.log(err)
        setmsg("error loading bookings")
 
     })
@@ -121,15 +117,16 @@ const Profile= ()=>{
        }
     }).then(res=>res.json())
     .then(result=>{
-        console.log(result)
+        
+        if(result.err) setmsg("error cancelling order")
+        else {
+            setmsg("order cancelled")
         let d=data.filter(item=>{return item._id!=id})
         setdata(d)
-        if(result.err) setmsg("error cancelling order")
-        else setmsg("order cancelled")
+    }
         setloadingo(true)
 
     }).catch(err=>{
-       console.log(err)
        setmsg("error cancelling order")
        setloadingo(true)
 
@@ -159,18 +156,16 @@ const cancelslot=async (id)=>{
        }
     }).then(res=>res.json())
     .then(result=>{
-        console.log(result)
-        let d=slotdata.filter(item=>{return item._id!=id})
+        
         if(result.err) setmsg("error cancelling booking")
-        else setmsg("booking cancelled")
+        else {setmsg("booking cancelled")
+        let d=slotdata.filter(item=>{return item._id!=id})
+        setslotdata(d)}
         setloadings(true)
-
-        setslotdata(d)
+        
     }).catch(err=>{
-       console.log(err)
        setmsg("error cancelling slot")
        setloadings(true)
-
     })
 }
 const changeslot=async (id)=>{

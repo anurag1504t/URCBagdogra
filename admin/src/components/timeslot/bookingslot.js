@@ -5,6 +5,8 @@ import {Link} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import TimeslotNav from '../timeslotnav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const WindowBookingTime= ()=>{
 
    const [data,setdata]=useState([])
@@ -21,6 +23,7 @@ const WindowBookingTime= ()=>{
    },[data])
 
 const getdate=()=>{
+    setmsg("")
     setloading(false)
     fetch(`${serverurl}/timeslot/getwindowslot`,{
         method:"post",
@@ -32,17 +35,29 @@ const getdate=()=>{
         })
      }).then(res=>res.json())
      .then(result=>{
-         setdata(result.arr)
+         if(result.err) setmsg("error loading")
+         else setdata(result.arr)
      }).catch(err=>{
         setloading(true)
          setmsg("error loading")
-         console.log(err)
      })
 }
 
-const setslot=()=>{
+const setslot=async()=>{
+    setmsg("")
+    let result = await confirm(
+        {
+            title: ( "dear admin"),
+            message: "do you really want to set this slot?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false
+    else setloading(false)
+    
     var arr=[]
-    setloading(false)
     for(var i=8.5;i<18;i=i+0.5){
         if(list[i]==true) arr.push(i)
     }
@@ -56,26 +71,35 @@ const setslot=()=>{
            date:date.toDateString(),arr:arr
         })
      }).then(res=>res.json())
-     .then(result=>{
-        console.log(result)
+     .then(async result=>{
+        
+        if(result.err) setmsg("error setting slot")
+        else{
+            setmsg("slot setted successfully")
+            let result = await confirm(
+                {
+                    title: ( "dear admin"),
+                    message: "slot setted successfully for "+date.toString(),
+                    confirmText: "ok",
+                    confirmColor: "primary",
+                    cancelText: ""
+                }
+            ); 
+        }
         setloading(true)
-        setmsg("slot setted successfully")
-     }).catch(err=>{
+        }).catch(err=>{
         setloading(true)
         setmsg("error setting slot")
-        console.log(err)
      })
 }
 
 const updatelist=()=>{
     var a={}
-    console.log(data)
     for(var i=8.5;i<18;i=i+0.5){
         a[i]=false;
     }
     for(var i=0;i<data.length;i++){
         a[data[i]]=true
-        console.log(data[i])
     }
     setlist(a);
     setloading(true)
@@ -83,7 +107,6 @@ const updatelist=()=>{
 }
 const toggle=(d)=>{
     var a={}
-    console.log(d)
     for(var i=8.5;i<18;i=i+0.5){
         if(i!=d)
         a[i]=list[i];

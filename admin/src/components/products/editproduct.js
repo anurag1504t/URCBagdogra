@@ -1,9 +1,11 @@
 import React,{useState,useEffect,useContext} from 'react'
 import {usercontext} from '../../App'
 import {serverurl} from '../../config'
-import {Link, useParams} from 'react-router-dom'
+import {Link, useParams,useHistory} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const EditProduct= ()=>{
 
    const [data,setdata]=useState([])
@@ -17,9 +19,8 @@ const EditProduct= ()=>{
    const [max,setmax]=useState(false)
    const [price,setprice]=useState(0)
    const [url,seturl]=useState(false)
-   const [percent,setpercent]=useState(100)
    const [loading,setloading]=useState(false)
-
+   const history=useHistory()
 
     useEffect(()=>{
 
@@ -30,15 +31,17 @@ const EditProduct= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
+            if(result.err) setmsg("error loading product")
+            else{
             setdata(result)
             setname(result.name)
             setsize(result.size)
             setquantity(result.quantity)
             setcategory(result.category)
-            setpercent(result.onlinePercentage)
             seturl(result.image)
             setmax(result.maxQuantity)
             setprice(result.price)
+            }
             setloading(true)
          }).catch(err=>{
             setmsg("error loading")
@@ -48,9 +51,21 @@ const EditProduct= ()=>{
 
 
 
-const updateproduct=(e)=>{
+const updateproduct=async (e)=>{
    e.preventDefault()
-   setloading(false)
+   setmsg("")
+   let result = await confirm(
+      {
+          title: ( "dear admin"),
+          message: "do you really want to update this product?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false
+  
+  setloading(false)
     fetch(`${serverurl}/products/${productid}`,{
         method:"put",
         headers:{
@@ -59,21 +74,42 @@ const updateproduct=(e)=>{
         },
         body:JSON.stringify({
            name:name,size:size,quantity:quantity,maxQuantity:max,
-           image:url,category:category,onlinePercent:percent,price:price
+           image:url,category:category,price:price
         })
      }).then(res=>res.json())
-     .then(result=>{
-        console.log(result)
-        setmsg("updated successfully")
+     .then(async result=>{
+        if(result.err) setmsg("error updating product")
+        else {
+           setmsg("updated successfully")
+           let result = await confirm(
+            {
+                title: ( "dear admin"),
+                message: "product is updated successfully",
+                confirmText: "ok",
+                confirmColor: "primary",
+                cancelText: ""
+            }
+        ); 
+        }
         setloading(true)
      }).catch(err=>{
         setloading(true)
-        console.log(err)
         setmsg("error updating product")
      })
 }
 
-const delproduct=()=>{
+const delproduct=async ()=>{
+   setmsg("")
+   let result = await confirm(
+      {
+          title: ( "dear admin"),
+          message: "do you really want to delete this product?",
+          confirmText: "ok",
+          confirmColor: "primary",
+          cancelText: "cancel"
+      }
+  ); 
+  if(result==false) return false
    setloading(false)
     fetch(`${serverurl}/products/${productid}`,{
         method:"delete",
@@ -82,13 +118,24 @@ const delproduct=()=>{
            "Authorization":"Bearer "+localStorage.getItem("token")
         }
      }).then(res=>res.json())
-     .then(result=>{
-        console.log(result)
-        setloading(true)
+     .then(async result=>{
+        if(result.err) setmsg("error loading product")
+        else {
         setmsg("product deleted successfully")
+        let result = await confirm(
+         {
+             title: ( "dear admin"),
+             message: "product is deleted successfully",
+             confirmText: "ok",
+             confirmColor: "primary",
+             cancelText: ""
+         }
+     ); 
+     history.push('/productlist')
+        }
+        setloading(true)
      }).catch(err=>{
         setloading(true)
-        console.log(err)
         setmsg("error deleting product")
      })
 }
@@ -112,10 +159,9 @@ return(
             <div>category <input value={category} onChange={(e)=>setcategory(e.target.value)} /></div>
             <div>max quantity <input value={max} onChange={(e)=>setmax(e.target.value)} /></div>
             <div>image url <input value={url} onChange={(e)=>seturl(e.target.value)} /></div>
-            <div>online percent <input value={percent} onChange={(e)=>setpercent(e.target.value)} /></div>
     <input type='submit' value='submit' />
     </form>
-    <button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to delete this product?')){delproduct()}}}>delete product</button>
+    <button className='redbutton' onClick={()=>{delproduct()}}>delete product</button>
         </div>:
         <Loading />
     }

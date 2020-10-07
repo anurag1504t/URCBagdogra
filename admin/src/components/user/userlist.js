@@ -3,6 +3,8 @@ import {usercontext} from '../../App'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 import Usernav from '../usernav'
 const Userlist= ()=>{
 
@@ -18,9 +20,6 @@ const Userlist= ()=>{
    const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'all',value:'all'})
 
-    useEffect(()=>{
-        getresult(1)
-    },[])
 
     useEffect(() => {
         getresult(1)
@@ -35,6 +34,7 @@ const searchuser=()=>{
       setprod(d);
    }
    const getresult=(pg)=>{
+       setmsg("")
       setloading(false)
        let url=''
       if(prod.type=='all'){
@@ -54,7 +54,8 @@ const searchuser=()=>{
           })
        }).then(res=>res.json())
        .then(result=>{
-          console.log(result)
+          if(result.err) setmsg("error loading")
+          else{
           setdata(result.users)
           setlist(result.users)
           setpage(pg)
@@ -69,12 +70,11 @@ const searchuser=()=>{
          d.push(i)
         }
         setpages(d)
-        setpagenum(result.pages)
+        setpagenum(result.pages)}
           setloading(true)
        }).catch(err=>{
            setmsg("error loading")
            setloading(true)
-          console.log(err)
        })
    }
 
@@ -82,11 +82,10 @@ const filteruser=(quer)=>{
     setquery(quer)
     let userpattern=new RegExp(quer,"i")
     let dd=data.filter(val=>{
-        return userpattern.test(val.name)
+        return userpattern.test(val.name)||userpattern.test(val.username)||userpattern.test(val.email)||userpattern.test(val.mobileNumber)
     })
     setlist(dd);
     setmsg("")
-    console.log(list)
    }
 
 return(

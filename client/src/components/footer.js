@@ -8,7 +8,7 @@ export const Footer = () => {
                 <div className="row justify-content-center">             
                     <div className="col-auto">                        
                         <div className="copyright">
-                            <p>© {new Date().getFullYear()} URC Bagdogra</p>
+                            <p>&copy; {new Date().getFullYear()} URC Bagdogra</p>
                         </div>                        
                     </div>
                 </div>

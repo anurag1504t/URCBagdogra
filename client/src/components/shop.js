@@ -32,7 +32,8 @@ const Shop= ()=>{
        }
     }).then(res=>res.json())
     .then(result=>{
-       if(!result.data.usershop){
+       if(result.err) history.push('/info/shclose')
+       else{if(!result.data.usershop){
           history.push('/info/shrestrict')
        }
        else if(!result.data.shop){
@@ -41,6 +42,7 @@ const Shop= ()=>{
        else{
           load()
        }
+      }
     }).catch(err=>{
        history.push('/')
     })
@@ -53,14 +55,14 @@ const Shop= ()=>{
         }
      }).then(res=>res.json())
      .then(result=>{
-        console.log(result.category)
-       let d=[]
+        if(result.err) setmsg("error loading the categories")
+       else {let d=[]
        for(var i=0;i<result.category.length;i++){
         d.push(result.category[i])
        }
-       setcategory(d);
+       setcategory(d);}
      }).catch(err=>{
-        setmsg("error loading the page")
+        setmsg("error loading the categories")
      })
     fetch(serverurl+'/cart/',{
        method:"get",
@@ -69,9 +71,9 @@ const Shop= ()=>{
        }
     }).then(res=>res.json())
     .then(result=>{
-       console.log(result)
-       updatecart(result.items)
-       setinitload(true)
+      if(result.err) setmsg("error loading the page") 
+      else{updatecart(result.items)
+       setinitload(true)}
     }).catch(err=>{
       setmsg("error loading the page")
    })
@@ -94,7 +96,6 @@ const Shop= ()=>{
         return userpattern.test(val.name)
     })
     setlist(dd);
-    console.log(list)
    }
 
    const searchcategory=(quer)=>{
@@ -107,8 +108,6 @@ const Shop= ()=>{
  }
  const getresult=(pg)=>{
    setmsg("")
-
-    console.log("with pg "+pg)
     setloading(false)
      let url=''
     if(prod.type=='category'){
@@ -132,8 +131,8 @@ const Shop= ()=>{
         })
      }).then(res=>res.json())
      .then(result=>{
-        console.log(result)
-        setdata(result.products)
+      if(result.err) setmsg("error loading page")  
+      else{setdata(result.products)
         setlist(result.products)
         setaddbutton(result.products)
         setpage(pg)
@@ -148,12 +147,11 @@ const Shop= ()=>{
          d.push(i)
         }
         setpages(d)
-        setpagenum(result.pages)
+        setpagenum(result.pages)}
+
         setloading(true)
-        setmsg("")
         setquery("")
      }).catch(err=>{
-        console.log(err)
         setmsg("error loading the page")
      })
  }
@@ -167,9 +165,11 @@ const setaddbutton=(prod)=>{
 }
 
 const changeb=(id,bool)=>{
-   let l=ab;
+   let l={}
+   for(let key in ab){
+      l[key]=ab[key]
+   }
    l[id]=bool;
-   console.log(l)
    setab(l)
 }
 
@@ -188,15 +188,12 @@ const changeb=(id,bool)=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
       changeb(id,true)
-
-         updatecart(result.items);
+         if(result.err) setmsg("error adding to cart")
+         else updatecart(result.items);
 
       }).catch(err=>{
-         console.log(err)
          changeb(id,true)
-
          setmsg("error adding to the cart")
       })
    }
@@ -215,11 +212,10 @@ const changeb=(id,bool)=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
-         updatecart(result.items);
+         if(result.err) setmsg("error removing from cart")
+         else updatecart(result.items);
       }).catch(err=>{
          setmsg("error removing from the cart")
-         console.log(err)
       })
    }
 

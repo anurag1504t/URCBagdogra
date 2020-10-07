@@ -35,7 +35,6 @@ const Login= ()=>{
             })
         }).then(res=>res.json())
         .then(data=>{
-            console.log(data)
             setloading(true)
             if(data.err){
                 setmsg(data.err.message)
@@ -48,7 +47,6 @@ const Login= ()=>{
                 localStorage.setItem("tokendate",dt)
                 localStorage.setItem("user",JSON.stringify(data.user))
                 dispatch({type:"USER",payload:data.user})
-                console.log(data.user)
                 history.push('/')
                 
             }

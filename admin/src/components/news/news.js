@@ -3,6 +3,8 @@ import {usercontext} from '../../App'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+import  'reactstrap'
 
 const News= ()=>{
 
@@ -19,8 +21,13 @@ const News= ()=>{
         query:JSON.stringify({})
      }).then(res=>res.json())
      .then(result=>{
+         if(!result.err){
         setdata(result)
-        setloading(true)
+        setloading(true)}
+        else{
+            setmsg("error loading")
+            setloading(true)
+        }
      }).catch(err=>{
          setmsg("error loading")
          setloading(true)
@@ -31,7 +38,20 @@ const News= ()=>{
         getfeeds();
     },[])
     
-    const deletenews=(id)=>{
+    const deletenews=async (id)=>{
+        setmsg("")
+
+        let result = await confirm(
+            {
+                title: ( "dear admin"),
+                message: "do you really want to delete this news item?",
+                confirmText: "ok",
+                confirmColor: "primary",
+                cancelText: "cancel"
+            }
+        ); 
+        if(result==false) return false
+
         fetch(`${serverurl}/feeds/${id}`,{
             method:"delete",
             headers:{
@@ -40,17 +60,24 @@ const News= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
-             console.log(result)
-             let d=data.filter(item=>{return item._id!=id})
+             if(result.err) setmsg("error deleting")
+             else{let d=data.filter(item=>{return item._id!=id})
              setdata(d)
-             setmsg("news item deleted")
+             setmsg("news item deleted")}
          }).catch(err=>{
-            console.log(err)
             setmsg("error deleting news item")
          })
     }
 
     const addnews=()=>{
+        setmsg("")
+        if(feeddata.length<10){
+            setmsg("min length of news is 10")
+            return false
+        }
+
+        let fd=feeddata
+        setfeed("")
         fetch(`${serverurl}/feeds/`,{
             method:"post",
             headers:{
@@ -58,19 +85,17 @@ const News= ()=>{
                "Authorization":"Bearer "+localStorage.getItem("token")
             },
             body:JSON.stringify({
-               feeds:feeddata
+               feeds:fd
             })
          }).then(res=>res.json())
          .then(result=>{
-             console.log(result)
-             let d=data;
+             if(result.err) setmsg("error adding")
+             else{let d=data;
              d.push(result)
              setdata(d)
-             setfeed("")
-             setmsg("news item added")
+             setmsg("news item added")}
 
          }).catch(err=>{
-            console.log(err)
             setmsg("error adding news item")
          })
     }

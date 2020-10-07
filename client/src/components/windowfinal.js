@@ -25,7 +25,6 @@ const WindowFinal= ()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
          setloading(true)
           if(result.err){
             setmsg("error loading")
@@ -33,7 +32,6 @@ const WindowFinal= ()=>{
             setdata(result)
           }
       }).catch(err=>{
-         console.log(err)
          setloading(true)
          setmsg("error loading")
       })

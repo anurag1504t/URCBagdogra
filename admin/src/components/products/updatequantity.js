@@ -4,6 +4,8 @@ import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
+
 const UpdateQuantity= ()=>{
 
    const [data,setdata]=useState([])
@@ -21,9 +23,7 @@ const UpdateQuantity= ()=>{
    const [quantitylist,setquantity]=useState({})
    const [pricelist,setprice]=useState({})
    const [maxquantitylist,setmaxquantity]=useState({})
-   let quantity={}
-   let price={}
-   let maxquantity={}
+   
 
 
 
@@ -39,14 +39,16 @@ const UpdateQuantity= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
-            console.log("categories "+result.category)
+             if(result.err) setmsg("error loading category")
+             else{
            let d=[]
            for(var i=0;i<result.category.length;i++){
-            d.push(result.category[i].name)
+            d.push(result.category[i])
            }
            setcategory(d);
+           
+        }
          }).catch(err=>{setmsg("error loading category")})
-    getresult(1)
     },[])
 
     useEffect(() => {
@@ -85,7 +87,8 @@ const UpdateQuantity= ()=>{
           })
        }).then(res=>res.json())
        .then(result=>{
-          console.log(result)
+        if(result.err) setmsg("error loading")
+        else{
           setlist(result.products)
           setdata(result.products)
           setpage(pg)
@@ -101,10 +104,10 @@ const UpdateQuantity= ()=>{
           }
           setpages(d)
           setpagenum(result.pages)
+        }
           setloading(true)
        }).catch(err=>{
           setloading(true)
-          console.log(err)
           setmsg("error loading products")
        })
    }
@@ -112,6 +115,9 @@ const UpdateQuantity= ()=>{
 
 
 const setvalues=()=>{
+    let quantity={}
+   let price={}
+   let maxquantity={}
     for(var i=0;i<data.length;i++){
         quantity[data[i]._id]=data[i].quantity
         price[data[i]._id]=data[i].price
@@ -123,14 +129,26 @@ const setvalues=()=>{
 }
 
 const setq=(id,pq)=>{
+    let quantity={}
+    for(let key in quantitylist){
+        quantity[key]=quantitylist[key]
+    }
     quantity[id]=pq
     setquantity(quantity)
 }
 const setp=(id,pp)=>{
+    let price={}
+    for(let key in pricelist){
+        price[key]=pricelist[key]
+    }
     price[id]=pp
     setprice(price)
 }
 const setmxq=(id,pmxq)=>{
+    let maxquantity={}
+    for(let key in maxquantitylist){
+        maxquantity[key]=maxquantitylist[key]
+    }
     maxquantity[id]=pmxq
     setmaxquantity(maxquantity)
 }
@@ -139,14 +157,35 @@ const filterproduct=(quer)=>{
     setquery(quer)
     let userpattern=new RegExp(quer,"i")
     let dd=data.filter(val=>{
-        return userpattern.test(val.name)
+        return userpattern.test(val.name)||userpattern.test(val.category)
     })
     setlist(dd);
-    console.log(list)
    }
 
-const updateq=(id)=>{
-
+const updateq=async(id)=>{
+    setmsg("")
+    let result = await confirm(
+        {
+            title: ( "dear admin"),
+            message: "do you really want to update this product values?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false
+    if(!(pricelist[id]&&quantitylist[id]&&maxquantitylist[id])){
+        let result = await confirm(
+            {
+                title: ( "dear admin"),
+                message: "fill all the values correctly",
+                confirmText: "ok",
+                confirmColor: "primary",
+                cancelText: ""
+            }
+        ); 
+        return false
+    }
     fetch(`${serverurl}/products/productvalues/update`,{
         method:"put",
         headers:{
@@ -160,11 +199,21 @@ const updateq=(id)=>{
            maxquantity:maxquantitylist[id]
         })
      }).then(res=>res.json())
-     .then(result=>{
-        console.log(result)
-        setmsg("updated successfully")
+     .then(async result=>{
+        if(result.err) setmsg("error updating values")
+        else{
+            let resulttt = await confirm(
+                {
+                    title: ( "dear admin"),
+                    message: result.name+" updated successfully",
+                    confirmText: "ok",
+                    confirmColor: "primary",
+                    cancelText: ""
+                }
+            ); 
+            setmsg(result.name+" updated successfully")
+        }
      }).catch(err=>{
-        console.log(err)
         setmsg("error updating product")
      })
 }
@@ -219,9 +268,9 @@ return(
                 <td><img src={item.image} height='100px' width='100px' /></td>
                 <td>name: {item.name}</td>
                 <td>size: {item.size}</td>
-                <td>quantity<input className='ip' id={item.id} value={quantitylist[item._id]} onChange={(e)=>setq(item._id,e.target.value)} /></td>
-                <td>price<input className='ip' id={item.id} value={pricelist[item._id]} onChange={(e)=>setp(item._id,e.target.value)} /></td>
-                <td>max quantity<input className='ip' id={item.id} value={maxquantitylist[item._id]} onChange={(e)=>setmxq(item._id,e.target.value)} /></td>
+                <td>quantity<input className='ip' type='number' id={item.id} value={quantitylist[item._id]} onChange={(e)=>setq(item._id,e.target.value)} /></td>
+                <td>price<input className='ip' type='number' id={item.id} value={pricelist[item._id]} onChange={(e)=>setp(item._id,e.target.value)} /></td>
+                <td>max quantity<input className='ip' type='number' id={item.id} value={maxquantitylist[item._id]} onChange={(e)=>setmxq(item._id,e.target.value)} /></td>
                 <td>
                     <button onClick={()=>updateq(item._id)}>submit</button>
                 </td>

@@ -10,7 +10,7 @@ const Home = () => {
   const [data, setdata] = useState([]);
   const { state, dispatch } = useContext(usercontext);
   const [loading, setloading] = useState(false);
-
+  const [msg,setmsg]=useState("")
   useEffect(() => {
     fetch(serverurl + "/feeds/", {
       method: "get",
@@ -18,9 +18,13 @@ const Home = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        setdata(result);
+        if(result.err) setmsg("error loading feeds")
+        else setdata(result);
         setloading(true);
-      });
+      }).catch(err=>{
+        setmsg("error loading feeds")
+        setloading(true)
+      })
   }, []);
 
   return (
@@ -32,6 +36,7 @@ const Home = () => {
 
         <div className="main-home">
           <h2 className="news"> NEWS </h2>
+          <div>{msg}</div>
           <div>
             {data && loading ? (
               <ul className="list-unstyled">

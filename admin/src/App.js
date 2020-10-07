@@ -14,14 +14,13 @@ import Userdetails from './components/user/userdetails'
 import Productlist from './components/products/productlist'
 import AddProduct from './components/products/addproduct'
 import Productdetails from './components/products/productdetails'
-import OnlinePercent from './components/products/updatepercent'
 import UpdateQuanity from './components/products/updatequantity'
 import ProductEdit from './components/products/editproduct'
 
 import Orderlist from './components/order/orders'
 import Bookinglist from './components/order/slotbooking'
 import Orderdetails from './components/order/orderdetails'
-
+import Def from './components/def'
 import Ordertimeslot from './components/timeslot/orderslot'
 import Bookingtimeslot from './components/timeslot/bookingslot'
 
@@ -39,20 +38,20 @@ const Routing=()=>{
 
   useEffect(()=>{
     const user=JSON.parse(localStorage.getItem("user"))
-        const tdt=localStorage.getItem("tokendate")
-        if(user&&tdt){
-            let dt=new Date();
-            let tdate=Date.parse(tdt)
-            if(tdate<=dt){
-                localStorage.clear();
-                history.push('/')
-            }else{
-                dispatch({type:"USER",payload:user})
-            }
-        }
-        else{
+    const tdt=localStorage.getItem("tokendate")
+    if(user&&tdt){
+        let dt=new Date();
+        let tdate=Date.parse(tdt)
+        if(tdate<=dt){
+            localStorage.clear();
             history.push('/')
+        }else{
+            dispatch({type:"USER",payload:user})
         }
+    }
+    else{
+        history.push('/')
+    }
   },[])
   return (
 <Switch>
@@ -116,6 +115,9 @@ const Routing=()=>{
     <Route path='/ordertimeslot'>
       <Ordertimeslot />
     </Route>
+    <Route path=''>
+      <Def />
+    </Route>
 
     </Switch>
   )
@@ -128,8 +130,10 @@ function App() {
   return (
     <usercontext.Provider value={{state,dispatch}}>
     <BrowserRouter>
-    <NavBar/>
-    <Routing />
+    <div>
+      <NavBar/>
+      <Routing />
+    </div>
     </BrowserRouter>
     </usercontext.Provider>
 

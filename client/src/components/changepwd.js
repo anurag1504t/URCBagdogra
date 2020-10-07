@@ -50,7 +50,6 @@ const submitpwd=()=>{
         })
     }).then(res=>res.json())
     .then(data=>{
-        console.log(data)
         setloading(true)
         if(data.err){
             setmsg(data.err)
@@ -65,7 +64,6 @@ const submitpwd=()=>{
 
     }).catch(err=>{
         setloading(true);
-        console.log("error")
         setmsg("error changing password")
     })
 }

@@ -31,12 +31,6 @@ const productSchema = new Schema({
     category: {
         type: String,
         default: ''
-    },
-    onlinePercent: {
-        type: Number,
-        min: 1,
-        max: 100,
-        default: 100
     }
 }, {
     timestamps: true

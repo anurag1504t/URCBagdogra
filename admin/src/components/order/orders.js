@@ -3,6 +3,7 @@ import {usercontext} from '../../App'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
+import confirm from "reactstrap-confirm";
 
 import OrderNav from '../ordernav'
 import Loading from '../loading'
@@ -20,9 +21,6 @@ const Orders= ()=>{
    const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'all',value:'all'})
    
-    useEffect(()=>{
-      getresult(1)
-  },[])
 
   useEffect(() => {
       getresult(1)
@@ -38,6 +36,7 @@ const searchdate=()=>{
  }
  const getresult=(pg)=>{
     setloading(false)
+    setmsg("")
      let url=''
     if(prod.type=='all'){
             url='/orders/allorders'
@@ -56,7 +55,8 @@ const searchdate=()=>{
         })
      }).then(res=>res.json())
      .then(result=>{
-        console.log(result)
+      if(result.err) setmsg("error loading")
+      else{
         setdata(result.orders)
         setpage(pg)
         let l=pg-1>5?5:pg-1;
@@ -71,34 +71,67 @@ const searchdate=()=>{
         }
         setpages(d)
         setpagenum(result.pages)
+      }
         setloading(true)
      }).catch(err=>{
-        console.log(err)
         setloading(true)
         setmsg("error loading")
      })
  }
 
-    const cancelorder=(id)=>{
-        fetch(`${serverurl}/orders/${id}`,{
+    const cancelorder=async(id)=>{
+       setmsg("")
+      let result = await confirm(
+         {
+             title: ( "dear admin"),
+             message: "do you really want to cancel this order?",
+             confirmText: "ok",
+             confirmColor: "primary",
+             cancelText: "cancel"
+         }
+     ); 
+     if(result==false) return false
+        fetch(`${serverurl}/orders/cancelorder/${id}`,{
             method:"delete",
             headers:{
                "Content-Type":"application/json",
                "Authorization":"Bearer "+localStorage.getItem("token")
             }
          }).then(res=>res.json())
-         .then(result=>{
-             console.log(result)
+         .then(async result=>{
+             
+             if(result.err) setmsg("error cancelling order")
+             else{
+               let resultt = await confirm(
+                  {
+                      title: ( "dear admin"),
+                      message: "order is cancelled",
+                      confirmText: "ok",
+                      confirmColor: "primary",
+                      cancelText: ""
+                  }
+              ); 
+               setmsg("order cancelled successfully")
              let d=data.filter(item=>{return item._id!=id})
              setdata(d)
-             setmsg("order cancelled successfully")
+            }
          }).catch(err=>{
-            console.log(err)
             setmsg("error cancelling order")
          })
     }
 
-    const completeorder=(id)=>{
+    const completeorder=async(id)=>{
+      setmsg("")
+      let result = await confirm(
+         {
+             title: ( "dear admin"),
+             message: "do you really want to mark this order as completed?",
+             confirmText: "ok",
+             confirmColor: "primary",
+             cancelText: "cancel"
+         }
+     ); 
+     if(result==false) return false
         fetch(`${serverurl}/orders/${id}`,{
             method:"delete",
             headers:{
@@ -106,13 +139,23 @@ const searchdate=()=>{
                "Authorization":"Bearer "+localStorage.getItem("token")
             }
          }).then(res=>res.json())
-         .then(result=>{
-             console.log(result)
+         .then(async result=>{
+             if(result.err) setmsg("error completing order")
+             else{
+               let resultt = await confirm(
+                  {
+                      title: ( "dear admin"),
+                      message: "order is marked as completed",
+                      confirmText: "ok",
+                      confirmColor: "primary",
+                      cancelText: ""
+                  }
+              ); 
              let d=data.filter(item=>{return item._id!=id})
              setdata(d)
              setmsg("order set completed")
+             }
          }).catch(err=>{
-            console.log(err)
             setmsg("error completing order")
          })
     }
@@ -152,8 +195,8 @@ return(
                </div>:<div>you cancelled this timeslot</div>}
                </div>
                </Link>
-                <div><button onClick={()=>{if(window.confirm('are you sure, you want to mark it as completed?')){completeorder(item._id)}}}>completed</button></div>
-                <div><button onClick={()=>{if(window.confirm('are you sure, you want to cancel this order?')){cancelorder(item._id)}}}>cancel</button></div>
+                <div><button onClick={()=>{completeorder(item._id)}}>completed</button></div>
+                <div><button onClick={()=>{cancelorder(item._id)}}>cancel</button></div>
             </div>
             )
         }):

@@ -4,6 +4,8 @@ import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import Loading from '../loading'
 import Usernav from '../usernav'
+import confirm from "reactstrap-confirm";
+
 const Userdetails= ()=>{
 
    const [data,setdata]=useState({})
@@ -22,7 +24,9 @@ const Userdetails= ()=>{
             }
          }).then(res=>res.json())
          .then(result=>{
-             setdata(result)
+             
+             if(result.err) setmsg("error loading")
+             else setdata(result)
              setloading(true)
          }).catch(err=>{
              setmsg("error loading")

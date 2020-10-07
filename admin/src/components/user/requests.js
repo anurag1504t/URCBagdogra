@@ -4,6 +4,8 @@ import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import Loading from '../loading'
 import Usernav from '../usernav'
+import confirm from "reactstrap-confirm";
+
 const SignupRequests= ()=>{
 
    const [data,setdata]=useState([])
@@ -31,7 +33,8 @@ const SignupRequests= ()=>{
             })
          }).then(res=>res.json())
          .then(result=>{
-            console.log(result)
+            if(result.err) setmsg("error loading")
+            else{
             setdata(result.usersreq)
             setpage(pg)
         let l=pg-1>5?5:pg-1;
@@ -45,16 +48,26 @@ const SignupRequests= ()=>{
          d.push(i)
         }
         setpages(d)
-        setpagenum(result.pages)
+        setpagenum(result.pages)}
             setloading(true)
          }).catch(err=>{
              setloading(true)
              setmsg("error loading")
-            console.log(err)
          })
      }
 
-const approve=(id)=>{
+const approve=async (id)=>{
+    setmsg("")
+    let result = await confirm(
+        {
+            title: ( "dear admin"),
+            message: "do you really want to approve this user?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false
     fetch(serverurl+'/users/signup/'+id,{
         method:"post",
         headers:{
@@ -62,19 +75,41 @@ const approve=(id)=>{
            "Authorization":"Bearer "+localStorage.getItem("token"),
         }
      }).then(res=>res.json())
-     .then(result=>{
+     .then(async result=>{
         if(!result.err){
             let d=data.filter(item=>{
                 return item._id!=id;
             });
             setdata(d);
-            setmsg("sign up request approed successfully")
+            let result = await confirm(
+                {
+                    title: ( "dear admin"),
+                    message: "user request is approved",
+                    confirmText: "ok",
+                    confirmColor: "primary",
+                    cancelText: ""
+                }
+            ); 
+            setmsg("sign up request approved successfully")
+        }else{
+            setmsg("error approving user")
         }
      }).catch(err=>{
          setmsg("error approving user")
      })
 }
-const reject=(id)=>{
+const reject=async (id)=>{
+    setmsg("")
+    let result = await confirm(
+        {
+            title: ( "dear admin"),
+            message: "do you really want to reject this user?",
+            confirmText: "ok",
+            confirmColor: "primary",
+            cancelText: "cancel"
+        }
+    ); 
+    if(result==false) return false
     fetch(serverurl+'/usersrequests/'+id,{
         method:"delete",
         headers:{
@@ -82,13 +117,24 @@ const reject=(id)=>{
            "Authorization":"Bearer "+localStorage.getItem("token"),
         }
      }).then(res=>res.json())
-     .then(result=>{
+     .then(async result=>{
         if(!result.err){
             let d=data.filter(item=>{
                 return item._id!=id;
             });
             setdata(d);
+            let result = await confirm(
+                {
+                    title: ( "dear admin"),
+                    message: "user request is rejected",
+                    confirmText: "ok",
+                    confirmColor: "primary",
+                    cancelText: ""
+                }
+            ); 
             setmsg("user request rejected")
+        }else{
+            setmsg("error rejecting user")
         }
      }).catch(err=>{
         setmsg("error rejecting user")
@@ -108,12 +154,13 @@ return(
             return(
             <div className='product2'>
                 <div>name: {item.name}</div>
+                <div>username: {item.username}</div>
                 <div>mobile number: {item.mobileNumber}</div>
                 <div>email: {item.email}</div>
-                <div>living in: {item.livingIn}</div>
+                <div>living in: {item.livingIn?"yes":"no"}</div>
                 <div>
-                    <button onClick={()=>{if(window.confirm('are you sure, you want to approve this user request?')){approve(item._id)}}}>approve</button>
-                    <button className='redbutton' onClick={()=>{if(window.confirm('are you sure, you want to reject this user request?')){reject(item._id)}}}>reject</button>
+                    <button onClick={()=>{approve(item._id)}}>approve</button>
+                    <button className='redbutton' onClick={()=>{reject(item._id)}}>reject</button>
                 </div>
             </div>
             )

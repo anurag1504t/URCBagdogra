@@ -16,7 +16,7 @@ import Changepwd from './components/changepwd'
 import Changeslot from './components/changeslot'
 import WindowFinal from './components/windowfinal'
 import WindowSlotBook from './components/windowslot'
-
+import Def from './components/def'
 
 import {initialstate,reducer} from './reducers/userreducer'
 import { Footer } from './components/footer';
@@ -87,6 +87,9 @@ const Routing=()=>{
             <Route path='/windowslotbooking'>
                 <WindowSlotBook />
             </Route>  
+            <Route path=''>
+                <Def />
+            </Route>
         </Switch>
     )
 }

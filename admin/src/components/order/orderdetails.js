@@ -4,6 +4,7 @@ import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import OrderNav from '../ordernav'
 import Loading from '../loading'
+import confirm from "reactstrap-confirm";
 
 const OrderDetails= ()=>{
 
@@ -22,8 +23,8 @@ const OrderDetails= ()=>{
       }
      }).then(res=>res.json())
      .then(result=>{
-        setdata(result)
-        console.log(result)
+        if(result.err) setmsg("error loading")
+        else setdata(result)
         setloading(true)
      }).catch(err=>{
         setloading(true)

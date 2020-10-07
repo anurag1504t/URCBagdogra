@@ -149,7 +149,6 @@ productRouter.route('/:productId')
             prod.maxQuantity=req.body.maxQuantity;
             prod.price=req.body.price;
             prod.image=req.body.image;
-            prod.onlinePercent=req.body.onlinePercent;
             prod.size=req.body.size;
             prod.category=req.body.category;
 
@@ -192,35 +191,24 @@ productRouter.route('/:productId')
     .catch((err) => next(err));
 });
 
-productRouter.route('/percent/update')
-.put(authenticate.verifyUser, (req, res, next) => {
-    console.log("eg4rh")
-  Products.updateMany({}, {onlinePercent:req.body.percent}, 
-    function(err, num) {
-        if(err){
-            res.json({error:err})
-        }
-        console.log("updated "+num);
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(num);
-    }
-);
-})
 
 productRouter.route('/productvalues/update')
 .put(authenticate.verifyUser, (req, res, next) => {
     const {id,quantity,price,maxquantity}=req.body
-  Products.updateOne({_id:id}, {quantity:quantity,price:price,maxQuantity:maxquantity}, 
-    function(err, ress) {
-        if(err){
-            res.json({error:err})
-        }
+  Products.findById(id)
+  .then(prod=>{
+    prod.quantity=quantity
+    prod.price=price
+    prod.maxQuantity=maxquantity
+    prod.save()
+    .then(result=>{
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
-        res.json(ress);
-    }
-);
+        res.json(result);
+    }).catch(err=>{
+        res.json({err:err})
+    })
+  }) 
 })
 
 module.exports = productRouter;

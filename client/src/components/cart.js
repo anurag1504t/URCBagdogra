@@ -24,6 +24,8 @@ const Cart= ()=>{
          }
       }).then(res=>res.json())
       .then(result=>{
+         if(result.err) history.push('/info/shclose')
+       else{
          if(!result.data.usershop){
             history.push('/info/shrestrict')
          }
@@ -33,6 +35,7 @@ const Cart= ()=>{
          else{
             load()
          }
+      }
       }).catch(err=>{
          history.push("/")
       })
@@ -47,16 +50,14 @@ const load=()=>{
          }
       }).then(res=>res.json())
       .then(result=>{
-        let cc=result.items.filter(val=>{
+        if(!result.err){let cc=result.items.filter(val=>{
             return val.quantity!=0
         })
-        console.log(cc)
-         setdata(cc)
-         console.log(JSON.stringify(result));
+         setdata(cc)}else{setmsg("error loading cart items")}
          setloading(true)
       }).catch(err=>{
          setloading(true)
-         setmsg("error loading the cart")
+         setmsg("error loading the cart items")
       })
    }
    let total=0
@@ -66,7 +67,6 @@ const load=()=>{
       cartarray=cartarray.filter(item=>{
          return item.quantity!=0
       })
-      console.log(cartarray)
       for(var i in cartarray){
          c.push(cartarray[i])
          }
@@ -87,10 +87,9 @@ const load=()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
-         updatecart(result.items);
+         if(!result.err){updatecart(result.items);}
+         else{setmsg("error adding to the cart")}
       }).catch(err=>{
-         console.log(err)
          setmsg("error adding to the cart")
       })
    }
@@ -109,10 +108,9 @@ const load=()=>{
          })
       }).then(res=>res.json())
       .then(result=>{
-         console.log(result)
-         updatecart(result.items);
+         if(!result.err){updatecart(result.items);}
+         else setmsg("error removing from the cart")
       }).catch(err=>{
-         console.log(err)
          setmsg("error removing from the cart")
       })
    }
@@ -138,12 +136,11 @@ const emptycart=async ()=>{
       }
    }).then(res=>res.json())
    .then(result=>{
-      console.log(result)
-      updatecart(result.items);
+      if(result.err){updatecart(result.items);}
+      else setmsg("error emptying the cart")
       setloading(true)
    }).catch(err=>{
       setloading(true)
-      console.log(err)
       setmsg("error emptying the cart")
    })
 }
