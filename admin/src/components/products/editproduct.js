@@ -1,7 +1,6 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
-import {Link, useParams,useHistory} from 'react-router-dom'
+import { useParams,useHistory} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
 import confirm from "reactstrap-confirm";
@@ -11,7 +10,6 @@ const EditProduct= ()=>{
    const [data,setdata]=useState([])
    const [msg,setmsg]=useState("")
    const {productid}=useParams()
-   const {state,dispatch}=useContext(usercontext)
    const [name,setname]=useState("")
    const [size,setsize]=useState("")
    const [quantity,setquantity]=useState("")

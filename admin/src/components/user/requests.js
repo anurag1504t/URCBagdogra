@@ -1,7 +1,5 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
-import {Link} from 'react-router-dom'
 import Loading from '../loading'
 import Usernav from '../usernav'
 import confirm from "reactstrap-confirm";
@@ -10,7 +8,6 @@ const SignupRequests= ()=>{
 
    const [data,setdata]=useState([])
    const [msg,setmsg]=useState("")
-   const {state,dispatch}=useContext(usercontext)
    const [page,setpage]=useState(1)
    const [loading,setloading]=useState(false)
    const [pages,setpages]=useState([1])

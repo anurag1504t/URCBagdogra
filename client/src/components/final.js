@@ -1,14 +1,12 @@
-import React, { useState, useEffect,useContext } from "react";
+import React, { useState, useEffect} from "react";
 import {serverurl} from "../config";
 import { useParams } from "react-router-dom";
 import "../stylesheet/final.css";
 import Loading from "./loading";
-import {usercontext} from '../App'
 
 const Final= ()=>{
 
    const [data,setdata]=useState({})
-    const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
    const [msg,setmsg]=useState("")
    const {id}=useParams()

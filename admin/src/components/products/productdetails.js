@@ -1,17 +1,14 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
-import confirm from "reactstrap-confirm";
 
 const Productdetails= ()=>{
 
    const [data,setdata]=useState([])
    const {productid}=useParams()
    const [msg,setmsg]=useState("")
-   const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
 
 

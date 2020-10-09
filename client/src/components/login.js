@@ -2,7 +2,6 @@
 import React,{ useState ,useContext  } from "react";
 import {Link} from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Alert } from "reactstrap";
 import {usercontext} from "../App";
 import {serverurl} from "../config";
 import "../stylesheet/login.css";

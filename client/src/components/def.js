@@ -5,7 +5,7 @@ const Def= ()=>{
    const history=useHistory()
    useEffect(() => {
        history.push('/')
-   }, [])
+   }, [history])
 
 return(
     <div className='main'>

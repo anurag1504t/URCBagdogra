@@ -1,6 +1,5 @@
-import React,{useContext} from 'react'
-import {Link,useHistory} from 'react-router-dom'
-import {usercontext} from '../App'
+import React from 'react'
+import {Link} from 'react-router-dom'
 
 const OrderNavBar=()=> {
 

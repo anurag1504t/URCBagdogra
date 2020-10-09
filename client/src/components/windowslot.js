@@ -1,7 +1,6 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../config'
-import {Link,useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import "../stylesheet/windowslot.css";
 import Loading from './loading'
@@ -10,7 +9,6 @@ import confirm from "reactstrap-confirm";
 const WindowSlot= ()=>{
 
    const [data,setdata]=useState([])
-   const {state,dispatch}=useContext(usercontext)
    const [date,setdate]=useState()
    const [dateshow,setdateshow]=useState()
    const [time,settime]=useState("")

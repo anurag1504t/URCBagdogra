@@ -1,7 +1,5 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
-import {Link} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
 import TimeslotNav from '../timeslotnav'
 import Loading from '../loading'
@@ -13,7 +11,6 @@ const WindowBookingTime= ()=>{
    const [list,setlist]=useState({})
    const [msg,setmsg]=useState("")
    const [date,setdate]=useState(new Date())
-   const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
    useEffect(()=>{
     getdate()

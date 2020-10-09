@@ -1,14 +1,11 @@
 
-import React,{ useState ,useContext  } from "react"
+import React,{ useState } from "react"
 import { useHistory,Link } from "react-router-dom"
-import {usercontext} from "../App"
 import {serverurl} from "../config"
 import '../stylesheet/signup.css';
 import Loading from './loading'
-import confirm from "reactstrap-confirm";
 
 const Signup= ()=>{
-    const{state,dispatch}=useContext(usercontext)
     const history=useHistory()
     const [username,setuid]=useState("")
     const [password,setpassword]=useState("")

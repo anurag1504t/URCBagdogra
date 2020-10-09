@@ -1,13 +1,11 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../config'
-import {Link, useHistory, useParams} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import "../stylesheet/profile.css"
 import ReactLoading from "react-loading";
 import Loading from './loadingbar'
 import confirm from "reactstrap-confirm";
 
-import Tiger from "../img/Tiger.png";
 import Officer from "../img/officer.jpg";
 
 
@@ -22,7 +20,6 @@ const Profile= ()=>{
     const history=useHistory()
    const [msg,setmsg]=useState("")
    const [slotdata,setslotdata]=useState([])
-   const {state,dispatch}=useContext(usercontext)
 
 
    useEffect(()=>{

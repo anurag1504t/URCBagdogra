@@ -1,20 +1,17 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
+import React,{useState} from 'react'
 import {serverurl} from '../config'
-import {Link, useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import confirm from "reactstrap-confirm";
 
 import Loading from './loading'
 
 const Pwdchange= ()=>{
     const [loading, setloading] = useState(true);
-   const [data,setdata]=useState({})
    const [msg,setmsg]=useState("")
    const [pass,setpass]=useState("")
    const [newpass,setnewpass]=useState("")
    const [newpass2,setnewpass2]=useState("")
     const history=useHistory()
-   const {state,dispatch}=useContext(usercontext)
 
 const passchanged=async()=>{
     let result = await confirm(

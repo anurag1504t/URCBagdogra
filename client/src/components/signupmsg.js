@@ -1,9 +1,8 @@
 
-import React,{ useState ,useContext  } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 // import '../stylesheet/style.css';
 
-import Loading from './loading'
 
 
 const Signupmsg= ()=>{

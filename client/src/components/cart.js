@@ -1,5 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../config'
 import {Link,useHistory} from 'react-router-dom'
 import Loading from './loading'
@@ -10,7 +9,6 @@ import confirm from "reactstrap-confirm";
 const Cart= ()=>{
 
    const [data,setdata]=useState([])
-   const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
    const history=useHistory()
    const [msg,setmsg]=useState("")
@@ -136,7 +134,7 @@ const emptycart=async ()=>{
       }
    }).then(res=>res.json())
    .then(result=>{
-      if(result.err){updatecart(result.items);}
+      if(!result.err){updatecart(result.items);}
       else setmsg("error emptying the cart")
       setloading(true)
    }).catch(err=>{

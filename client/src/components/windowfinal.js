@@ -1,14 +1,12 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../config'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import "../stylesheet/windowfinal.css"
 import Loading from './loading'
 
 const WindowFinal= ()=>{
 
    const [data,setdata]=useState({})
-   const {state,dispatch}=useContext(usercontext)
    const {id}=useParams()
    const [msg,setmsg]=useState("")
    const [loading,setloading]=useState(false)
@@ -52,6 +50,7 @@ const WindowFinal= ()=>{
 return(
 
    <div className='main-windowfinal'>
+      <div>{msg}</div>
       <div><h1>your slot is booked successfully</h1></div>
       <br></br>
       <div className="timeslot-finalwindow-container">

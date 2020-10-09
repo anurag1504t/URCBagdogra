@@ -1,7 +1,5 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
-import {Link} from 'react-router-dom'
 import Loading from '../loading'
 import confirm from "reactstrap-confirm";
 import  'reactstrap'
@@ -12,8 +10,6 @@ const News= ()=>{
    const [feeddata,setfeed]=useState("")
    const [msg,setmsg]=useState("")
    const [loading,setloading]=useState(false)
-
-   const {state,dispatch}=useContext(usercontext)
 
    const getfeeds=()=>{
     fetch(serverurl+'/feeds/',{

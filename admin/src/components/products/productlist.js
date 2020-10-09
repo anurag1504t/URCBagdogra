@@ -1,10 +1,8 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import ProductNavBar from '../productnav'
 import Loading from '../loading'
-import confirm from "reactstrap-confirm";
 
 const Productlist= ()=>{
 
@@ -16,7 +14,6 @@ const Productlist= ()=>{
    const [pages,setpages]=useState([1])
    const [pagenum,setpagenum]=useState(1)
    const [prod,setprod]=useState({type:'category',value:'all'})
-   const {state,dispatch}=useContext(usercontext)
    const [category,setcategory]=useState([])
    const [msg,setmsg]=useState("")
 

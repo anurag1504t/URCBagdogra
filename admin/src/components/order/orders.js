@@ -1,5 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
 import {Link} from 'react-router-dom'
 import DatePicker from 'react-date-picker'
@@ -11,9 +10,7 @@ const Orders= ()=>{
 
    const [data,setdata]=useState([])
 
-   const [feeddata,setfeed]=useState("")
    const [msg,setmsg]=useState("")
-   const {state,dispatch}=useContext(usercontext)
    const [date,setdate]=useState(new Date())
    const [page,setpage]=useState(1)
    const [loading,setloading]=useState(false)
@@ -26,7 +23,7 @@ const Orders= ()=>{
       getresult(1)
   }, [prod])
 
-const searchall=(quer)=>{
+const searchall=()=>{
       let d={type:'all',value:"all"}
       setprod(d);
    }
@@ -177,8 +174,11 @@ return(
       <OrderNav />
    <div class='headt'>  orders </div>
        <div>{msg}</div>
+       <div>
+          <button onClick={()=>searchall()}>all orders</button>
        <DatePicker value={date} format="y-MM-dd" minDate={new Date()} onChange={(dt)=>setdate(dt)} />
        <button onClick={()=>searchdate()}>check</button>
+       </div>
 <div className='list'>
     {
         data&&loading?

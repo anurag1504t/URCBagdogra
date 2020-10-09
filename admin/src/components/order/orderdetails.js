@@ -1,17 +1,14 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import OrderNav from '../ordernav'
 import Loading from '../loading'
-import confirm from "reactstrap-confirm";
 
 const OrderDetails= ()=>{
 
    const [data,setdata]=useState({})
     const {orderid}=useParams()
    const [msg,setmsg]=useState("")
-   const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
 
    const getorders=()=>{

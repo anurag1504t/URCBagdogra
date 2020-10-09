@@ -19,7 +19,6 @@ import ProductEdit from './components/products/editproduct'
 
 import Orderlist from './components/order/orders'
 import Bookinglist from './components/order/slotbooking'
-import Orderdetails from './components/order/orderdetails'
 import Def from './components/def'
 import Ordertimeslot from './components/timeslot/orderslot'
 import Bookingtimeslot from './components/timeslot/bookingslot'

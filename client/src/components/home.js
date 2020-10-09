@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { usercontext } from "../App";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { serverurl } from "../config";
 import ReactLoading from "react-loading";
 import { UncontrolledCarousel } from "reactstrap";
@@ -8,7 +6,6 @@ import "../stylesheet/home.css";
 
 const Home = () => {
   const [data, setdata] = useState([]);
-  const { state, dispatch } = useContext(usercontext);
   const [loading, setloading] = useState(false);
   const [msg,setmsg]=useState("")
   useEffect(() => {

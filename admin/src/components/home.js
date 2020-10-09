@@ -1,11 +1,6 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../App'
-import {Link} from 'react-router-dom'
-import {serverurl} from '../config'
-const Home= ()=>{
+import React from 'react'
 
-   const [data,setdata]=useState([])
-   const {state,dispatch}=useContext(usercontext)
+const Home= ()=>{
    
 
 return(

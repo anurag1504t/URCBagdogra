@@ -1,17 +1,14 @@
-import React,{useState,useEffect,useContext} from 'react'
-import {usercontext} from '../../App'
+import React,{useState,useEffect} from 'react'
 import {serverurl} from '../../config'
 import {Link, useParams} from 'react-router-dom'
 import Loading from '../loading'
 import Usernav from '../usernav'
-import confirm from "reactstrap-confirm";
 
 const Userdetails= ()=>{
 
    const [data,setdata]=useState({})
    const [msg,setmsg]=useState("")
    const {username}=useParams()
-   const {state,dispatch}=useContext(usercontext)
    const [loading,setloading]=useState(false)
 
 
@@ -40,6 +37,7 @@ return(
    <div className='main'>
 
 <Usernav />
+<div>{msg}</div>
    <div class='headt'> user details </div>
     {
         data&&loading?<div>
