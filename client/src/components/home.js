@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { usercontext } from "../App";
+import { Link } from "react-router-dom";
 import { serverurl } from "../config";
 import ReactLoading from "react-loading";
 import { UncontrolledCarousel } from "reactstrap";
@@ -6,8 +8,9 @@ import "../stylesheet/home.css";
 
 const Home = () => {
   const [data, setdata] = useState([]);
+  const { state, dispatch } = useContext(usercontext);
   const [loading, setloading] = useState(false);
-  const [msg,setmsg]=useState("")
+
   useEffect(() => {
     fetch(serverurl + "/feeds/", {
       method: "get",
@@ -15,13 +18,9 @@ const Home = () => {
     })
       .then((res) => res.json())
       .then((result) => {
-        if(result.err) setmsg("error loading feeds")
-        else setdata(result);
+        setdata(result);
         setloading(true);
-      }).catch(err=>{
-        setmsg("error loading feeds")
-        setloading(true)
-      })
+      });
   }, []);
 
   return (
@@ -33,7 +32,6 @@ const Home = () => {
 
         <div className="main-home">
           <h2 className="news"> NEWS </h2>
-          <div>{msg}</div>
           <div>
             {data && loading ? (
               <ul className="list-unstyled">
@@ -68,8 +66,8 @@ const Home = () => {
 
 const items = [
   {
-    src:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSaH5M7D9mA1-cWxKcNyXs-Pic1zRCSkNzT_A&usqp=CAU",
+    
+    src: "https://images.financialexpress.com/2019/10/PIC-5.jpg",
     key: "1",
     className: "air-force-item",
   },
@@ -86,13 +84,20 @@ const items = [
     className: "air-force-item",
   },
   {
-    src: "https://images.financialexpress.com/2019/10/PIC-5.jpg",
+    src:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSaH5M7D9mA1-cWxKcNyXs-Pic1zRCSkNzT_A&usqp=CAU",
     key: "4",
     className: "air-force-item",
   },
   {
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTqKzWIzU97FRmw5GfYuPwUTHeleRPeYQHqoA&usqp=CAU",
+    src:
+      "https://qphs.fs.quoracdn.net/main-qimg-78f51dc71c7fbffa46052d72b2e04641.webp",
     key: "5",
+    className: "air-force-item",
+  },
+  {
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTqKzWIzU97FRmw5GfYuPwUTHeleRPeYQHqoA&usqp=CAU",
+    key: "6",
     className: "air-force-item",
   }, 
 ];
