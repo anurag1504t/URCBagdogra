@@ -6,6 +6,7 @@ const Products = require('../models/product');
 var authenticate = require('../authenticate');
 const Category=require('../models/category');
 const SystemInfo = require('../models/system');
+const Carts = require('../models/cart');
 
 const productRouter = express.Router();
 productRouter.use(bodyParser.json());
@@ -48,7 +49,7 @@ productRouter.route('/search')
     .limit(pagesize)
     .skip(pagesize*(pgnum-1))
     .then(product=>{
-        Products.count({name:{$regex:p}})
+        Products.countDocuments({name:{$regex:p}})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({products:product,pages:pages})
@@ -64,7 +65,7 @@ productRouter.route('/category')
     .skip(pagesize*(pgnum-1))
     .then(product=>{
         console.log(product)
-       Products.count({category:query})
+       Products.countDocuments({category:query})
        .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({products:product,pages:pages})
@@ -79,7 +80,7 @@ productRouter.route('/allproducts')
     .skip(pagesize*(pgnum-1))
     .then(product=>{
         console.log(product)
-       Products.count({})
+       Products.countDocuments({})
        .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({products:product,pages:pages})
@@ -182,13 +183,22 @@ productRouter.route('/:productId')
     */
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
-    Products.findByIdAndRemove(req.params.productId)
-    .then((resp) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(resp);
-    }, (err) => next(err))
-    .catch((err) => next(err));
+    Carts.updateMany({},  
+        {items:[]}, function (err, docs) { 
+        if (err){ 
+            res.json({err}) 
+        } 
+        else{
+            Products.findByIdAndRemove(req.params.productId)
+            .then((resp) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(resp);
+            })
+            .catch((err) => res.json({err}));
+         }
+    }); 
+    
 });
 
 

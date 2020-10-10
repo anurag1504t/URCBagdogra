@@ -20,7 +20,7 @@ userRouter.route('/search')
     .limit(pagesize)
     .skip(pagesize*(pgnum-1))
     .then(users=>{
-        User.count({$or:[{name:{$regex:p}},{username:{$regex:p}},{email:{$regex:p}},{mobileNUmber:{$regex:p}}]})
+        User.countDocuments({$or:[{name:{$regex:p}},{username:{$regex:p}},{email:{$regex:p}},{mobileNUmber:{$regex:p}}]})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({users:users,pages:pages})
@@ -35,7 +35,7 @@ userRouter.route('/allusers')
     .limit(pagesize)
     .skip(pagesize*(pgnum-1))
     .then(users=>{
-        User.count({})
+        User.countDocuments({})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({users:users,pages:pages})

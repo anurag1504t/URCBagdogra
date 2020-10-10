@@ -27,7 +27,7 @@ orderRouter.route('/searchdate')
     .populate('timeSlot')
     .then(orders=>{
         console.log(orders)
-        Orders.count({date:query})
+        Orders.countDocuments({date:query})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({orders:orders,pages:pages})
@@ -45,7 +45,7 @@ orderRouter.route('/allorders')
     .populate('items.item')
     .populate('timeSlot')
     .then(orders=>{
-        Orders.count({})
+        Orders.countDocuments({})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({orders:orders,pages:pages})

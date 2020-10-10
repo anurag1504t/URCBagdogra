@@ -17,7 +17,7 @@ userRequestRouter.route('/allreq')
     .limit(pagesize)
     .skip(pagesize*(pgnum-1))
     .then(usersreq=>{
-        UserRequest.count({})
+        UserRequest.countDocuments({})
         .exec((err,c)=>{
        let pages=Math.ceil(c/pagesize)
         res.json({usersreq:usersreq,pages:pages})
