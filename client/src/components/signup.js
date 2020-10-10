@@ -80,7 +80,7 @@ const Signup= ()=>{
 
 
 return(
-    <div className="container">
+    <div className="container main-signup">
         {loading?
         <div className='inside'>
             <div>

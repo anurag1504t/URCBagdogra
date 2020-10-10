@@ -1,7 +1,7 @@
 
 import React from 'react'
 import { useParams } from 'react-router-dom'
-// import '../stylesheet/style.css';
+import '../stylesheet/signupmsg.css';
 
 
 
@@ -12,7 +12,7 @@ const Signupmsg= ()=>{
 
 return(
 
-    <div className='main signmsg'>
+    <div className='main-signmsg'>
       <div>Dear { name}</div>
        <div>Your sign up request is posted successfully.</div>
        <div>It would be verified by the admin.</div>

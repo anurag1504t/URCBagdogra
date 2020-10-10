@@ -4,6 +4,7 @@ import {Link,useHistory} from 'react-router-dom'
 import Loading from './loading'
 import '../stylesheet/cart.css'
 import confirm from "reactstrap-confirm";
+import { Card, CardTitle, CardSubtitle, CardImg } from 'reactstrap'
 
 
 const Cart= ()=>{
@@ -144,53 +145,49 @@ const emptycart=async ()=>{
 }
 return(
 
-   <div className='main-cart'>
-   {/* <br></br>
- <br></br>
- <br></br>
- <br></br>
- <br></br> */}
- 
-      <div>{msg}</div>
-      <div className='main-cart'>
-       <ul className='cartlist row'>
+    <div> 
+        <div className="main-cart">
+        <div>{msg}</div>
+        <div className='container'>
+        <ul className='cartlist row'>
         {data&&loading?
             data.map(item=>{
                 total+=item.item.price*item.quantity;
                 return (
-                    <li className='col-12 col-md-3 m-1 m-lg-5 mb-1  cartobj'>
-                        <div className="row cart-card">
-                            <div className="col-12 col-md-6 mb-3 cart-image">
-                                <img width="100%" height="100%" src={item.item.image} alt={item.item.name} />
+                    <li className='col-12 col-md-4 cartobj'>
+                        <Card className="cart-card">
+                            <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
+                            <div>                                
+                                <h4>{item.item.name}</h4>
+                                Current Quantity<br></br><button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                                {item.quantity}
+                                <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                             </div>
-                            <div className = "col-12 col-md-6 mb-3 cart-content">
-                                <div>                                
-                                    <h4>{item.item.name}</h4>
-                                    Current Quantity:<button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
-                                    {item.quantity}
-                                    <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
-                                </div>
-                                <div>
-                                    Price: ₹ {item.item.price}<br></br>
-                                    Subtotal: ₹ {item.item.price*item.quantity}
-                                </div>
+                            <div>
+                                Unit Price: ₹ {item.item.price}<br></br>
+                                Subtotal: ₹ {item.item.price*item.quantity}
                             </div>
-                        </div>
-                        
+
+                        </Card>                        
                     </li>
                 )
             })
-            :
-            <Loading />
+            :<div className="cart-loading">
+            <Loading /></div>
         }
         </ul>
-        
+        </div>
+        </div>
+
+        <div>
+        <div className="cart-checkout">        
+        <div className="cart-checkout">
         {loading?(
         data.length==0?
         <div className="empty-cart">
         <h3>Your Shopping Cart is empty</h3>
         <p>To add items go to the shop page</p></div>:
-        <div>
+        <div className="cart-checkout">
         <div className='ta'>
             total amount: {total} INR
         </div>
@@ -200,8 +197,12 @@ return(
            <button className="cart-button" onClick={()=>{emptycart()}}>empty cart</button>
            </div>
         </div>):<div></div>
+
+        
         
 }
+</div>
+</div>
 </div>
 
  

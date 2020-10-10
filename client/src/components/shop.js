@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {serverurl} from '../config'
 import Loading from './loading'
-import { Card, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
+import { Card, CardImg, CardSubtitle, CardTitle, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import '../stylesheet/shop.css'
 
 const Shop= ()=>{
@@ -227,7 +227,7 @@ return(
       loading&&initload?
       <div className='main-shop'>
             <div className="row row-shop">
-                <div className='dropdown category col'>
+                {/* <div className='dropdown category col'>
                     <div><button className='dropbtn'>categories</button></div>
                     <div className='dropdown-content'>
                         <span onClick={()=>searchcategory("all")}>All</span>
@@ -242,7 +242,27 @@ return(
                            <span>No Category</span>
                         }
                     </div>
-                </div>
+                </div> */}
+
+                <UncontrolledDropdown className="dropdown category col">
+                    <DropdownToggle caret>
+                        Categories
+                    </DropdownToggle>
+                    <DropdownMenu>
+                    <DropdownItem header>Categories</DropdownItem>
+                    <DropdownItem onClick={()=>searchcategory("all")}>All</DropdownItem>
+                    {
+                        category?
+                        category.map(item=>{
+                            return(
+                                <DropdownItem onClick={()=>searchcategory(item)}>{item}</DropdownItem>
+                            )
+                        })
+                        :
+                        <span>No Category</span>
+                    }
+                  </DropdownMenu>
+                </UncontrolledDropdown>
             
                 <div className="category col">
                     <input size="10px" type='text' value={query} onChange={(e)=>filterproduct(e.target.value)} placeholder='search' />
@@ -251,31 +271,39 @@ return(
                     <button className="search-btn fa fa-search" onClick={()=>searchproduct()}></button>
                 </div>
             </div>
-        <div className='row row-shop'>
+        <div className='row container'>
         
             {  list?
                 list.map(item=>{
                     return(   
-                        <div className="col-6 col-md-2 mb-3">
-                        <div className="sizu">
-                            <Card className={cart[item._id]?"product1":"product2"}>
+                        <div className="col-12 col-md-3 mb-4 ">
+                            <Card className="shop-product-card">
                                 <CardTitle className='t'>{item.name}</CardTitle>
                                 <CardSubtitle>{item.size}</CardSubtitle>
-                                <CardImg width="100%" height="100%" src={item.image} alt={item.name} />
+                                <CardImg height="200px" width="auto" src={item.image} alt={item.name} />
                                 {/* <div><img src={item.image} height='200px' width='200px' /></div> */}
-                                <div className='t'>price : Rs.{item.price}</div>
+                                <div className='t'>₹ {item.price}</div>
                                { item.quantity!=0?<div><div>
-                                    <button className='add' disabled={item.quantity>0&&ab[item._id]?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quantity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
-                                    <span className='t'>{cart[item._id]?cart[item._id]:0}</span>
-                                    <button className='remove' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
+                                    <button className='shop-button' disabled={item.quantity>0&&ab[item._id]?((cart[item._id]>=item.maxQuantity||cart[item._id]>=item.quantity)?true:false):true} onClick={()=>addtocart(item._id)}>+</button>
+                                    <span className='t'>{cart[item._id]?cart[item._id]:0}/{Math.min(item.maxQuantity, item.quantity)} </span>
+                                    <button className='shop-button' disabled={cart[item._id]?(cart[item._id]>0?false:true):true} onClick={()=>removefromcart(item._id)}>-</button>
                                 </div>
-                                    <div>max quantity : {item.maxQuantity}</div>
-                                <div>total quantity : {item.quantity}</div>
+                                {
+                                   item.quantity>= 30?
+                                   <div className="in-stock">IN STOCK</div>
+                                   :<div></div>                                   
+                                }
+                                    {/* <div>max quantity : {item.maxQuantity}</div> */}
+                                {/* <div>total quantity : {item.quantity}</div> */}
                                 </div>
-                                :<div>not availaible</div>
+                                :<div className="out-stock">OUT OF STOCK</div>
+                               }
+                               {
+                                  (item.quantity!=0 && item.quantity< 30)?
+                                  <div className="limited-avail">LIMITED AVAILABILTY</div>
+                                  :<div></div>                                  
                                }
                             </Card>
-                            </div>
                         </div>
                     )
                 }):
