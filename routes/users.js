@@ -9,7 +9,9 @@ const cart = require('../models/cart');
 const userRouter = express.Router();
 userRouter.use(bodyParser.json());
 
-const {pagesize}=require('../config')
+const {pagesize}=require('../config');
+const Carts = require('../models/cart');
+const Orders = require('../models/order');
 
 userRouter.route('/search')
 .post((req,res,next) => {
@@ -273,9 +275,15 @@ userRouter.route('/:username')
     console.log(req.params.username)
     User.findOneAndRemove({username: req.params.username})
     .then((resp) => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json(resp);
+        Carts.findOneAndDelete({buyer:res._id})
+        .then(c=>{
+            Orders.findOneAndDelete({buyer:res._id})
+            .then(o=>{
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(resp);
+            }).catch((err) => res.json({err}));
+        }).catch((err) => res.json({err}));
     })
     .catch((err) => res.json({err}));
 });

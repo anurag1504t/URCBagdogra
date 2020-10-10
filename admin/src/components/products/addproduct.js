@@ -33,7 +33,7 @@ const updateproduct=async (e)=>{
   ); 
   if(result==false) return false
   setloading(false)
-    fetch(`${serverurl}/products/`,{
+    fetch(`${serverurl}/products/add`,{
         method:"post",
         headers:{
            "Content-Type":"application/json",
@@ -60,7 +60,6 @@ const updateproduct=async (e)=>{
         }else{
            setmsg("error adding product")
         }
-        
         setloading(true)
      }).catch(err=>{
         setloading(true)

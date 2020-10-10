@@ -7,6 +7,7 @@ var authenticate = require('../authenticate');
 const Category=require('../models/category');
 const SystemInfo = require('../models/system');
 const Carts = require('../models/cart');
+const Orders = require('../models/order');
 
 const productRouter = express.Router();
 productRouter.use(bodyParser.json());
@@ -89,7 +90,7 @@ productRouter.route('/allproducts')
 })
 
 // Methods for http://localhost:3000/products/ API end point
-productRouter.route('/')
+productRouter.route('/add/')
 .get((req,res,next) => {
     Products.find({})
     .then((products) => {
@@ -100,7 +101,6 @@ productRouter.route('/')
     .catch((err) => res.json({err}));
 })
 .post(authenticate.verifyUser, (req, res, next) => {
-    console.log(req.body)
     let p=Products(req.body)
     p.save()
     .then((product) => {
@@ -108,7 +108,7 @@ productRouter.route('/')
         res.statusCode = 200;
         res.setHeader('Content-Type', 'application/json');
         res.json(product);
-    }, (err) => console.log(err))
+    })
     .catch((err) =>res.json({err}));
 })
 .put((req, res, next) => {
@@ -184,18 +184,30 @@ productRouter.route('/:productId')
 })
 .delete(authenticate.verifyUser, (req, res, next) => {
     Carts.updateMany({},  
-        {items:[]}, function (err, docs) { 
+        {$pull:{items:{item:req.params.productId}}}, function (err, docs) { 
         if (err){ 
             res.json({err}) 
         } 
         else{
-            Products.findByIdAndRemove(req.params.productId)
-            .then((resp) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(resp);
-            })
-            .catch((err) => res.json({err}));
+            Orders.updateMany({},  
+                {$pull:{items:{item:req.params.productId}}}, function (err, docs) { 
+                if (err){ 
+                    res.json({err}) 
+                } 
+                else{
+                    Products.findByIdAndRemove(req.params.productId)
+                    .then((resp) => {
+                        Orders.deleteMany({items:[]})
+                            .then(od=>{
+                                res.statusCode = 200;
+                                res.setHeader('Content-Type', 'application/json');
+                                res.json(resp);
+                            }).catch((err) => res.json({err}));
+                        
+                    })
+                    .catch((err) => res.json({err}));
+                 }
+            });
          }
     }); 
     

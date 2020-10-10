@@ -186,7 +186,6 @@ return(
             return(
             <div className='product2'><Link to={`/orderdetail/${item._id}`} className='ll'>
                 <div>buyer name: {item.buyer.name}</div>
-                <div>amount: Rs. {item.amount}</div>
                 <div className='timeslot'>
               <div className='tm'>timeSlot details</div>
               {item.timeSlot.date!=0?<div>

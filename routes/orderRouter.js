@@ -143,7 +143,7 @@ orderRouter.route('/placeorder')
                 timeslot.orders+=1;
                 timeslot.save()
                 .then(tm=>{
-                    let s=Orders({buyer:req.user._id,timeSlot:timeid,items:orderitems,amount:total,date:tm.date})
+                    let s=Orders({buyer:req.user._id,timeSlot:timeid,items:orderitems,date:tm.date})
                     s.save()
                     .then((order) => {
                         console.log("order saved")

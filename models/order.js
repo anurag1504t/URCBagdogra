@@ -28,10 +28,6 @@ const orderSchema = new Schema({
         ref: 'pickupslot'
     },
     items: [ productSchema ],
-    amount:{
-        type:Number,
-        required:true
-    },
     date:{
         type: String,
         required:false

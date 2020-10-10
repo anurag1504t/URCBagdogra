@@ -55,11 +55,9 @@ return(
     {
         data.items&&loading?
         <div>
-            
              <div>   buyer name: {data.buyer.name}</div>
              <div>   buyer username: {data.buyer.username}</div>
              <div>   buyer contact number: {data.buyer.mobileNumber}</div>
-             <div> amount: Rs. {data.amount}</div>
             <ul>
                            {data.items.filter(pro=>{return pro.quantity!=0}).map(prod=>{
                                             return(
