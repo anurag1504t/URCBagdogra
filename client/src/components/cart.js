@@ -154,8 +154,8 @@ return(
                 data.map(item=>{
                     total+=item.item.price*item.quantity;
                     return (
-                        <li className='col-12 col-md-4 cartobj'>
-                            <Card>
+                        <li className='list-unstyled col-12 col-md-4'>
+                            <Card className="cartobj">
                                 <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
                                 <div>
                                     <CardTitle>{item.item.name}</CardTitle>
@@ -172,8 +172,8 @@ return(
                         </li>
                     )
                 })
-                :<div className="cart-loading container">
-                <Loading /></div>
+                :<div className="container"><div className="cart-loading">
+                <Loading /></div></div>
                 }
             </ul>
         </div>

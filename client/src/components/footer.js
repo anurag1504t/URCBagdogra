@@ -12,7 +12,10 @@ export const Footer = () => {
             <h5 className="title">About</h5>
             <ul>
               <li className="list-unstyled">
-                Idea By: <a href="#">Gp Capt M M Anil Kumar</a>
+                Idea<br></br> <a href="#">Gp Capt M M Anil Kumar</a>
+              </li>
+              <li className="list-unstyled">
+              Design & Development<br></br><a href="#">Team URC Bagdogra</a>
               </li>
             </ul>            
           </MDBCol>          
@@ -20,10 +23,10 @@ export const Footer = () => {
             <h5 className="title">Contact Us</h5>
             <ul>
               <li className="list-unstyled">
-                <a href="#!">+913532698206</a>
+                Phone<br></br><a href="#!">+913532698206</a>
               </li>
               <li className="list-unstyled">
-                <a href="#!">urc20wingairforce@gmail.com</a>
+                Email<br></br><a href="#!">urc20wingairforce@gmail.com</a>
               </li>
               </ul>
           </MDBCol>

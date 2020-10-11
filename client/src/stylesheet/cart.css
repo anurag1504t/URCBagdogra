@@ -6,9 +6,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    
-    /* padding-bottom:400px; */
-    /* height: calc(100% - 60px); */
 }
 
 .cart-loading {
@@ -37,20 +34,21 @@
 
 .cartobj{
     font-size:20px;
-    padding: 5px;
+    /* padding: 5px; */
     display: flex;
+    margin-right: 20px !important;
   flex-direction: column;
   align-items: center;
     text-align: center;
     /* border-bottom: 2px solid  #242F3E; */
 }
 
-.cartlist{
+/* .cartlist{
     list-style-type: none;
     margin: 10px;
     align-items: center;
     font-variant: small-caps;
-}
+} */
 
 .cart-button {
     background-color: #242F3E;

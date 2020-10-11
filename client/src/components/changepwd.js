@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import {serverurl} from '../config'
 import {useHistory} from 'react-router-dom'
 import confirm from "reactstrap-confirm";
-
+import "../stylesheet/changepwd.css";
 import Loading from './loading'
 
 const Pwdchange= ()=>{
@@ -67,18 +67,23 @@ const submitpwd=()=>{
    
 return(
 
-   <div className='main'>
-   <div>{msg}</div>
-      {loading?
-      <div>
-      <div><input type='password' value={pass} onChange={(e)=>setpass(e.target.value)} placeholder='old password' /></div>
-      <div><input type='password' minlength="6" maxLength="20"  value={newpass} onChange={(e)=>setnewpass(e.target.value)} placeholder='new password' /></div>
-      <div><input type='password' minlength="6" maxLength="20"  value={newpass2} onChange={(e)=>setnewpass2(e.target.value)} placeholder='re-enter new password' /></div>
-        <div><button onClick={()=>submitpwd()}>submit</button></div>
-    </div>:
-    <Loading />
-    }
-   </div>
+    <div className='changepwd-main container'>
+        <div>{msg}</div>
+        {loading?
+            <div className='changepwd-inside'>
+            <div className="changepwd-main">
+                <h1>Password Reset</h1>
+                <span>Use Current Password</span><span>to reset password</span>
+            </div>
+            <br></br>
+            <div><input type='password' value={pass} onChange={(e)=>setpass(e.target.value)} placeholder='old password' /></div>
+            <div><input type='password' minlength="6" maxLength="20"  value={newpass} onChange={(e)=>setnewpass(e.target.value)} placeholder='new password' /></div>
+            <div><input type='password' minlength="6" maxLength="20"  value={newpass2} onChange={(e)=>setnewpass2(e.target.value)} placeholder='re-enter new password' /></div>
+            <div><button className="changepwd-button" onClick={()=>submitpwd()}>submit</button></div>
+         </div>:
+         <Loading />
+        }
+    </div>
 
 )
 
