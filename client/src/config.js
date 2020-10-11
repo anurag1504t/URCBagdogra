@@ -1,3 +1,3 @@
 module.exports={
-    serverurl: "http://localhost:5000/api"
+    serverurl: "https://www.urcbagdogra.in/api"
 }
