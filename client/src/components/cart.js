@@ -144,72 +144,59 @@ const emptycart=async ()=>{
    })
 }
 return(
-
-    <div> 
+    <div className="container">
         <div className="main-cart">
-        <div>{msg}</div>
-        <div className='container'>
-        <ul className='cartlist row'>
-        {data&&loading?
-            data.map(item=>{
-                total+=item.item.price*item.quantity;
-                return (
-                    <li className='col-12 col-md-4 cartobj'>
-                        <Card className="cart-card">
-                            <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
-                            <div>                                
-                                <h4>{item.item.name}</h4>
-                                Current Quantity<br></br><button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
-                                {item.quantity}
-                                <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
-                            </div>
-                            <div>
-                                Unit Price: ₹ {item.item.price}<br></br>
-                                Subtotal: ₹ {item.item.price*item.quantity}
-                            </div>
-
-                        </Card>                        
-                    </li>
-                )
-            })
-            :<div className="cart-loading">
-            <Loading /></div>
-        }
-        </ul>
+            <div>{msg}</div>
         </div>
-        </div>
+        <div className="cart-items">
+            <ul className='cartlist row'>
+                {data&&loading?
+                data.map(item=>{
+                    total+=item.item.price*item.quantity;
+                    return (
+                        <li className='col-12 col-md-4 cartobj'>
+                            <Card className="cart-card">
+                                <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
+                                <div>                                
+                                    <h4>{item.item.name}</h4>
+                                    Current Quantity<br></br><button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
+                                    {item.quantity}
+                                    <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
+                                </div>
+                                <div>
+                                    Unit Price: ₹ {item.item.price}<br></br>
+                                    Subtotal: ₹ {item.item.price*item.quantity}
+                                </div>
 
-        <div>
-        <div className="cart-checkout">        
+                            </Card>                        
+                        </li>
+                    )
+                })
+                :<div className="cart-loading container">
+                <Loading /></div>
+                }
+            </ul>
+        </div>
         <div className="cart-checkout">
-        {loading?(
-        data.length==0?
-        <div className="empty-cart">
-        <h3>Your Shopping Cart is empty</h3>
-        <p>To add items go to the shop page</p></div>:
-        <div className="cart-checkout">
-        <div className='ta'>
-            total amount: {total} INR
+            {loading?(
+            data.length==0?
+            <div className="empty-cart">
+            <h3>Your Shopping Cart is empty</h3>
+            <p>To add items go to the shop page</p></div>:
+            <div className="cart-checkout">
+            <div className='ta'>
+                total amount: {total} INR
+            </div>
+            <div className="inline">
+            <Link to='/checkout'> <button className="cart-button">checkout</button></Link> 
+            
+               <button className="cart-button" onClick={()=>{emptycart()}}>empty cart</button>
+               </div>
+            </div>):<div></div>          
+            }
         </div>
-        <div className="inline">
-        <Link to='/checkout'> <button className="cart-button">checkout</button></Link> 
-        
-           <button className="cart-button" onClick={()=>{emptycart()}}>empty cart</button>
-           </div>
-        </div>):<div></div>
-
-        
-        
-}
-</div>
-</div>
-</div>
-
- 
-   </div>
-
-)
-
+    </div>
+    )
 }
 
 export default Cart

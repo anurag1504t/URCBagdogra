@@ -1,22 +1,3 @@
-// import React from 'react';
-
-
-// export const Footer = () => {
-//     return(
-//         <div className="footer">
-//             <div className="container">
-//                 <div className="row justify-content-center">             
-//                     <div className="col-auto">                        
-//                         <div className="copyright">
-//                             <p>© {new Date().getFullYear()} URC Bagdogra</p>
-//                         </div>                        
-//                     </div>
-//                 </div>
-//             </div>            
-//         </div>
-//     );
-// };
-
 import '../stylesheet/footer.css';
 import React from "react";
 import { MDBCol, MDBContainer, MDBRow, MDBFooter } from "mdbreact";
@@ -24,11 +5,18 @@ import '../stylesheet/footer.css';
 export const Footer = () => {
   return (
       <div className="yoyos">
-    <MDBFooter color="blue" className="font-small pt-4 mt-4">
-      <MDBContainer fluid className="text-center text-md-right">
+    <MDBFooter color="blue" className="font-small pt-4 mt-4 container">
+      <MDBContainer fluid className="text-right text-md-right">
         <MDBRow>
-          
-          <MDBCol md="6">
+          <MDBCol md="5">
+            <h5 className="title">About</h5>
+            <ul>
+              <li className="list-unstyled">
+                Idea By: <a href="#">Gp Capt M M Anil Kumar</a>
+              </li>
+            </ul>            
+          </MDBCol>          
+          <MDBCol md="4">
             <h5 className="title">Contact Us</h5>
             <ul>
               <li className="list-unstyled">
@@ -43,7 +31,7 @@ export const Footer = () => {
             <h5 className="title">Address</h5>
             <ul>
               <li className="list-unstyled">
-                <a href="#!">Unit Run Canteen,
+                <a href="#!">Unit Run Canteen<br></br>
                 Air Force Station Bagdogra</a>
               </li>
               
