@@ -1,0 +1,3 @@
+{"_id":{"$oid":"5f7dfb948560f409dc77cc84"},"maxOrders":0,"orders":-1,"date":"0","start":0.0,"end":0,"__v":0}
+{"_id":{"$oid":"5f7e0e263eaba53c04c4e2bd"},"maxOrders":3,"orders":0,"date":"Thu Oct 08 2020","start":9.5,"end":10,"__v":0}
+{"_id":{"$oid":"5f7e0e263eaba53c04c4e2bc"},"maxOrders":3,"orders":0,"date":"Thu Oct 08 2020","start":10,"end":10.5,"__v":0}

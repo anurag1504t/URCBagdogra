@@ -1,0 +1,4 @@
+{"_id":{"$oid":"5f7dce565ccd5f610b947cfd"},"maxOrders":0,"orders":-1,"date":"0","start":0.0,"end":0,"__v":0}
+{"_id":{"$oid":"5f7dfbc63eaba53c04c4e2b4"},"maxOrders":3,"orders":0,"date":"Sat Oct 06 2020","start":9.5,"end":10,"__v":0}
+{"_id":{"$oid":"5f814422c14f1538a02a56df"},"maxOrders":3,"orders":0,"date":"Thu Oct 15 2020","start":10.5,"end":11,"__v":0}
+{"_id":{"$oid":"5f814422c14f1538a02a56de"},"maxOrders":3,"orders":2,"date":"Thu Oct 15 2020","start":10,"end":10.5,"__v":0}

@@ -303,7 +303,7 @@ return(
         </div>
         
 
-        <div className="profile-instruction">        
+        <div className="profile-instruction container">        
             <div><h3>instructions for Order Pickup/Shopping at URC</h3></div>
             <div>
             <ul className="list">

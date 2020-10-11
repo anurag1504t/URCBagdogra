@@ -1,1 +1,1 @@
-export const serverurl = "http://localhost:5000/api";
+export const serverurl = "https://urcbagdogra.in/api";
