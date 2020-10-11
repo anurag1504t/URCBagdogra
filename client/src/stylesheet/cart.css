@@ -69,18 +69,18 @@
     margin-bottom: 300px;
 }
 
-.cart-card
+/* .cart-card
 {
   /* width: 400px; */
   display: flex;
-  flex-direction: row;
+  flex-direction: colu;
   border: 1px solid #333;
   box-shadow: 0 2px 4px rgba(0,0,0,0.25);
   border-radius: 5px;
   align-items: center;
     text-align: center;
     margin: 20px !important;
-}
+} */
 
 /* .cart-image
 {
@@ -88,12 +88,12 @@
   /* height: 200px; 
 } */
 
-.cart-content
+/* .cart-content
 {
-  /* width: 50%; */
+  width: 50%; 
   font-size:15px;
   padding: 10px 20px;
-}
+} */
 
 .cart-checkout{
     display: flex;
