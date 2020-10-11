@@ -155,15 +155,19 @@ return(
                     total+=item.item.price*item.quantity;
                     return (
                         <li className='col-12 col-md-4 cartobj'>
-                            <Card className="cart-card">
+                            <Card>
                                 <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
+<<<<<<< HEAD
                                 <div>                                
+=======
+                                <div className="row">                                
+>>>>>>> f2a5b7dd9fc282398dbdbd7f155300bc6a1be620
                                     <CardTitle>{item.item.name}</CardTitle>
                                     Current Quantity<br></br><button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                                     {item.quantity}
                                     <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                                 </div>
-                                <div>
+                                <div className="row">
                                     Unit Price: ₹ {item.item.price}<br></br>
                                     Subtotal: ₹ {item.item.price*item.quantity}
                                 </div>
