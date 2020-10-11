@@ -157,13 +157,13 @@ return(
                         <li className='col-12 col-md-4 cartobj'>
                             <Card>
                                 <CardImg height="200px" width="auto" src={item.item.image} alt={item.item.name} />
-                                <div className="row">                                
+                                <div>                                
                                     <CardTitle>{item.item.name}</CardTitle>
                                     Current Quantity<br></br><button className='add cart-button' disabled={item.item.quantity>0?((item.quantity>=item.item.maxQuantity||item.quantity>=item.item.quantity)?true:false):true} onClick={()=>addtocart(item.item._id)}>+</button>
                                     {item.quantity}
                                     <button className='remove cart-button' disabled={false}  onClick={()=>removefromcart(item.item._id)}>-</button>
                                 </div>
-                                <div className="row">
+                                <div>
                                     Unit Price: ₹ {item.item.price}<br></br>
                                     Subtotal: ₹ {item.item.price*item.quantity}
                                 </div>
