@@ -192,7 +192,7 @@ return(
                 {loadingp?
                     <div className="user-container">
                         <br></br>                        
-                        <div>                            
+                        <div className="user-container">                            
                             <div className='dd'>Hi, <em>{pdata.name}</em></div>
                             <br></br>
                             <img className="profile-image" src={Officer} width="90%" ></img>
@@ -215,6 +215,19 @@ return(
             
             <div className="order col-12 col-md-8 mb-4">
 
+                <div className="profile-instruction">        
+                    <div><h3>instructions for Order Pickup/Shopping at URC</h3></div>
+                    <div>
+                    <ul className="list-unstyled">
+                        <li key="1">please carry your canteen card along with you</li>
+                        <li key="2">the shopping and billing process has to be completed within booked time slot else items will not be billed.</li>
+                        <li key="3">social distancing norms must be followed by all</li>
+                        <li key="4">no entry without mask</li>
+                        <li key="5">canteen staff is authorised by orders of oic urc to cancel your booking if you are found wanting of following above instructions</li>
+                    </ul>
+                    </div>
+                </div>
+                
                 <div>
                     <div className='oh'> slot booked</div>
                     {loadings?
@@ -301,22 +314,6 @@ return(
 
             </div>
         </div>
-        
-
-        <div className="profile-instruction container">        
-            <div><h3>instructions for Order Pickup/Shopping at URC</h3></div>
-            <div>
-            <ul className="list">
-                <li key="1">please carry your canteen card along with you</li>
-                <li key="2">the shopping and billing process has to be completed within booked time slot else items will not be billed.</li>
-                <li key="3">social distancing norms must be followed by all</li>
-                <li key="4">no entry without mask</li>
-                <li key="5">canteen staff is authorised by orders of oic urc to cancel your booking if you are found wanting of following above instructions</li>
-            </ul>
-            </div>
-        </div>
-
-
     </div>   
 )
 

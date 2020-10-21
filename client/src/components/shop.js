@@ -222,28 +222,11 @@ return(
     <div>
 
    <div className='main-shop'>
-<div>{msg}</div>
+    <div>{msg}</div>
       {
       loading&&initload?
       <div className='main-shop'>
             <div className="row row-shop">
-                {/* <div className='dropdown category col'>
-                    <div><button className='dropbtn'>categories</button></div>
-                    <div className='dropdown-content'>
-                        <span onClick={()=>searchcategory("all")}>All</span>
-                        {
-                           category?
-                           category.map(item=>{
-                              return(
-                                 <span onClick={()=>searchcategory(item)}>{item}</span>
-                              )
-                           })
-                           :
-                           <span>No Category</span>
-                        }
-                    </div>
-                </div> */}
-
                 <UncontrolledDropdown className="dropdown category col">
                     <DropdownToggle caret>
                         Categories

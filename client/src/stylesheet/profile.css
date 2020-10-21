@@ -18,6 +18,12 @@
     border-radius: 50px;
 }
 
+.user-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .profile-button {
     background-color: #242F3E;
     font-size:15px;
@@ -31,6 +37,8 @@
 
 .profile-image {
     border-radius: 50px;
+    height: auto;
+    width: auto;
 }
 
 .ul-order {
@@ -94,13 +102,14 @@
 .profile-instruction {
     color: floralwhite;
     background-color:  #242F3E;
-    /* padding:20px; */
+    padding:20px;
     font-size:20px;
     font-variant: small-caps;
     /* margin:20px; */
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: justify;
     border-radius: 50px;
     /* text-align: center; */
     /* vertical-align: middle; */
