@@ -155,7 +155,7 @@ return(
    <div className='main-checkout'>
       <h1>Select a time slot to pick order</h1>
       <br></br>
-      <div>{msg}</div>
+      <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
       {loading?<div className="timeslot-checkout-container">
       
   <DatePicker value={date} minDate={getmindate()} onChange={(dt)=>setdate(dt)} />

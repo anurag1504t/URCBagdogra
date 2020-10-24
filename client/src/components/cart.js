@@ -146,7 +146,7 @@ const emptycart=async ()=>{
 return(
     <div className="container">
         <div className="main-cart">
-            <div>{msg}</div>
+        <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
         </div>
         <div className="cart-items">
             <ul className='cartlist row'>

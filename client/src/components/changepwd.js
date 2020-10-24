@@ -68,7 +68,7 @@ const submitpwd=()=>{
 return(
 
     <div className='changepwd-main container'>
-        <div>{msg}</div>
+        <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
         {loading?
             <div className='changepwd-inside'>
             <div className="changepwd-main">

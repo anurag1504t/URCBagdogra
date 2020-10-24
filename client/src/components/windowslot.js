@@ -143,7 +143,7 @@ if(i*10%10==0){
             
             <h1>Welcome to URC Bagdogra Online Token Issuing System</h1>
             <br></br> 
-            <div>{msg}</div>
+            <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
             {loading?<div className="timeslot-window-container">
                 <div>Choose a Date to select a time slot</div>
                 <div className="time">

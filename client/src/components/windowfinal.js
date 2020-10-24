@@ -50,7 +50,7 @@ const WindowFinal= ()=>{
 return(
 
    <div className='main-windowfinal'>
-      <div>{msg}</div>
+      <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
       <div><h1>your slot is booked successfully</h1></div>
       <br></br>
       <div className="timeslot-finalwindow-container">

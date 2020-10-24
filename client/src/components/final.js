@@ -50,7 +50,7 @@ const Final= ()=>{
 return(
 
    <div className='main-final'>
-      <div>{msg}</div>
+      <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
       <div><h1>your order is placed successfully</h1></div>
       <br></br>
       <div className="order-final-container">

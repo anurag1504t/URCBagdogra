@@ -222,7 +222,7 @@ return(
     <div>
 
    <div className='main-shop'>
-    <div>{msg}</div>
+   <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
       {
       loading&&initload?
       <div className='main-shop'>

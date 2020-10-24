@@ -186,7 +186,7 @@ const changeslot=async (id)=>{
 return(
 
     <div className='main-profile'>
-        <div>{msg}</div>
+        <div className='alert alert-primary' style={{textAlign:'center'}}>{msg}</div>
         <div className="row">
             <div className="user-details col-12 col-md-4 mb-4">
                 {loadingp?
